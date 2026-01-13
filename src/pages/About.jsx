@@ -3,7 +3,7 @@ import './About.css';
 function About() {
   return (
     <div className="about">
-      <section className="page-header">
+      <section className="page-header animate-on-load">
         <div className="container">
           <h1>About IARE MUN</h1>
           <p className="head">
@@ -15,7 +15,7 @@ function About() {
 
       <section className="section">
         <div className="container">
-          <div className="content-block">
+          <div className="content-block animate-on-load delay-200">
             <h2 className="head">What is Model United Nations?</h2>
 
             <p>
@@ -32,7 +32,7 @@ function About() {
             </p>
           </div>
 
-          <div className="content-block">
+          <div className="content-block animate-on-load delay-300">
             <h2 className="head">About IARE</h2>
             <p>
               The Institute of Aeronautical Engineering (IARE) is a leading technical institution
@@ -48,7 +48,7 @@ function About() {
             </p>
           </div>
 
-          <div className="content-block">
+          <div className="content-block animate-on-load delay-400">
             <h2 className="head">IARE MUN 2024</h2>
             <p>
               IARE MUN 2024 is a 3-day conference bringing together students from various
@@ -65,7 +65,7 @@ function About() {
             </p>
           </div>
 
-          <div className="objectives-grid">
+          <div className="objectives-grid animate-on-load delay-500">
             <div className="objective-card">
               <h3>🎯 Our Mission</h3>
               <p>

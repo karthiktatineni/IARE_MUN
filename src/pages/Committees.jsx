@@ -3,7 +3,7 @@ import './Committees.css';
 function Committees() {
   return (
     <div className="committees">
-      <section className="page-header">
+      <section className="page-header animate-on-load">
         <div className="container">
           <h1>Committees</h1>
           <p className="head">
@@ -16,7 +16,7 @@ function Committees() {
 
       <section className="section">
         <div className="container">
-          <div className="committee-card">
+          <div className="committee-card animate-on-load delay-200">
             <div className="committee-header">
               <h2>United Nations Security Council (UNSC)</h2>
               <span className="committee-badge">International</span>
@@ -60,7 +60,7 @@ function Committees() {
             </div>
           </div>
 
-          <div className="committee-card">
+          <div className="committee-card animate-on-load delay-300">
             <div className="committee-header">
               <h2>Disarmament and International Security Committee - DISEC</h2>
               <span className="committee-badge">Disarmament</span>
@@ -103,7 +103,7 @@ function Committees() {
             </div>
           </div>
 
-          <div className="committee-card">
+          <div className="committee-card animate-on-load delay-400">
             <div className="committee-header">
               <h2>All India Political Parties Meet (AIPPM)</h2>
               <span className="committee-badge">National</span>
@@ -145,7 +145,7 @@ function Committees() {
               </div>
             </div>
           </div>
-          <div className="committee-card">
+          <div className="committee-card animate-on-load delay-500">
             <div className="committee-header">
               <h2>International Press (IP)</h2>
               <span className="committee-badge">International</span>

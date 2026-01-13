@@ -12,45 +12,13 @@
 .hero-content {
   max-width: 900px;
   margin: 0 auto;
+  text-align: center;
 }
 
-.logo-container {
-  margin-bottom: 2rem;
-}
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.globe-icon {
-  font-size: 4rem;
-  display: inline-block;
-  animation: rotate 20s linear infinite, fadeInUp 0.8s ease-out forwards;
-  opacity: 0;
-  /* Start hidden */
-  filter: drop-shadow(0 0 10px rgba(74, 144, 226, 0.5));
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
 
 .hero-title {
-  font-size: 5rem;
+  font-size: 6rem;
   font-weight: 800;
   margin-bottom: 1rem;
   line-height: 1.1;
@@ -69,7 +37,7 @@
 }
 
 .hero-eyebrow {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   text-transform: uppercase;
   letter-spacing: 4px;
   color: var(--cornflower-ocean);

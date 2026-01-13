@@ -139,6 +139,21 @@
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
 }
 
+.contact-info-separator {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cornflower-ocean), transparent);
+  margin: 3rem 0 2rem;
+}
+
+.contact-info-box {
+  background-color: var(--deep-space-blue);
+  padding: 3rem;
+  border-radius: 12px;
+  border: 2px solid var(--cornflower-ocean);
+  box-shadow: 0 4px 20px rgba(197, 160, 40, 0.1);
+}
+
 @media (max-width: 992px) {
   .contact-main-grid {
     grid-template-columns: 1fr;

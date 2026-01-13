@@ -7,11 +7,6 @@ function Home() {
       <section className="hero">
         <div className="container">
           <div className="hero-content">
-            <div className="logo-container">
-              <div className="globe-icon">
-                🌎
-              </div>
-            </div>
             <p className="hero-eyebrow">Institute of Aeronautical Engineering</p>
             <h1 className="hero-title">
               IARE MUN-

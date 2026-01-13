@@ -47,7 +47,7 @@ function Schedule() {
 
   return (
     <div className="schedule">
-      <section className="page-header">
+      <section className="page-header animate-on-load">
         <div className="container">
           <h1>Event Schedule</h1>
 
@@ -61,7 +61,7 @@ function Schedule() {
       <section className="section">
         <div className="container">
           {scheduleData.map((day, index) => (
-            <div key={index} className="day-schedule">
+            <div key={index} className={`day-schedule animate-on-load delay-${(index + 2) * 100}`}>
               <div className="day-header">
                 <h2>{day.day}</h2>
                 <span className="day-date">{day.date}</span>
@@ -80,7 +80,7 @@ function Schedule() {
             </div>
           ))}
 
-          <div className="schedule-note">
+          <div className="schedule-note animate-on-load delay-500">
             <h3>Important Notes</h3>
             <ul>
               <li>All delegates must arrive 30 minutes before the scheduled time on Day 1</li>

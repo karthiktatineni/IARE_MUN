@@ -123,48 +123,53 @@ function Contact() {
               </div>
             </div>
 
-            <div className="contact-info">
-              <h2>Get In Touch</h2>
-              <p className="contact-description">
-                Have questions about IARE MUN 2024? We&apos;re here to help! Reach out to us
-                through any of the following channels or fill out the contact form.
-              </p>
 
-              <div className="info-items">
-                <div className="info-item">
-                  <div className="info-icon">📍</div>
-                  <div className="info-content">
-                    <h3>Address</h3>
-                    <p>Institute of Aeronautical Engineering</p>
-                    <p>Dundigal, Hyderabad - 500043</p>
-                    <p>Telangana, India</p>
+            <div className="contact-info-separator"></div>
+
+            <div className="contact-info-box">
+              <div className="contact-info">
+                <h2>Get In Touch</h2>
+                <p className="contact-description">
+                  Have questions about IARE MUN 2024? We&apos;re here to help! Reach out to us
+                  through any of the following channels or fill out the contact form.
+                </p>
+
+                <div className="info-items">
+                  <div className="info-item">
+                    <div className="info-icon">📍</div>
+                    <div className="info-content">
+                      <h3>Address</h3>
+                      <p>Institute of Aeronautical Engineering</p>
+                      <p>Dundigal, Hyderabad - 500043</p>
+                      <p>Telangana, India</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="info-item">
-                  <div className="info-icon">📧</div>
-                  <div className="info-content">
-                    <h3>Email</h3>
-                    <p>mun@iare.ac.in</p>
-                    <p>info@iaremun.org</p>
+                  <div className="info-item">
+                    <div className="info-icon">📧</div>
+                    <div className="info-content">
+                      <h3>Email</h3>
+                      <p>mun@iare.ac.in</p>
+                      <p>info@iaremun.org</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="info-item">
-                  <div className="info-icon">📞</div>
-                  <div className="info-content">
-                    <h3>Phone</h3>
-                    <p>+91 1234567890</p>
-                    <p>+91 0987654321</p>
+                  <div className="info-item">
+                    <div className="info-icon">📞</div>
+                    <div className="info-content">
+                      <h3>Phone</h3>
+                      <p>+91 1234567890</p>
+                      <p>+91 0987654321</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="info-item">
-                  <div className="info-icon">🕒</div>
-                  <div className="info-content">
-                    <h3>Office Hours</h3>
-                    <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
-                    <p>Saturday: 10:00 AM - 2:00 PM</p>
+                  <div className="info-item">
+                    <div className="info-icon">🕒</div>
+                    <div className="info-content">
+                      <h3>Office Hours</h3>
+                      <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                      <p>Saturday: 10:00 AM - 2:00 PM</p>
+                    </div>
                   </div>
                 </div>
               </div>
