@@ -15,7 +15,7 @@
 
 .hero-content {
   max-width: 900px;
-  margin: 0 auto;
+  margin: -100px auto 0;
   text-align: center;
 }
 
@@ -64,6 +64,98 @@
   flex-wrap: wrap;
   opacity: 0;
   animation: fadeInUp 0.8s ease-out 0.8s forwards;
+}
+
+.scroll-down {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 1.2s forwards;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mouse {
+  width: 26px;
+  height: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 13px;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+.scroll-down:hover .mouse {
+  border-color: var(--cornflower-ocean);
+}
+
+.wheel {
+  width: 4px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scroll 1.5s infinite;
+}
+
+@keyframes scroll {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(16px);
+  }
+}
+
+.arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.arrows span {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  border-right: 2px solid rgba(255, 255, 255, 0.5);
+  transform: rotate(45deg);
+  animation: arrowSlide 1.5s infinite;
+}
+
+.arrows span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.arrows span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes arrowSlide {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translateY(-10px);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translateY(10px);
+  }
 }
 
 .btn-primary {
