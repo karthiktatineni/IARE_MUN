@@ -4,30 +4,39 @@
 
 .hero {
   background: transparent;
-  padding: 40px 0;
+  padding: 80px 0 60px;
   text-align: center;
+  position: relative;
 }
 
 .hero-content {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
 .logo-container {
-  margin-bottom: 0rem;
+  margin-bottom: 2rem;
 }
 
-.mun-logo {
-  display: inline-block;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .globe-icon {
-  width: 150px;
-  height: 150px;
-  margin: 0 auto 0rem;
-  color: rgba(255, 255, 255, 0.9);
-  /* White instead of gold */
-  animation: rotate 20s linear infinite;
+  font-size: 4rem;
+  display: inline-block;
+  animation: rotate 20s linear infinite, fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+  /* Start hidden */
+  filter: drop-shadow(0 0 10px rgba(74, 144, 226, 0.5));
 }
 
 @keyframes rotate {
@@ -40,26 +49,45 @@
   }
 }
 
-.hero h1 {
-  font-size: 3.5rem;
+.hero-title {
+  font-size: 5rem;
+  font-weight: 800;
   margin-bottom: 1rem;
-  color: rgb(255, 255, 255);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.1;
+  color: white;
+  letter-spacing: -2px;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.4s forwards;
 }
 
-.hero-subtitle {
-  font-size: 3rem;
-  color: rgba(255, 255, 255, 0.95);
-  /* White instead of gold */
-  margin-bottom: 1rem;
-  font-weight: 500;
+.hero-year-highlight {
+  background: linear-gradient(90deg, #D4AF37, #FFD700, #B8860B);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.hero-eyebrow {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--cornflower-ocean);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  display: block;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.2s forwards;
 }
 
 .hero-description {
-  font-size: 1.5rem;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 2rem;
-  line-height: 1.5;
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 auto 3rem;
+  line-height: 1.8;
+  max-width: 700px;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.6s forwards;
 }
 
 .hero-buttons {
@@ -67,6 +95,8 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.8s forwards;
 }
 
 .btn-primary {
@@ -215,12 +245,13 @@
     padding: 60px 0;
   }
 
-  .hero h1 {
-    font-size: 2.5rem;
+  .hero-title {
+    font-size: 3rem;
   }
 
-  .hero-subtitle {
-    font-size: 1.2rem;
+  .hero-eyebrow {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
   }
 
   .hero-description {
@@ -228,8 +259,7 @@
   }
 
   .globe-icon {
-    width: 100px;
-    height: 100px;
+    font-size: 3rem;
   }
 
   .features-grid {

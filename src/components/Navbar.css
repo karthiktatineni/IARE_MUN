@@ -1,5 +1,5 @@
 .navbar {
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -16,7 +16,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  min-height: 60px;
+  min-height: 50px;
   gap: 15rem;
 }
 
@@ -51,14 +51,14 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 900;
   white-space: nowrap;
 }
 
 
 .logo-img {
-  height: 80px;
+  height: 50px;
   width: auto;
 }
 

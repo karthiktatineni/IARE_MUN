@@ -8,18 +8,18 @@ function Home() {
         <div className="container">
           <div className="hero-content">
             <div className="logo-container">
-              <div className="mun-logo">
-                <div className="globe-icon">
-                  
-                </div>
-                <h1>MODEL UNITED NATIONS 2026</h1>
+              <div className="globe-icon">
+                🌎
               </div>
             </div>
-            <p className="hero-subtitle">Institute of Aeronautical Engineering</p>
+            <p className="hero-eyebrow">Institute of Aeronautical Engineering</p>
+            <h1 className="hero-title">
+              IARE MUN-
+              <span className="hero-year-highlight">  2026</span>
+            </h1>
             <p className="hero-description">
-              Join us for an immersive 3-day Model United Nations conference where students
-              engage in diplomatic debates, negotiate resolutions, and experience international
-              relations firsthand.
+              Join us for an immersive 3-day Model United Nations conference<br />
+              Where Diplomacy Meets Leadership
             </p>
             <div className="hero-buttons">
               <Link to="/register" className="btn btn-primary">Register Now</Link>
