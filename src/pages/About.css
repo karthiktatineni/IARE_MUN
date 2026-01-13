@@ -2,19 +2,33 @@
   flex: 1;
 }
 
+.page-header {
+  
+  padding: 0px 0 60px;
+  text-align: center;
+  margin-bottom: -50px;
+}
 
+.page-header h1 {
+  font-size: 3rem;
+  margin-bottom: 0rem;
+  color: white;
+}
+
+.page-header p {
+  font-size: 1.3rem;
+  color: var(--cornflower-ocean);
+}
 
 .content-block {
   margin-bottom: 4rem;
 }
 
 .content-block h2 {
-  color: white;
-  /* White */
+  color: var(--cornflower-ocean);
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
-  /* White underline */
+  border-bottom: 3px solid var(--cornflower-ocean);
   padding-bottom: 0.5rem;
 }
 
@@ -36,19 +50,17 @@
   background-color: var(--deep-space-blue);
   padding: 2rem;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--cornflower-ocean);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .objective-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  border-color: var(--cornflower-ocean);
-  /* Hint of gold on hover */
+  box-shadow: 0 10px 30px rgba(0, 109, 164, 0.3);
 }
 
 .objective-card h3 {
-  color: white;
+  color: var(--cornflower-ocean);
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
