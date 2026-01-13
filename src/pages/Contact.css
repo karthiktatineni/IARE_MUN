@@ -140,7 +140,7 @@
 }
 
 @media (max-width: 992px) {
-  .contact-content {
+  .contact-main-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
