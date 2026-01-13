@@ -33,13 +33,94 @@ function Contact() {
       <section className="page-header">
         <div className="container">
           <h1>Contact Us</h1>
-          <p>Get in touch with the IARE MUN team</p>
+          <p className="head">Get in touch with the IARE MUN team</p>
         </div>
       </section>
 
       <section className="section">
         <div className="container">
           <div className="contact-content">
+            <div className="contact-main-grid">
+              <div className="contact-form-container">
+                <h2>Send Us a Message</h2>
+                {submitted && (
+                  <div className="success-message">
+                    Thank you for contacting us! We&apos;ll get back to you soon.
+                  </div>
+                )}
+                <form onSubmit={handleSubmit} className="contact-form">
+                  <div className="form-group">
+                    <label htmlFor="name">Name *</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email">Email *</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="subject">Subject *</label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="message">Message *</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows="6"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                    ></textarea>
+                  </div>
+
+                  <button type="submit" className="btn-submit">
+                    Send Message
+                  </button>
+                </form>
+              </div>
+
+              <div className="contact-map-container">
+                <div className="contact-card" style={{ flex: '1 1 400px', minWidth: '300px', maxWidth: '600px', backgroundColor: 'transparent', borderRadius: '12px', overflow: 'hidden', height: '100%' }}>
+                  <h3 style={{ marginBottom: '1rem', color: 'var(--cornflower-ocean)', fontSize: '2rem' }}>Our Location</h3>
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3803.059126552245!2d78.41515037516982!3d17.599926983323957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb8ecfe1af26dd%3A0x65666fa3c4a256d2!2sInstitute%20of%20Aeronautical%20Engineering!5e0!3m2!1sen!2sin!4v1761156512865!5m2!1sen!2sin"
+                    width="100%"
+                    height="500"
+                    style={{ border: 0, borderRadius: '12px' }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="IARE College Location Map"
+                  >
+                  </iframe>
+                </div>
+              </div>
+            </div>
+
             <div className="contact-info">
               <h2>Get In Touch</h2>
               <p className="contact-description">
@@ -85,68 +166,6 @@ function Contact() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="contact-form-container">
-              <h2>Send Us a Message</h2>
-              {submitted && (
-                <div className="success-message">
-                  Thank you for contacting us! We&apos;ll get back to you soon.
-                </div>
-              )}
-              <form onSubmit={handleSubmit} className="contact-form">
-                <div className="form-group">
-                  <label htmlFor="name">Name *</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="email">Email *</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="subject">Subject *</label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="message">Message *</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="6"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                  ></textarea>
-                </div>
-
-                <button type="submit" className="btn-submit">
-                  Send Message
-                </button>
-              </form>
             </div>
           </div>
         </div>

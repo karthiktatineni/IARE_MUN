@@ -9,27 +9,13 @@ import Registration from './pages/Registration';
 import CountryMatrix from './pages/CountryMatrix';
 import Secretariat from './pages/Secretariat';
 import Contact from './pages/Contact';
+import ParticlesBackground from './components/ParticlesBackground';
 import './App.css';
 
 function App() {
   return (
     <Router>
-      {/* Video Background */}
-      <video
-        className="video-background"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        onError={(e) => console.error('Video error:', e)}
-        onLoadStart={() => console.log('Video loading started')}
-        onCanPlay={() => console.log('Video can play')}
-      >
-        <source src="/bg2.mp4" type="video/mp4" />
-        
-      </video>
-      <div className="video-overlay"></div>
+      <ParticlesBackground />
 
       <Navbar />
       <Routes>

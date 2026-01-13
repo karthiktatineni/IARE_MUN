@@ -6,7 +6,11 @@ function Committees() {
       <section className="page-header">
         <div className="container">
           <h1>Committees</h1>
-          <p>Explore the three dynamic committees of IARE MUN 2024</p>
+          <p className="head">
+            Explore the three dynamic committees of IARE MUN 2024
+          </p>
+
+
         </div>
       </section>
 

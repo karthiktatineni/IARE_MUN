@@ -69,7 +69,7 @@ function Secretariat() {
       <section className="page-header">
         <div className="container">
           <h1>Secretariat</h1>
-          <p>Meet the team behind IARE MUN 2024</p>
+          <p className="head">Meet the team behind IARE MUN 2024</p>
         </div>
       </section>
 

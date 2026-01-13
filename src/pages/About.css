@@ -2,8 +2,15 @@
   flex: 1;
 }
 
+.head {
+  background: linear-gradient(90deg, #D4AF37, #FFD700, #B8860B);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .page-header {
-  
+
   padding: 80px 0 60px;
   text-align: center;
   margin-bottom: 60px;
@@ -17,7 +24,7 @@
 
 .page-header p {
   font-size: 1.3rem;
-  color: var(--cornflower-ocean);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .content-block {
@@ -25,10 +32,12 @@
 }
 
 .content-block h2 {
-  color: var(--cornflower-ocean);
+  color: white;
+  /* White */
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  border-bottom: 3px solid var(--cornflower-ocean);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+  /* White underline */
   padding-bottom: 0.5rem;
 }
 
@@ -50,17 +59,19 @@
   background-color: var(--deep-space-blue);
   padding: 2rem;
   border-radius: 12px;
-  border: 2px solid var(--cornflower-ocean);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .objective-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 109, 164, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border-color: var(--cornflower-ocean);
+  /* Hint of gold on hover */
 }
 
 .objective-card h3 {
-  color: var(--cornflower-ocean);
+  color: white;
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }

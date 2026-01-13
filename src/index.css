@@ -1,10 +1,14 @@
 :root {
   --ink-black: #051720;
-  --deep-space-blue: #03273C;
-  --deep-space-blue-alt: #003554;
-  --cornflower-ocean: #006DA4;
-  --baltic-blue: #006494;
-  --yale-blue: #004D74;
+  --deep-space-blue: #111111;
+  --deep-space-blue-alt: #1a1a1a;
+  --cornflower-ocean: #C5A028;
+  /* Muted Gold (Antique) - Reduced Contrast */
+  --baltic-blue: #D4AF37;
+  /* Brighter Gold for Hover only */
+  --yale-blue: #8F721D;
+  /* Darker/Shadow Gold */
+  --gold: #C5A028;
 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
@@ -22,37 +26,19 @@
   box-sizing: border-box;
 }
 
+html {
+  background-color: #010314;
+  /* Solid backing for the particles */
+}
+
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: var(--ink-black);
+  /* Requested totally semi-transparent overlay over the html/particles */
+  background-color: rgba(1, 3, 20, 0.7);
   color: #ffffff;
   overflow-x: hidden;
   position: relative;
-}
-
-.video-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  object-fit: cover;
-  object-position: center;
-}
-
-.video-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    rgba(6, 18, 40, 0.85),
-    rgba(6, 18, 40, 0.85)
-  );
-  z-index: -1;
 }
 
 #root {
@@ -61,7 +47,12 @@ body {
   flex-direction: column;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   line-height: 1.2;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -80,32 +71,41 @@ h3 {
 }
 
 a {
-  color: var(--cornflower-ocean);
+  color: #ffffff;
+  /* Reduced gold usage: Link default is white */
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: var(--baltic-blue);
+  color: var(--cornflower-ocean);
+  /* Gold on hover only */
 }
 
-button, .btn {
+button,
+.btn {
   border-radius: 8px;
-  border: none;
+  border: 1px solid var(--cornflower-ocean);
+  /* Outline instead of solid */
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   font-weight: 500;
   font-family: inherit;
-  background-color: var(--cornflower-ocean);
-  color: white;
+  background-color: transparent;
+  /* Transparent background */
+  color: var(--cornflower-ocean);
+  /* Gold Text */
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-button:hover, .btn:hover {
-  background-color: var(--baltic-blue);
+button:hover,
+.btn:hover {
+  background-color: var(--cornflower-ocean);
+  color: white;
+  /* Text becomes white on hover */
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 109, 164, 0.3);
+  box-shadow: 0 4px 12px rgba(197, 160, 40, 0.2);
 }
 
 button:disabled {

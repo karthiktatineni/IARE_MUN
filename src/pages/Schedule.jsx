@@ -50,7 +50,11 @@ function Schedule() {
       <section className="page-header">
         <div className="container">
           <h1>Event Schedule</h1>
-          <p>Complete 3-day schedule for IARE MUN 2024</p>
+
+          <p className="head">
+            Complete 3-day schedule for IARE MUN 2024
+          </p>
+
         </div>
       </section>
 

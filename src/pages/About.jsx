@@ -6,14 +6,18 @@ function About() {
       <section className="page-header">
         <div className="container">
           <h1>About IARE MUN</h1>
-          <p>Empowering future leaders through diplomacy and debate</p>
+          <p className="head">
+            Empowering future leaders through diplomacy and debate
+          </p>
+
         </div>
       </section>
 
       <section className="section">
         <div className="container">
           <div className="content-block">
-            <h2>What is Model United Nations?</h2>
+            <h2 className="head">What is Model United Nations?</h2>
+
             <p>
               Model United Nations (MUN) is an educational simulation where students learn about
               diplomacy, international relations, and the United Nations. In MUN, students take on
@@ -29,7 +33,7 @@ function About() {
           </div>
 
           <div className="content-block">
-            <h2>About IARE</h2>
+            <h2 className="head">About IARE</h2>
             <p>
               The Institute of Aeronautical Engineering (IARE) is a leading technical institution
               committed to excellence in education, research, and innovation. Located in Hyderabad,
@@ -45,7 +49,7 @@ function About() {
           </div>
 
           <div className="content-block">
-            <h2>IARE MUN 2024</h2>
+            <h2 className="head">IARE MUN 2024</h2>
             <p>
               IARE MUN 2024 is a 3-day conference bringing together students from various
               institutions to engage in meaningful debates and discussions on pressing global issues.

@@ -321,7 +321,7 @@ function CountryMatrix() {
       <section className="page-header">
         <div className="container">
           <h1>Country Matrix</h1>
-          <p>Check country/party availability for each committee</p>
+          <p className="head">Check country/party availability for each committee</p>
         </div>
       </section>
 

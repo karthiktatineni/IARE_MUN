@@ -25,7 +25,8 @@
   width: 150px;
   height: 150px;
   margin: 0 auto 0rem;
-  color: var(--cornflower-ocean);
+  color: rgba(255, 255, 255, 0.9);
+  /* White instead of gold */
   animation: rotate 20s linear infinite;
 }
 
@@ -33,6 +34,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -47,7 +49,8 @@
 
 .hero-subtitle {
   font-size: 3rem;
-  color: var(--cornflower-ocean);
+  color: rgba(255, 255, 255, 0.95);
+  /* White instead of gold */
   margin-bottom: 1rem;
   font-weight: 500;
 }
@@ -67,26 +70,32 @@
 }
 
 .btn-primary {
-  background-color: var(--cornflower-ocean);
-  color: white;
+  background-color: transparent;
+  /* Force outline style logic handled by globalbtn */
+  color: var(--cornflower-ocean);
+  /* Will be overridden by global but keeping consistency */
   padding: 1rem 2rem;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
   display: inline-block;
+  border: 1px solid var(--cornflower-ocean);
 }
 
 .btn-primary:hover {
-  background-color: var(--baltic-blue);
+  background-color: var(--cornflower-ocean);
+  color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 109, 164, 0.4);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
 }
 
 .btn-secondary {
   background-color: transparent;
-  color: var(--cornflower-ocean);
-  border: 2px solid var(--cornflower-ocean);
+  color: white;
+  /* White text instead of gold */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  /* White border instead of gold */
   padding: 1rem 2rem;
   border-radius: 8px;
   text-decoration: none;
@@ -96,8 +105,9 @@
 }
 
 .btn-secondary:hover {
-  background-color: var(--cornflower-ocean);
+  background-color: rgba(255, 255, 255, 0.1);
   color: white;
+  border-color: white;
   transform: translateY(-2px);
 }
 
@@ -125,13 +135,16 @@
   border-radius: 12px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 2px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Subtle white border default */
 }
 
 .feature-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 10px 30px rgba(0, 109, 164, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  /* Remove gold shadow */
   border-color: var(--cornflower-ocean);
+  /* Only border turns gold on hover */
 }
 
 .feature-icon {
@@ -140,7 +153,8 @@
 }
 
 .feature-card h3 {
-  color: var(--cornflower-ocean);
+  color: white;
+  /* White instead of gold */
   margin-bottom: 1rem;
 }
 
@@ -167,7 +181,8 @@
 .stat-number {
   font-size: 4rem;
   font-weight: 700;
-  color: var(--cornflower-ocean);
+  color: white;
+  /* White instead of gold */
   margin-bottom: 0.5rem;
 }
 

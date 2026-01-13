@@ -7,21 +7,26 @@
   margin-bottom: 3rem;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  /* User requested dark bg */
 }
 
 .committee-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 109, 164, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 39, 139, 0.5);
+  /* Remove gold shadow */
 }
 
 .committee-header {
-  background: linear-gradient(135deg, var(--cornflower-ocean), var(--baltic-blue));
+  background: rgba(255, 255, 255, 0.05);
+  /* Dark background instead of gold gradient */
   padding: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .committee-header h2 {
@@ -31,12 +36,13 @@
 }
 
 .committee-badge {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 600;
   color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .committee-content {
@@ -45,7 +51,8 @@
 
 .committee-intro {
   font-size: 1.2rem;
-  color: var(--cornflower-ocean);
+  color: white;
+  /* White */
   margin-bottom: 2rem;
   font-weight: 500;
   line-height: 1.6;
@@ -57,10 +64,12 @@
 }
 
 .detail-section h3 {
-  color: var(--cornflower-ocean);
+  color: white;
+  /* White */
   font-size: 1.3rem;
   margin-bottom: 1rem;
-  border-left: 4px solid var(--cornflower-ocean);
+  border-left: 4px solid rgba(255, 255, 255, 0.3);
+  /* White Accent */
   padding-left: 1rem;
 }
 
@@ -86,7 +95,8 @@
   content: '▸';
   position: absolute;
   left: 0;
-  color: var(--cornflower-ocean);
+  color: rgba(255, 255, 255, 0.5);
+  /* White bullet */
   font-weight: bold;
 }
 

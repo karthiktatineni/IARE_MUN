@@ -40,7 +40,7 @@
 
 .registration-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 109, 164, 0.4);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
 }
 
 .registration-card.internal {
@@ -80,7 +80,7 @@
 .card-content li {
   color: rgba(255, 255, 255, 0.8);
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(0, 109, 164, 0.2);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
   position: relative;
   padding-left: 1.5rem;
 }
@@ -170,7 +170,7 @@
 .info-item li {
   color: rgba(255, 255, 255, 0.8);
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(0, 109, 164, 0.2);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
   position: relative;
   padding-left: 1.5rem;
 }
@@ -247,12 +247,12 @@
 }
 
 .country-matrix-navigation {
-  background-color: rgba(0, 109, 164, 0.15);
+  background-color: rgba(212, 175, 55, 0.15);
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 2rem;
   text-align: center;
-  border: 2px solid rgba(0, 109, 164, 0.3);
+  border: 2px solid rgba(212, 175, 55, 0.3);
 }
 
 .matrix-info {
@@ -280,7 +280,7 @@
   background-color: var(--cornflower-ocean);
   border-color: var(--cornflower-ocean);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 109, 164, 0.4);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
 }
 
 .btn-country-matrix:active {
@@ -288,7 +288,7 @@
 }
 
 .preference-group {
-  background-color: rgba(0, 109, 164, 0.1);
+  background-color: rgba(212, 175, 55, 0.1);
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -368,7 +368,7 @@
 .btn-submit:hover:not(:disabled) {
   background-color: var(--baltic-blue);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 109, 164, 0.4);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
 }
 
 .btn-submit:disabled {

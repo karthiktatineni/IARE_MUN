@@ -7,7 +7,8 @@
 }
 
 .day-header {
-  background: linear-gradient(135deg, var(--cornflower-ocean), var(--baltic-blue));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  /* User requested dark bg */
   padding: 1.5rem 2rem;
   border-radius: 12px 12px 0 0;
   display: flex;
@@ -21,22 +22,26 @@
   color: white;
   margin: 0;
   font-size: 2rem;
+
 }
 
 .day-date {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   color: white;
   font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .events-timeline {
-  background-color: var(--deep-space-blue);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  /* Slightly transparent version of header */
   padding: 2rem;
   border-radius: 0 0 12px 12px;
-  border: 2px solid var(--cornflower-ocean);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-top: none;
+
 }
 
 .event-item {
@@ -45,14 +50,16 @@
   gap: 2rem;
   padding: 1.5rem;
   margin-bottom: 1rem;
-  background-color: rgba(0, 109, 164, 0.1);
+  background-color: rgba(255, 255, 255, 0.03);
+  /* Subtle dark overlay */
   border-radius: 8px;
-  border-left: 4px solid var(--cornflower-ocean);
+  border-left: 4px solid rgba(255, 255, 255, 0.3);
+  /* White accent */
   transition: all 0.3s ease;
 }
 
 .event-item:hover {
-  background-color: rgba(0, 109, 164, 0.2);
+  background-color: rgba(255, 255, 255, 0.08);
   transform: translateX(10px);
 }
 

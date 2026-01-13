@@ -32,7 +32,7 @@
 .tab-button.active {
   background-color: var(--cornflower-ocean);
   border-color: var(--cornflower-ocean);
-  box-shadow: 0 4px 12px rgba(0, 109, 164, 0.4);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
 }
 
 .tab-name {
@@ -53,7 +53,7 @@
 .loading-spinner {
   width: 60px;
   height: 60px;
-  border: 4px solid rgba(0, 109, 164, 0.2);
+  border: 4px solid rgba(212, 175, 55, 0.2);
   border-top-color: var(--cornflower-ocean);
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -114,7 +114,7 @@
   justify-content: center;
   margin-bottom: 2rem;
   padding: 1rem;
-  background-color: rgba(0, 109, 164, 0.1);
+  background-color: rgba(212, 175, 55, 0.1);
   border-radius: 8px;
 }
 
@@ -269,8 +269,8 @@
 .aippm-details {
   margin: 0.75rem 0;
   padding: 0.5rem 0;
-  border-top: 1px solid rgba(0, 109, 164, 0.3);
-  border-bottom: 1px solid rgba(0, 109, 164, 0.3);
+  border-top: 1px solid rgba(212, 175, 55, 0.3);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .portfolio {
