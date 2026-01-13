@@ -7,24 +7,29 @@ function Home() {
       <section className="hero">
         <div className="container">
           <div className="hero-content">
-            <p className="hero-eyebrow">Institute of Aeronautical Engineering</p>
-            <h1 className="hero-title">
-              IARE MUN-
-              <span className="hero-year-highlight">  2026</span>
-            </h1>
-            <p className="hero-description">
-              Join us for an immersive 3-day Model United Nations conference<br />
-              Where Diplomacy Meets Leadership
-            </p>
+            <h1 className="hero-title">IARE Model United Nations</h1>
+            <p className="hero-tagline">Where Diplomacy Meets Leadership</p>
+            <p className="hero-dates">MARCH 6TH, 2026 - MARCH 8TH, 2026</p>
             <div className="hero-buttons">
               <Link to="/register" className="btn btn-primary">Register Now</Link>
-              <Link to="/about" className="btn btn-secondary">Learn More</Link>
+              <Link to="/committees" className="btn btn-secondary">View Committees</Link>
             </div>
+
+            <a href="#features" className="scroll-down" aria-label="Scroll down to features section">
+              <div className="mouse">
+                <div className="wheel"></div>
+              </div>
+              <div className="arrows">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </a>
           </div>
         </div>
       </section>
 
-      <section className="features section">
+      <section id="features" className="features section">
         <div className="container">
           <h2 className="section-title">Why Attend IARE MUN?</h2>
           <div className="features-grid">
