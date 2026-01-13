@@ -9,12 +9,14 @@ import Registration from './pages/Registration';
 import CountryMatrix from './pages/CountryMatrix';
 import Secretariat from './pages/Secretariat';
 import Contact from './pages/Contact';
+import ScrollToTop from './components/ScrollToTop';
 import ParticlesBackground from './components/ParticlesBackground';
 import './App.css';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <ParticlesBackground />
 
       <Navbar />

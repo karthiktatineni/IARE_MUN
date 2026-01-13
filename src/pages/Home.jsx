@@ -15,7 +15,7 @@ function Home() {
               <Link to="/committees" className="btn btn-secondary">View Committees</Link>
             </div>
 
-            <a href="#features" className="scroll-down" aria-label="Scroll down to features section">
+            {/*<a href="#features" className="scroll-down" aria-label="Scroll down to features section">
               <div className="mouse">
                 <div className="wheel"></div>
               </div>
@@ -24,7 +24,7 @@ function Home() {
                 <span></span>
                 <span></span>
               </div>
-            </a>
+            </a>*/}
           </div>
         </div>
       </section>
