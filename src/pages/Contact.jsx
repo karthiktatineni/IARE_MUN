@@ -25,11 +25,13 @@ function Contact() {
     setIsSubmitting(true);
     setStatus({ type: '', message: '' });
 
-    // Use your Formspree ID here
-    const FORMSPREE_ID = 'your-form-id';
+    console.log('Attempting to submit form to Formspree...', formData);
 
     try {
-      const response = await fetch(`https://formspree.io/f/xwvvkrbp`, {
+
+      const FORMSPREE_URL = 'https://formspree.io/f/xwvvkrbp';
+
+      const response = await fetch(FORMSPREE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,20 +40,34 @@ function Contact() {
         body: JSON.stringify(formData)
       });
 
+      const data = await response.json();
+
       if (response.ok) {
+        console.log('Formspree submission successful:', data);
         setStatus({
           type: 'success',
           message: "Thank you for contacting us! We'll get back to you soon."
         });
         setFormData({ name: '', email: '', subject: '', message: '' });
       } else {
-        const data = await response.json();
+        console.error('Formspree submission failed:', data);
+        if (data.errors) {
+          const errorMsg = data.errors.map(err => `${err.field || 'General'}: ${err.message}`).join(', ');
+          throw new Error(`Validation Error - ${errorMsg}`);
+        }
         throw new Error(data.error || 'Oops! There was a problem submitting your form');
       }
     } catch (err) {
+      console.error('Network or Request Error:', err);
+      let userFriendlyMessage = err.message;
+
+      if (err.message === 'Failed to fetch') {
+        userFriendlyMessage = 'Network Error: Request was blocked or URL is invalid. Please check your internet connection or disable ad-blockers for this site.';
+      }
+
       setStatus({
         type: 'error',
-        message: err.message || 'Something went wrong. Please try again later.'
+        message: userFriendlyMessage
       });
     } finally {
       setIsSubmitting(false);
