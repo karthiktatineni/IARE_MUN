@@ -64,6 +64,9 @@
 
 
 .logo-text {
+  font-family: 'times new roman';
+  font-weight: 900;
+  letter-spacing: 1px;
   background: linear-gradient(135deg, var(--cornflower-ocean), var(--baltic-blue));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
