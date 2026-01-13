@@ -8,7 +8,7 @@ function Footer() {
         <div className="footer-content">
           <div className="footer-section">
             <h3>IARE MUN 2026</h3>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1.5rem' }}>
+            <div className="footer-logo-container">
               <img src="/favicon.png" alt="IARE MUN Logo" style={{ width: '100px', height: '100px' }} />
             </div>
           </div>

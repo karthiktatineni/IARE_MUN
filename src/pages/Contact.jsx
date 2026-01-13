@@ -9,7 +9,8 @@ function Contact() {
     message: ''
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState({ type: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,13 +20,42 @@ function Contact() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      setSubmitted(false);
-    }, 3000);
+    setIsSubmitting(true);
+    setStatus({ type: '', message: '' });
+
+    // Use your Formspree ID here
+    const FORMSPREE_ID = 'your-form-id';
+
+    try {
+      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setStatus({
+          type: 'success',
+          message: "Thank you for contacting us! We'll get back to you soon."
+        });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        const data = await response.json();
+        throw new Error(data.error || 'Oops! There was a problem submitting your form');
+      }
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        message: err.message || 'Something went wrong. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -43,9 +73,9 @@ function Contact() {
             <div className="contact-main-grid">
               <div className="contact-form-container">
                 <h2>Send Us a Message</h2>
-                {submitted && (
-                  <div className="success-message">
-                    Thank you for contacting us! We&apos;ll get back to you soon.
+                {status.message && (
+                  <div className={`message ${status.type}`}>
+                    {status.message}
                   </div>
                 )}
                 <form onSubmit={handleSubmit} className="contact-form">
@@ -97,8 +127,12 @@ function Contact() {
                     ></textarea>
                   </div>
 
-                  <button type="submit" className="btn-submit">
-                    Send Message
+                  <button
+                    type="submit"
+                    className="btn-submit"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                   </button>
                 </form>
               </div>
@@ -163,14 +197,14 @@ function Contact() {
                     </div>
                   </div>
 
-                  <div className="info-item">
+                  {/*<div className="info-item">
                     <div className="info-icon">🕒</div>
                     <div className="info-content">
                       <h3>Office Hours</h3>
                       <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
                       <p>Saturday: 10:00 AM - 2:00 PM</p>
                     </div>
-                  </div>
+                  </div>*/}
                 </div>
               </div>
             </div>

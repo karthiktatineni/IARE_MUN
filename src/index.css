@@ -123,22 +123,25 @@ button:disabled {
   padding: 60px 0;
 }
 
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2rem;
-  }
+.page-header {
+  padding: 80px 0 60px;
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-  h2 {
-    font-size: 1.5rem;
-  }
+.page-header h1 {
+  color: white;
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
 
-  h3 {
-    font-size: 1.25rem;
-  }
-
-  .section {
-    padding: 40px 0;
-  }
+.page-header p.head,
+.page-header .head {
+  color: var(--gold);
+  font-size: 1.5rem;
+  font-weight: 500;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 @keyframes fadeInUp {

@@ -13,9 +13,17 @@
 }
 
 .footer-section h3 {
-  color: var(--cornflower-ocean);
+  color: var(--gold);
   margin-bottom: 1rem;
   font-size: 1.5rem;
+}
+
+.footer-logo-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 1.5rem;
+  margin-left: 2.7rem;
 }
 
 .footer-section h4 {
@@ -87,5 +95,10 @@
 
   .social-links {
     align-items: center;
+  }
+
+  .footer-logo-container {
+    justify-content: center;
+    margin-left: 0;
   }
 }

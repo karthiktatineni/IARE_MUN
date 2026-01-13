@@ -40,11 +40,7 @@ function Committees() {
 
                 <div className="detail-section">
                   <h3>Agenda</h3>
-                  <p>
-                    Addressing threats to international peace and security, with focus on
-                    contemporary conflicts and peacekeeping operations. The committee will debate
-                    resolutions and work towards diplomatic solutions.
-                  </p>
+                  <p>Yet to decide</p>
                 </div>
 
                 <div className="detail-section">
@@ -83,11 +79,7 @@ function Committees() {
 
                 <div className="detail-section">
                   <h3>Agenda</h3>
-                  <p>
-                    Discussion on disarmament, arms control, and international security issues.
-                    Topics include nuclear non-proliferation, conventional weapons, and emerging
-                    security threats in the modern era.
-                  </p>
+                  <p>Yet to decide</p>
                 </div>
 
                 <div className="detail-section">
@@ -126,11 +118,7 @@ function Committees() {
 
                 <div className="detail-section">
                   <h3>Agenda</h3>
-                  <p>
-                    Deliberation on crucial domestic policy matters affecting India. Delegates will
-                    represent various political parties and work towards consensus on national
-                    issues while maintaining their party&apos;s ideology and stance.
-                  </p>
+                  <p>Yet to decide</p>
                 </div>
 
                 <div className="detail-section">
@@ -165,9 +153,7 @@ function Committees() {
 
                 <div className="detail-section">
                   <h3>Agenda</h3>
-                  <p>
-                    Coverage and analysis of committee sessions through written articles, interviews, photographs, and digital media. The International Press focuses on accurate reporting, critical evaluation, and ethical journalism while capturing the essence of diplomacy in action.
-                  </p>
+                  <p>Yet to decide</p>
                 </div>
 
                 <div className="detail-section">

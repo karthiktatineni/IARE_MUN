@@ -16,7 +16,7 @@
 
 .contact-info h2,
 .contact-form-container h2 {
-  color: var(--cornflower-ocean);
+  color: white;
   margin-bottom: 1.5rem;
   font-size: 2rem;
 }
@@ -54,7 +54,7 @@
 }
 
 .info-content h3 {
-  color: var(--cornflower-ocean);
+  color: white;
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
 }
@@ -69,17 +69,27 @@
   background-color: var(--deep-space-blue);
   padding: 2rem;
   border-radius: 12px;
-  border: 2px solid var(--cornflower-ocean);
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.success-message {
-  background-color: rgba(34, 197, 94, 0.2);
-  border: 2px solid rgb(34, 197, 94);
-  color: rgb(134, 239, 172);
+.message {
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
   text-align: center;
+  font-weight: 500;
+}
+
+.message.success {
+  background-color: rgba(34, 197, 94, 0.2);
+  border: 2px solid rgb(34, 197, 94);
+  color: rgb(134, 239, 172);
+}
+
+.message.error {
+  background-color: rgba(239, 68, 68, 0.2);
+  border: 2px solid rgb(239, 68, 68);
+  color: rgb(252, 165, 165);
 }
 
 .contact-form {
@@ -122,7 +132,7 @@
 }
 
 .contact-form .btn-submit {
-  background-color: var(--cornflower-ocean);
+  background-color: var(--yale-blue);
   color: white;
   padding: 1rem 2rem;
   border: none;
@@ -134,15 +144,15 @@
 }
 
 .contact-form .btn-submit:hover {
-  background-color: var(--baltic-blue);
+  background-color: var(--cornflower-ocean);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .contact-info-separator {
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--cornflower-ocean), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   margin: 3rem 0 2rem;
 }
 
@@ -150,8 +160,8 @@
   background-color: var(--deep-space-blue);
   padding: 3rem;
   border-radius: 12px;
-  border: 2px solid var(--cornflower-ocean);
-  box-shadow: 0 4px 20px rgba(197, 160, 40, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 992px) {

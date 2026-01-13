@@ -2,30 +2,7 @@
   flex: 1;
 }
 
-.head {
-  background: linear-gradient(90deg, #D4AF37, #FFD700, #B8860B);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 
-.page-header {
-
-  padding: 80px 0 60px;
-  text-align: center;
-  margin-bottom: 60px;
-}
-
-.page-header h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  color: white;
-}
-
-.page-header p {
-  font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.9);
-}
 
 .content-block {
   margin-bottom: 4rem;
