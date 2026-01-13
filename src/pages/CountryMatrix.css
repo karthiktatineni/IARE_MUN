@@ -1,0 +1,363 @@
+.country-matrix {
+  flex: 1;
+}
+
+.committee-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.tab-button {
+  flex: 1;
+  min-width: 200px;
+  background-color: var(--deep-space-blue);
+  border: 2px solid var(--yale-blue);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tab-button:hover {
+  border-color: var(--cornflower-ocean);
+  transform: translateY(-2px);
+}
+
+.tab-button.active {
+  background-color: var(--cornflower-ocean);
+  border-color: var(--cornflower-ocean);
+  box-shadow: 0 4px 12px rgba(0, 109, 164, 0.4);
+}
+
+.tab-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.tab-stats {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(0, 109, 164, 0.2);
+  border-top-color: var(--cornflower-ocean);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.matrix-container {
+  background-color: var(--deep-space-blue);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--cornflower-ocean);
+}
+
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-box {
+  background-color: var(--ink-black);
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid var(--yale-blue);
+}
+
+.stat-box.available {
+  border-color: rgb(34, 197, 94);
+}
+
+.stat-box.allocated {
+  border-color: rgb(239, 68, 68);
+}
+
+.stat-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.legend {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: rgba(0, 109, 164, 0.1);
+  border-radius: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.legend-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.legend-indicator.available {
+  background-color: rgb(34, 197, 94);
+}
+
+.legend-indicator.allocated {
+  background-color: rgb(239, 68, 68);
+}
+
+.countries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.controls-section {
+  margin-bottom: 2rem;
+}
+
+.search-filter-container {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: var(--deep-space-blue);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 2px solid var(--yale-blue);
+}
+
+.search-box {
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--yale-blue);
+  border-radius: 6px;
+  background-color: var(--ink-black);
+  color: white;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--cornflower-ocean);
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--yale-blue);
+  background-color: var(--ink-black);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.filter-btn:hover {
+  border-color: var(--cornflower-ocean);
+}
+
+.filter-btn.active {
+  background-color: var(--cornflower-ocean);
+  border-color: var(--cornflower-ocean);
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+}
+
+.country-card {
+  background-color: var(--ink-black);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 2px solid;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.country-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 49%, rgba(255, 255, 255, 0.1) 50%, transparent 51%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.country-card.available {
+  border-color: rgb(34, 197, 94);
+}
+
+.country-card.allocated {
+  border-color: rgb(239, 68, 68);
+  opacity: 0.7;
+}
+
+.country-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.country-card:hover::before {
+  opacity: 1;
+}
+
+.country-card:active {
+  transform: translateY(-1px);
+}
+
+.country-card.aippm-card {
+  min-height: 180px;
+}
+
+.aippm-details {
+  margin: 0.75rem 0;
+  padding: 0.5rem 0;
+  border-top: 1px solid rgba(0, 109, 164, 0.3);
+  border-bottom: 1px solid rgba(0, 109, 164, 0.3);
+}
+
+.portfolio {
+  color: var(--cornflower-ocean);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.minister {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.country-name {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.country-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background-color: rgb(239, 68, 68);
+  color: white;
+  width: fit-content;
+}
+
+.status-badge.available {
+  background-color: rgb(34, 197, 94);
+}
+
+.allocated-to {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .committee-tabs {
+    flex-direction: column;
+  }
+
+  .tab-button {
+    min-width: 100%;
+  }
+
+  .matrix-container {
+    padding: 1rem;
+  }
+
+  .stats-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .countries-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .legend {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .search-filter-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .search-box {
+    min-width: 100%;
+  }
+
+  .filter-buttons {
+    justify-content: center;
+  }
+}

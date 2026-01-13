@@ -1,0 +1,158 @@
+.schedule {
+  flex: 1;
+}
+
+.day-schedule {
+  margin-bottom: 4rem;
+}
+
+.day-header {
+  background: linear-gradient(135deg, var(--cornflower-ocean), var(--baltic-blue));
+  padding: 1.5rem 2rem;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.day-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 2rem;
+}
+
+.day-date {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+}
+
+.events-timeline {
+  background-color: var(--deep-space-blue);
+  padding: 2rem;
+  border-radius: 0 0 12px 12px;
+  border: 2px solid var(--cornflower-ocean);
+  border-top: none;
+}
+
+.event-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background-color: rgba(0, 109, 164, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid var(--cornflower-ocean);
+  transition: all 0.3s ease;
+}
+
+.event-item:hover {
+  background-color: rgba(0, 109, 164, 0.2);
+  transform: translateX(10px);
+}
+
+.event-item:last-child {
+  margin-bottom: 0;
+}
+
+.event-time {
+  color: var(--cornflower-ocean);
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.event-content h3 {
+  color: white;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.event-location {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.schedule-note {
+  background-color: var(--deep-space-blue);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--yale-blue);
+  margin-top: 4rem;
+}
+
+.schedule-note h3 {
+  color: var(--cornflower-ocean);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.schedule-note ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.schedule-note li {
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.75rem 0;
+  padding-left: 2rem;
+  position: relative;
+  line-height: 1.6;
+}
+
+.schedule-note li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--cornflower-ocean);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .day-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .day-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .events-timeline {
+    padding: 1rem;
+  }
+
+  .event-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .event-time {
+    font-size: 0.95rem;
+  }
+
+  .event-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .schedule-note {
+    padding: 1.5rem;
+  }
+
+  .schedule-note h3 {
+    font-size: 1.3rem;
+  }
+
+  .schedule-note li {
+    font-size: 0.95rem;
+  }
+}

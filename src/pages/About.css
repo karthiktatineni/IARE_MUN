@@ -1,0 +1,98 @@
+.about {
+  flex: 1;
+}
+
+.page-header {
+  
+  padding: 80px 0 60px;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.page-header h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.page-header p {
+  font-size: 1.3rem;
+  color: var(--cornflower-ocean);
+}
+
+.content-block {
+  margin-bottom: 4rem;
+}
+
+.content-block h2 {
+  color: var(--cornflower-ocean);
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid var(--cornflower-ocean);
+  padding-bottom: 0.5rem;
+}
+
+.content-block p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1rem;
+}
+
+.objectives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.objective-card {
+  background-color: var(--deep-space-blue);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--cornflower-ocean);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.objective-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 109, 164, 0.3);
+}
+
+.objective-card h3 {
+  color: var(--cornflower-ocean);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.objective-card p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 60px 0 40px;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .page-header p {
+    font-size: 1.1rem;
+  }
+
+  .content-block h2 {
+    font-size: 1.5rem;
+  }
+
+  .content-block p {
+    font-size: 1rem;
+  }
+
+  .objectives-grid {
+    grid-template-columns: 1fr;
+  }
+}
