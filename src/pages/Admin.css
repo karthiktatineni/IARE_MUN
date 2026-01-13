@@ -1,0 +1,264 @@
+.admin-panel {
+    min-height: 100vh;
+    padding-bottom: 5rem;
+}
+
+.admin-notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: var(--gold-primary, #d4af37);
+    color: #000;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    z-index: 1000;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.admin-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-controls .search-box input {
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 30px;
+    color: white;
+    width: 300px;
+    transition: all 0.3s ease;
+}
+
+.admin-controls .search-box input:focus {
+    outline: none;
+    border-color: var(--gold-primary, #d4af37);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.export-btn,
+.reset-btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.export-btn {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--gold-primary, #d4af37);
+    border: 1px solid var(--gold-primary, #d4af37);
+}
+
+.export-btn:hover {
+    background: var(--gold-primary, #d4af37);
+    color: #000;
+}
+
+.reset-btn {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff4444;
+    border: 1px solid #ff4444;
+}
+
+.reset-btn:hover {
+    background: #ff4444;
+    color: white;
+}
+
+.admin-matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.admin-country-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.admin-country-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-country-card.available {
+    border-left: 4px solid #4ade80;
+}
+
+.admin-country-card.allocated {
+    border-left: 4px solid var(--gold-primary, #d4af37);
+    background: rgba(212, 175, 55, 0.05);
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.country-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+}
+
+.delegate-label {
+    font-size: 0.9rem;
+    color: var(--gold-primary, #d4af37);
+}
+
+.card-status {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    opacity: 0.7;
+}
+
+.allocated .card-status {
+    color: var(--gold-primary, #d4af37);
+}
+
+.available .card-status {
+    color: #4ade80;
+}
+
+@media (max-width: 768px) {
+    .admin-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-controls .search-box input {
+        width: 100%;
+    }
+
+    .action-buttons {
+        justify-content: space-between;
+    }
+}
+
+/* Auth Styles */
+.admin-login-overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(10, 15, 30, 0.95), #050505);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(10px);
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 3rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.login-card h2 {
+    color: var(--gold-primary, #d4af37);
+    margin-bottom: 1rem;
+}
+
+.login-card p {
+    opacity: 0.7;
+    margin-bottom: 2rem;
+}
+
+.login-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.login-card input {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.login-card button {
+    padding: 1rem;
+    background: var(--gold-primary, #d4af37);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-card button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+.login-error {
+    margin-top: 1rem;
+    color: #ff4444;
+    font-size: 0.9rem;
+}
+
+.header-with-logout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.logout-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: #ff4444;
+    color: #ff4444;
+}

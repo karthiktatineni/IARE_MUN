@@ -9,6 +9,7 @@ import Registration from './pages/Registration';
 import CountryMatrix from './pages/CountryMatrix';
 import Secretariat from './pages/Secretariat';
 import Contact from './pages/Contact';
+import Admin from './pages/Admin';
 import ScrollToTop from './components/ScrollToTop';
 import ParticlesBackground from './components/ParticlesBackground';
 import './App.css';
@@ -29,6 +30,7 @@ function App() {
         <Route path="/country-matrix" element={<CountryMatrix />} />
         <Route path="/secretariat" element={<Secretariat />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <Footer />
     </Router>
