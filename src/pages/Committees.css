@@ -4,18 +4,54 @@
 
 
 .committee-card {
+  position: relative;
   border-radius: 12px;
   margin-bottom: 3rem;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
   /* User requested dark bg */
+  z-index: 1;
+}
+
+.card-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  opacity: 0.08;
+  /* increased visibility */
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(2px);
+  /* reduced blur for more clarity */
+  transition: none;
+  /* static */
+}
+
+.card-watermark.size-up {
+  width: 700px;
+  height: 700px;
+}
+
+.card-watermark.size-mid {
+  width: 500px;
+  height: 500px;
+}
+
+.card-watermark.size-down {
+  width: 400px;
+  height: 400px;
 }
 
 .committee-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(0, 39, 139, 0.5);
-  /* Remove gold shadow */
 }
 
 .committee-header {
@@ -25,9 +61,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.committee-title-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.committee-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 5px;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.committee-card:hover .committee-logo {
+  transform: scale(1.05) rotate(5deg);
 }
 
 .committee-header h2 {
@@ -105,8 +164,19 @@
     align-items: flex-start;
   }
 
+  .committee-title-group {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+
+  .committee-logo {
+    width: 60px;
+    height: 60px;
+  }
+
   .committee-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .committee-content {

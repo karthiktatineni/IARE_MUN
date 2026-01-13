@@ -1,4 +1,12 @@
 import './Committees.css';
+import unscLogo from '../assets/unsc_logo.png';
+import disecLogo from '../assets/disec_logo.png';
+import aippmLogo from '../assets/aippm_logo.png';
+import ipLogo from '../assets/ip_logo.png';
+import unscLogoTransparent from '../assets/unsc_logo_transparent.png';
+import disecLogoTransparent from '../assets/disec_logo_transparent.png';
+import aippmLogoTransparent from '../assets/aippm_logo_transparent.png';
+import ipLogoTransparent from '../assets/ip_logo_transparent.png';
 
 function Committees() {
   return (
@@ -17,8 +25,12 @@ function Committees() {
       <section className="section">
         <div className="container">
           <div className="committee-card animate-on-load delay-200">
+            <img src={unscLogoTransparent} alt="" className="card-watermark" />
             <div className="committee-header">
-              <h2>United Nations Security Council (UNSC)</h2>
+              <div className="committee-title-group">
+                <img src={unscLogo} alt="UNSC Logo" className="committee-logo" />
+                <h2>United Nations Security Council (UNSC)</h2>
+              </div>
               <span className="committee-badge">International</span>
             </div>
             <div className="committee-content">
@@ -57,8 +69,12 @@ function Committees() {
           </div>
 
           <div className="committee-card animate-on-load delay-300">
+            <img src={disecLogoTransparent} alt="" className="card-watermark size-up" />
             <div className="committee-header">
-              <h2>Disarmament and International Security Committee - DISEC</h2>
+              <div className="committee-title-group">
+                <img src={disecLogo} alt="DISEC Logo" className="committee-logo" />
+                <h2>Disarmament and International Security Committee - DISEC</h2>
+              </div>
               <span className="committee-badge">Disarmament</span>
             </div>
             <div className="committee-content">
@@ -96,8 +112,12 @@ function Committees() {
           </div>
 
           <div className="committee-card animate-on-load delay-400">
+            <img src={aippmLogoTransparent} alt="" className="card-watermark size-mid" />
             <div className="committee-header">
-              <h2>All India Political Parties Meet (AIPPM)</h2>
+              <div className="committee-title-group">
+                <img src={aippmLogo} alt="AIPPM Logo" className="committee-logo" />
+                <h2>All India Political Parties Meet (AIPPM)</h2>
+              </div>
               <span className="committee-badge">National</span>
             </div>
             <div className="committee-content">
@@ -134,8 +154,12 @@ function Committees() {
             </div>
           </div>
           <div className="committee-card animate-on-load delay-500">
+            <img src={ipLogoTransparent} alt="" className="card-watermark size-down" />
             <div className="committee-header">
-              <h2>International Press (IP)</h2>
+              <div className="committee-title-group">
+                <img src={ipLogo} alt="IP Logo" className="committee-logo" />
+                <h2>International Press (IP)</h2>
+              </div>
               <span className="committee-badge">International</span>
             </div>
             <div className="committee-content">
