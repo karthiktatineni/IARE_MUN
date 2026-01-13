@@ -68,7 +68,7 @@
 
 .scroll-down {
   position: absolute;
-  bottom: 100px;
+  bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -305,7 +305,12 @@
   }
 
   .hero-title {
-    font-size: 3rem;
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .scroll-down {
+    bottom: 30px;
   }
 
   .hero-eyebrow {
