@@ -11,7 +11,7 @@ function Registration() {
       internal: 'https://forms.gle/EEGEXhE3sNuVUyrM6', // Replace with actual internal form URL
       external: 'https://forms.gle/tvRh5G9MZZGaWdF38'  // Replace with actual external form URL
     };
-
+    
     window.open(formUrls[formType], '_blank');
   };
 
@@ -20,7 +20,7 @@ function Registration() {
       <section className="page-header">
         <div className="container">
           <h1>Delegate Registration</h1>
-          <p className="head">Register for IARE MUN 2024</p>
+          <p>Register for IARE MUN 2024</p>
         </div>
       </section>
 

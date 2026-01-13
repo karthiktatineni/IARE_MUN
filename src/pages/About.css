@@ -21,10 +21,10 @@
 }
 
 .content-block h2 {
-  color: var(--gold);
+  color: var(--gold-primary, #d4af37);
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  border-left: 4px solid var(--gold);
+  border-left: 4px solid var(--gold-primary, #d4af37);
   padding-left: 1rem;
 }
 
@@ -33,6 +33,24 @@
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 1rem;
+}
+
+.signature-block {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.signature-block p {
+  margin-bottom: 0.2rem !important;
+  font-size: 1.1rem;
+}
+
+.signature-block strong {
+  color: var(--gold-primary, #d4af37);
+  font-size: 1.4rem;
+  display: inline-block;
+  margin: 0.5rem 0;
 }
 
 .objectives-grid {
@@ -46,18 +64,18 @@
   background-color: rgba(255, 255, 255, 0.05);
   padding: 2rem;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .objective-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  border-color: var(--gold);
+  border-color: var(--gold-primary, #d4af37);
 }
 
 .objective-card h3 {
-  color: white;
+  color: var(--gold-primary, #d4af37);
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
@@ -96,22 +114,4 @@
   .objectives-grid {
     grid-template-columns: 1fr;
   }
-}
-
-.signature-block {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.signature-block p {
-  margin-bottom: 0.2rem !important;
-  font-size: 1.1rem;
-}
-
-.signature-block strong {
-  color: var(--gold);
-  font-size: 1.4rem;
-  display: inline-block;
-  margin: 0.5rem 0;
 }
