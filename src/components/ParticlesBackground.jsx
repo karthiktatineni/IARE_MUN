@@ -11,23 +11,23 @@ const ParticlesBackground = () => {
         let w, h, particles;
         let animationFrameId;
 
-        // Configuration
+
         // Brighter Gold particle color for better visibility
         const color = 'rgba(212,175,55,';
 
         const resize = () => {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-            // Density based on width
-            const density = Math.min(80, Math.max(40, Math.floor(window.innerWidth / 20)));
+            // Increased density for more visible particles
+            const density = Math.min(150, Math.max(80, Math.floor(window.innerWidth / 15)));
 
             particles = Array.from({ length: density }, () => ({
                 x: Math.random() * w,
                 y: Math.random() * h,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
-                r: Math.random() * 1.6 + 0.4,
-                a: Math.random() * 0.5 + 0.3 // Increased opacity range: 0.3 to 0.8
+                r: Math.random() * 2.5 + 0.8, // Increased size: 0.8 to 3.3
+                a: Math.random() * 0.6 + 0.1 // Increased opacity: 0.4 to 1.0
             }));
         };
 
