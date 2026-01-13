@@ -75,12 +75,7 @@ function Secretariat() {
 
       <section className="section">
         <div className="container">
-          <p className="intro-text animate-on-load delay-200">
-            The Secretariat is the driving force behind IARE MUN 2024. Our dedicated team of
-            student leaders has worked tirelessly to ensure a memorable and enriching experience
-            for all delegates. Each member brings unique skills and passion to make this conference
-            a success.
-          </p>
+          
 
           <div className="team-grid animate-on-load delay-300">
             {teamMembers.map((member, index) => (
