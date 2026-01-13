@@ -4,7 +4,7 @@ function Schedule() {
   const scheduleData = [
     {
       day: 'Day 1',
-      date: 'March 15, 2024',
+      date: 'March 6th, 2026',
       events: [
         { time: '09:00 AM - 10:00 AM', title: 'Registration and Check-in', location: 'Main Lobby' },
         { time: '10:00 AM - 11:00 AM', title: 'Opening Ceremony', location: 'Auditorium' },
@@ -17,7 +17,7 @@ function Schedule() {
     },
     {
       day: 'Day 2',
-      date: 'March 16, 2024',
+      date: 'March 7th, 2026',
       events: [
         { time: '09:00 AM - 09:30 AM', title: 'Morning Assembly', location: 'Main Hall' },
         { time: '09:30 AM - 12:00 PM', title: 'Committee Session 3', location: 'Committee Rooms' },
@@ -31,7 +31,7 @@ function Schedule() {
     },
     {
       day: 'Day 3',
-      date: 'March 17, 2024',
+      date: 'March 8th, 2026',
       events: [
         { time: '09:00 AM - 09:30 AM', title: 'Morning Assembly', location: 'Main Hall' },
         { time: '09:30 AM - 12:00 PM', title: 'Committee Session 6', location: 'Committee Rooms' },
@@ -52,7 +52,7 @@ function Schedule() {
           <h1>Event Schedule</h1>
 
           <p className="head">
-            Complete 3-day schedule for IARE MUN 2024
+            Complete 3-day schedule for IARE MUN 2026
           </p>
 
         </div>

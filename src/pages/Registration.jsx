@@ -11,7 +11,7 @@ function Registration() {
       internal: 'https://forms.gle/EEGEXhE3sNuVUyrM6', // Replace with actual internal form URL
       external: 'https://forms.gle/tvRh5G9MZZGaWdF38'  // Replace with actual external form URL
     };
-    
+
     window.open(formUrls[formType], '_blank');
   };
 
@@ -20,7 +20,7 @@ function Registration() {
       <section className="page-header">
         <div className="container">
           <h1>Delegate Registration</h1>
-          <p>Register for IARE MUN 2024</p>
+          <p>Register for IARE MUN 2026</p>
         </div>
       </section>
 
@@ -103,7 +103,7 @@ function Registration() {
                       <li>UNSC - United Nations Security Council</li>
                       <li>DISEC - Disarmament and International Security Committee</li>
                       <li>AIPPM - All India Political Parties Meet</li>
-                      <li>IP - Israel-Palestine Committee</li>
+                      <li>IP - International Press</li>
                     </ul>
                   </div>
                   <div className="info-item">

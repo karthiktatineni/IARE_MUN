@@ -7,7 +7,7 @@ function Committees() {
         <div className="container">
           <h1>Committees</h1>
           <p className="head">
-            Explore the three dynamic committees of IARE MUN 2024
+            Explore the three dynamic committees of IARE MUN 2026
           </p>
 
 

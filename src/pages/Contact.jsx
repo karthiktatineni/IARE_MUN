@@ -180,7 +180,7 @@ function Contact() {
               <div className="contact-info">
                 <h2>Get In Touch</h2>
                 <p className="contact-description">
-                  Have questions about IARE MUN 2024? We&apos;re here to help! Reach out to us
+                  Have questions about IARE MUN 2026? We&apos;re here to help! Reach out to us
                   through any of the following channels or fill out the contact form.
                 </p>
 

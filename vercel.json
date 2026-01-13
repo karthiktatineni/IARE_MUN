@@ -1,8 +1,15 @@
 {
-    "rewrites": [
+    "redirects": [
         {
-            "source": "/(.*)",
-            "destination": "/index.html"
+            "source": "/",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "admin.iaremun.in"
+                }
+            ],
+            "destination": "/admin",
+            "permanent": true
         }
     ]
 }

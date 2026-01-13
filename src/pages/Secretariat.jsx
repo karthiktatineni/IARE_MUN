@@ -69,13 +69,13 @@ function Secretariat() {
       <section className="page-header animate-on-load">
         <div className="container">
           <h1>Secretariat</h1>
-          <p className="head">Meet the team behind IARE MUN 2024</p>
+          <p className="head">Meet the team behind IARE MUN 2026</p>
         </div>
       </section>
 
       <section className="section">
         <div className="container">
-          
+
 
           <div className="team-grid animate-on-load delay-300">
             {teamMembers.map((member, index) => (
