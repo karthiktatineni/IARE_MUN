@@ -219,21 +219,25 @@
 }
 
 .feature-card {
-  background-color: var(--deep-space-blue);
+  background: rgba(16, 24, 45, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 2rem;
   border-radius: 12px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  /* Subtle white border default */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Glass border */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  /* Glass shadow */
 }
 
 .feature-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  /* Remove gold shadow */
-  border-color: var(--cornflower-ocean);
-  /* Only border turns gold on hover */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  background: rgba(16, 24, 45, 0.75);
+  /* Slight darken on hover */
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .feature-icon {
