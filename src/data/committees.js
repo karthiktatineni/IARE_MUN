@@ -17,7 +17,6 @@ export const staticCountryData = {
         { country: 'Belgium', is_allocated: false, allocated_to: null },
         { country: 'Bolivia', is_allocated: false, allocated_to: null },
         { country: 'Brazil', is_allocated: false, allocated_to: null },
-        { country: 'Bulgaria', is_allocated: false, Hyde: null },
         { country: 'Bulgaria', is_allocated: false, allocated_to: null },
         { country: 'Canada', is_allocated: false, allocated_to: null },
         { country: 'Chile', is_allocated: false, allocated_to: null },

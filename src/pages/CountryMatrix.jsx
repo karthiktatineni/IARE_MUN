@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { staticCountryData } from '../data/committees';
+import { db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import './CountryMatrix.css';
 
 function CountryMatrix() {
@@ -15,17 +17,38 @@ function CountryMatrix() {
   const [filterStatus, setFilterStatus] = useState('all');
 
   useEffect(() => {
-    // Simulate loading delay
-    setLoading(true);
-    setTimeout(() => {
-      const savedData = localStorage.getItem('mun_country_matrix');
-      if (savedData) {
-        setCountryData(JSON.parse(savedData));
-      } else {
-        setCountryData(staticCountryData);
+    const fetchMatrix = async () => {
+      setLoading(true);
+      try {
+        // Try fetching from Firestore first (Public View)
+        const matrixDoc = await getDoc(doc(db, "public", "countryMatrix"));
+        if (matrixDoc.exists()) {
+          setCountryData(matrixDoc.data().matrix);
+        } else {
+          // Fallback to localStorage (for Admin local updates)
+          const savedData = localStorage.getItem('mun_country_matrix');
+          if (savedData) {
+            setCountryData(JSON.parse(savedData));
+          } else {
+            // Fallback to static data
+            setCountryData(staticCountryData);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching country matrix:", error);
+        // Fallback on error
+        const savedData = localStorage.getItem('mun_country_matrix');
+        if (savedData) {
+          setCountryData(JSON.parse(savedData));
+        } else {
+          setCountryData(staticCountryData);
+        }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }, 1000);
+    };
+
+    fetchMatrix();
   }, []);
 
   // Function to filter countries based on search and status
@@ -173,6 +196,9 @@ function CountryMatrix() {
                   </div>
                 ) : (
                   getFilteredCountries(selectedCommittee).map((item, index) => {
+                    const originalIndex = countryData[selectedCommittee].findIndex(
+                      country => country.country === item.country
+                    );
                     return (
                       <div
                         key={index}

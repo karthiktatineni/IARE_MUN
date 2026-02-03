@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, setDoc } from "firebase/firestore";
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "firebase/auth";
 import { db, auth } from "../firebase";
 import { staticCountryData } from "../data/committees";
@@ -168,10 +168,24 @@ function Admin() {
 
             setDelegates(delegateList);
             setCountryData(newCountryData);
+
+            // Save to localStorage for immediate admin view
             localStorage.setItem(
                 "mun_country_matrix",
                 JSON.stringify(newCountryData)
             );
+
+            // Sync to Firestore for public view
+            try {
+                await setDoc(doc(db, "public", "countryMatrix"), {
+                    matrix: newCountryData,
+                    lastUpdated: new Date().toISOString()
+                });
+                console.log("Country matrix synced to Firestore");
+            } catch (syncErr) {
+                console.error("Error syncing matrix to Firestore:", syncErr);
+            }
+
             setLoading(false);
         } catch (err) {
             console.error(err);

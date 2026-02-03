@@ -187,48 +187,44 @@ const COMMITTEE_COUNTRIES = {
     "Zimbabwe"
   ],
   AIPPM: [
-    "Nirmala Sitharaman",
-    "Amit Shah",
-    "Dharmendra Pradhan",
-    "Dr. Subrahmanyam Jaishankar",
-    "Ashwini Vaishnaw",
-    "Anupriya Devi",
-    "Jyotiraditya M. Scindia",
-    "Jagat Prakash Nadda",
-    "Tejasvi Surya",
-    "Rajnath Singh",
-    "K Annamalai",
-    "Yogi Adityanath",
-    "Kangana Ranaut",
-    "Eknath Shinde",
-    "Chirag Paswan",
-    "Edapaddi Palaniswami",
-    "H.D. Kumaraswamy",
-    "Nitish Kumar",
-    "Nara Chandrababu Naidu",
-    "Jayant Chaudhary",
-    "Ramdas Athawale",
-    "Rahul Gandhi",
-    "Mallikarjun Kharge",
-    "Siddaramaiah",
-    "D.K. Shivakumar",
-    "Priyanka Gandhi Vadra",
-    "Shashi Tharoor",
-    "Revanth Reddy",
-    "Atishi Marlena",
-    "Pinarayi Vijayan",
-    "Uddhav Balasaheb Thackeray",
-    "M.K. Stalin",
-    "Udhayanidhi Stalin",
-    "Omar Abdullah",
-    "Mehbooba Mufti",
-    "Hemant Soren",
-    "Asaduddin Owaisi",
-    "YS Jagan Mohan Reddy",
-    "Akhilesh Yadav",
-    "K Chandrashekar Rao",
-    "Sachin Pilot",
-    "Mamata Banerjee"
+    "Nirmala Sitharaman", "Amit Shah", "Dharmendra Pradhan", "Dr. Subrahmanyam Jaishankar",
+    "Ashwini Vaishnaw", "Anupriya Devi", "Jyotiraditya M. Scindia", "Jagat Prakash Nadda",
+    "Tejasvi Surya", "Rajnath Singh", "K Annamalai", "Yogi Adityanath", "Kangana Ranaut",
+    "Eknath Shinde", "Chirag Paswan", "Edapaddi Palaniswami", "H.D. Kumaraswamy",
+    "Nitish Kumar", "Nara Chandrababu Naidu", "Jayant Chaudhary", "Ramdas Athawale",
+    "Rahul Gandhi", "Mallikarjun Kharge", "Siddaramaiah", "D.K. Shivakumar",
+    "Priyanka Gandhi Vadra", "Shashi Tharoor", "Revanth Reddy", "Atishi Marlena",
+    "Pinarayi Vijayan", "Uddhav Balasaheb Thackeray", "M.K. Stalin", "Udhayanidhi Stalin",
+    "Omar Abdullah", "Mehbooba Mufti", "Hemant Soren", "Asaduddin Owaisi",
+    "YS Jagan Mohan Reddy", "Akhilesh Yadav", "K Chandrashekar Rao", "Sachin Pilot",
+    "Mamata Banerjee", "Y. V. Subba Reddy", "Meda Raghunath Reddy", "Golla Baburao",
+    "S. Niranjan Reddy", "Alla Ayodhya Rami Reddy", "Parimal Nathwani",
+    "Pilli Subhash Chandra Bose", "R. Krishnaiah", "Beeda Masthan Rao", "Sana Satish",
+    "Nabam Rebia", "Bhubaneswar Kalita", "Birendra Prasad Baishya", "Pabitra Margherita",
+    "Sarbananda Sonowal", "Kamakhya Prasad Tasa", "Ajit Kumar Bhuyan", "Dharamshila Gupta",
+    "Bhim Singh", "Satish Chandra Dubey", "Shambhu Sharan Patel", "Manan Kumar Mishra",
+    "Manoj Jha", "Sanjay Yadav", "Faiyaz Ahmad", "Prem Chand Gupta", "Amarendra Dhari Singh",
+    "Sanjay Kumar Jha", "Khiru Mahto", "Harivansh Narayan Singh", "Ram Nath Thakur",
+    "Akhilesh Prasad Singh", "Upendra Kushwaha", "Devendra Pratap Singh", "Rajeev Shukla",
+    "Ranjeet Ranjan", "Phulo Devi Netam", "K.T.S. Tulsi", "Sanjay Singh",
+    "Narain Dass Gupta", "Raghav Chadha", "Sadanand Shet Tanavade", "J. P. Nadda",
+    "Jasvantsinh Salinkumar", "Mayankkumar Nayak", "Babubhai Desai", "Kesridevsinh Jhala",
+    "Shaktisinh Gohil", "Narhari Amin", "Ramilaben Bara", "Rambhai Mokariya",
+    "Parshottam Rupala", "Mansukh Mandaviya", "Subhash Barala", "Rekha Sharma",
+    "Ram Chander Jangra", "Kiran Chaudhary", "Kartikeya Sharma", "Harsh Mahajan",
+    "Indu Goswami", "Sikander Kumar", "Dr. Sarfraz Ahmad", "Pradeep Varma",
+    "Aditya Sahu", "Mahua Maji", "Deepak Prakash", "Ajay Maken", "G. C. Chandrashekhar",
+    "Syed Nasir Hussain", "Narayansa Bhandage", "H. D. Deve Gowda", "Iranna Kadadi",
+    "K. Narayan", "Jose K. Mani", "P. P. Suneer", "Haris Beeran", "Abdul Wahab",
+    "V. Sivadasan", "John Brittas", "A. A. Rahim", "Jebi Mather Hisham", "Sandosh Kumar",
+    "Maya Naroliya", "Banshilal Gurjar", "Umesh Nath Maharaj", "L. Murugan",
+    "George Kurian", "Sumitra Balmik", "Kavita Patidar", "Ashok Chavan", "Praful Patel",
+    "Milind Deora", "Sunetra Pawar", "Sharad Pawar", "Priyanka Chaturvedi",
+    "Bhagwat Karad", "Dhairyashil Patil", "Fouzia Khan", "Mamata Mohanta", "Sujeet Kumar",
+    "Munna Khan", "Niranjan Bishi", "Sonia Gandhi", "Chunnilal Garasiya", "Madan Rathore",
+    "Randeep Surjewala", "Mukul Wasnik", "Neeraj Dangi", "Jaya Bachchan",
+    "Sudhanshu Trivedi", "R. P. N. Singh", "Chaudhary Tejveer Singh", "Amarpal Maurya",
+    "Sangeeta Balwant", "Sadhna Singh", "Naveen Jain", "Ramji Lal Suman"
   ],
   IP: [
     "Reporter",
@@ -283,6 +279,7 @@ const GRADE_OPTIONS = [
   { value: "12th Grade", label: "12th Grade" },
 ];
 
+/*
 function Registration() {
   const navigate = useNavigate(); // <-- Hook to redirect
   const [form, setForm] = useState({
@@ -512,5 +509,38 @@ function Registration() {
     </div>
   );
 }
+*/
+
+function Registration() {
+  return (
+    <div className="registration">
+      <section className="page-header">
+        <div className="container">
+          <h1>Delegate Registration</h1>
+          <p>Register for IARE MUN 2026</p>
+        </div>
+      </section>
+
+      <section className="section registration-soon-section">
+        <div className="container">
+          <div className="registration-soon-content">
+            <div className="soon-card">
+
+              <h2>Registrations Opening Soon</h2>
+              <p className="soon-text">
+                Prepare yourself for the ultimate diplomatic experience.
+                Delegate applications for IARE MUN 2026 will be live shortly.
+              </p>
+              <div className="updates-box">
+                <p>Stay tuned for updates!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 
 export default Registration;
