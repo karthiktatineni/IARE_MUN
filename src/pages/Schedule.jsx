@@ -73,7 +73,6 @@ function Schedule() {
                     <div className="event-time">{event.time}</div>
                     <div className="event-content">
                       <h3>{event.title}</h3>
-                      {event.location && <p className="event-location">📍 {event.location}</p>}
                     </div>
                   </div>
                 ))}
