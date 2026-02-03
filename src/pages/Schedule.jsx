@@ -2,45 +2,46 @@ import './Schedule.css';
 
 function Schedule() {
   const scheduleData = [
-    {
+     {
       day: 'Day 1',
-      date: 'March 6th, 2026',
+      date: 'March 03, 2026',
       events: [
-        { time: '09:00 AM - 10:00 AM', title: 'Registration and Check-in', location: 'Main Lobby' },
-        { time: '10:00 AM - 11:00 AM', title: 'Opening Ceremony', location: 'Auditorium' },
-        { time: '11:00 AM - 11:30 AM', title: 'Tea Break', location: 'Cafeteria' },
-        { time: '11:30 AM - 01:30 PM', title: 'Committee Session 1', location: 'Committee Rooms' },
-        { time: '01:30 PM - 02:30 PM', title: 'Lunch Break', location: 'Dining Hall' },
-        { time: '02:30 PM - 05:00 PM', title: 'Committee Session 2', location: 'Committee Rooms' },
-        { time: '05:00 PM - 05:30 PM', title: 'Evening Snacks', location: 'Cafeteria' },
+        { time: '09:00 AM - 10:00 AM', title: 'Registration and Check-in' },
+        { time: '10:00 AM - 12:45 PM', title: 'Opening Ceremony'},
+        { time: '12:45 PM - 01:30 PM', title: 'Lunch Break'},
+        { time: '01:30 PM - 02:30 PM', title: 'Committee Session 1'},
+        { time: '02:30 PM - 02:45 PM', title: 'Break' },
+        { time: '02:45 PM - 03:45 PM', title: 'Committee Session 2'},
+        { time: '03:45 PM - 04:00 PM', title: 'High Tea'},
+        { time: '04:10 PM - 04:30 PM', title: 'Diplomats den'},
       ]
     },
     {
       day: 'Day 2',
-      date: 'March 7th, 2026',
+      date: 'March 04, 2026',
       events: [
-        { time: '09:00 AM - 09:30 AM', title: 'Morning Assembly', location: 'Main Hall' },
-        { time: '09:30 AM - 12:00 PM', title: 'Committee Session 3', location: 'Committee Rooms' },
-        { time: '12:00 PM - 12:30 PM', title: 'Tea Break', location: 'Cafeteria' },
-        { time: '12:30 PM - 02:00 PM', title: 'Committee Session 4', location: 'Committee Rooms' },
-        { time: '02:00 PM - 03:00 PM', title: 'Lunch Break', location: 'Dining Hall' },
-        { time: '03:00 PM - 05:30 PM', title: 'Committee Session 5', location: 'Committee Rooms' },
-        { time: '05:30 PM - 06:00 PM', title: 'Evening Snacks', location: 'Cafeteria' },
-        { time: '07:00 PM - 09:00 PM', title: 'Social Evening', location: 'Auditorium' },
+        { time: '10:00 AM - 11:00 AM', title: 'Session 3'},
+        { time: '11:00 AM - 11:15 AM', title: 'Breakfast'},
+        { time: '11:15 PM - 12:30 PM', title: 'Session 4'},
+        { time: '12:30 PM - 01:30 PM', title: 'Lunch Break' },
+        { time: '01:30 PM - 02:15 PM', title: 'Session 5},
+        { time: '02:15 PM - 02:30 PM', title: 'Break'},
+        { time: '02:30 PM - 03:15 PM', title: 'Session 6'},
+        { time: '03:15 PM - 03:30 PM', title: 'Break'},
+        { time: '03:30 PM - 04:40 PM', title: 'Session 7'},
+        { time: '04:40 PM - 05:00 PM', title: 'Break'},
+        { time: '05:00 PM - 07:30 PM', title: 'Socials'},
       ]
     },
     {
       day: 'Day 3',
-      date: 'March 8th, 2026',
+      date: 'March 05, 2026',
       events: [
-        { time: '09:00 AM - 09:30 AM', title: 'Morning Assembly', location: 'Main Hall' },
-        { time: '09:30 AM - 12:00 PM', title: 'Committee Session 6', location: 'Committee Rooms' },
-        { time: '12:00 PM - 12:30 PM', title: 'Tea Break', location: 'Cafeteria' },
-        { time: '12:30 PM - 02:00 PM', title: 'Final Committee Session', location: 'Committee Rooms' },
-        { time: '02:00 PM - 03:00 PM', title: 'Lunch Break', location: 'Dining Hall' },
-        { time: '03:00 PM - 04:00 PM', title: 'Resolution Voting', location: 'Committee Rooms' },
-        { time: '04:30 PM - 06:00 PM', title: 'Closing Ceremony & Awards', location: 'Auditorium' },
-        { time: '06:00 PM', title: 'Conference Concludes', location: '' },
+        { time: '10:00 AM - 11:15 AM', title: 'Session 8'},
+        { time: '11:15 AM - 11:40 AM', title: 'Breakfast'},
+        { time: '11:40 AM - 01:00 PM', title: 'Session 9'},
+        { time: '01:00 PM - 02:00 PM', title: 'Lunch Break'},
+        { time: '02:00 PM - 04:15PM', title: 'Closing Ceremony' }
       ]
     }
   ];
