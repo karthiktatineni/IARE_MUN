@@ -12,7 +12,6 @@ function CountryMatrix() {
   const [loading, setLoading] = useState(true);
   const [selectedCommittee, setSelectedCommittee] = useState('UNSC');
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
 
   useEffect(() => {
     // Simulate loading delay
@@ -28,7 +27,7 @@ function CountryMatrix() {
     }, 1000);
   }, []);
 
-  // Function to filter countries based on search and status
+  // Function to filter countries based on search term only
   const getFilteredCountries = (committee) => {
     let countries = countryData[committee] || [];
 
@@ -36,17 +35,9 @@ function CountryMatrix() {
     if (searchTerm) {
       countries = countries.filter(country =>
         country.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (country.allocated_to && country.allocated_to.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (country.portfolio && country.portfolio.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (country.minister && country.minister.toLowerCase().includes(searchTerm.toLowerCase()))
       );
-    }
-
-    // Filter by status
-    if (filterStatus === 'available') {
-      countries = countries.filter(country => !country.is_allocated);
-    } else if (filterStatus === 'allocated') {
-      countries = countries.filter(country => country.is_allocated);
     }
 
     return countries;
@@ -56,16 +47,12 @@ function CountryMatrix() {
     const allCountries = countryData[committee] || [];
     const filteredCountries = getFilteredCountries(committee);
     const total = allCountries.length;
-    const allocated = allCountries.filter(c => c.is_allocated).length;
-    const available = total - allocated;
     const filteredTotal = filteredCountries.length;
 
     return {
       total,
-      allocated,
-      available,
       filteredTotal,
-      showingFiltered: filteredTotal !== total || searchTerm || filterStatus !== 'all'
+      showingFiltered: filteredTotal !== total || searchTerm
     };
   };
 
@@ -91,7 +78,7 @@ function CountryMatrix() {
                 >
                   <span className="tab-name">{committee}</span>
                   <span className="tab-stats">
-                    {stats.available}/{stats.total} Available
+                    {stats.total} Members
                   </span>
                 </button>
               );
@@ -103,32 +90,11 @@ function CountryMatrix() {
               <div className="search-box">
                 <input
                   type="text"
-                  placeholder="Search countries or delegates..."
+                  placeholder="Search candidates..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="search-input"
                 />
-              </div>
-
-              <div className="filter-buttons">
-                <button
-                  className={`filter-btn ${filterStatus === 'all' ? 'active' : ''}`}
-                  onClick={() => setFilterStatus('all')}
-                >
-                  All
-                </button>
-                <button
-                  className={`filter-btn ${filterStatus === 'available' ? 'active' : ''}`}
-                  onClick={() => setFilterStatus('available')}
-                >
-                  Available
-                </button>
-                <button
-                  className={`filter-btn ${filterStatus === 'allocated' ? 'active' : ''}`}
-                  onClick={() => setFilterStatus('allocated')}
-                >
-                  Allocated
-                </button>
               </div>
             </div>
           </div>
@@ -142,68 +108,31 @@ function CountryMatrix() {
             <div className="matrix-container">
               <div className="stats-summary">
                 <div className="stat-box">
-                  <div className="stat-label">Total</div>
+                  <div className="stat-label">Total Members</div>
                   <div className="stat-value">{getStats(selectedCommittee).total}</div>
-                </div>
-                <div className="stat-box available">
-                  <div className="stat-label">Available</div>
-                  <div className="stat-value">{getStats(selectedCommittee).available}</div>
-                </div>
-                <div className="stat-box allocated">
-                  <div className="stat-label">Allocated</div>
-                  <div className="stat-value">{getStats(selectedCommittee).allocated}</div>
-                </div>
-              </div>
-
-              <div className="legend">
-                <div className="legend-item">
-                  <span className="legend-indicator available"></span>
-                  <span>Available</span>
-                </div>
-                <div className="legend-item">
-                  <span className="legend-indicator allocated"></span>
-                  <span>Allocated</span>
                 </div>
               </div>
 
               <div className="countries-grid">
                 {getFilteredCountries(selectedCommittee).length === 0 ? (
                   <div className="no-results">
-                    <p>No countries found matching your criteria.</p>
+                    <p>No candidates found matching your search.</p>
                   </div>
                 ) : (
-                  getFilteredCountries(selectedCommittee).map((item, index) => {
-                    const originalIndex = countryData[selectedCommittee].findIndex(
-                      country => country.country === item.country
-                    );
-                    return (
-                      <div
-                        key={index}
-                        className={`country-card ${item.is_allocated ? 'allocated' : 'available'} ${selectedCommittee === 'AIPPM' ? 'aippm-card' : ''}`}
-                        title={item.is_allocated ? `Allocated to ${item.allocated_to}` : 'Available'}
-                      >
-                        <div className="country-name">{item.country}</div>
-                        {selectedCommittee === 'AIPPM' && (
-                          <div className="aippm-details">
-                            <div className="portfolio">{item.portfolio}</div>
-                            <div className="minister">{item.minister}</div>
-                          </div>
-                        )}
-                        <div className="country-status">
-                          {item.is_allocated ? (
-                            <>
-                              <span className="status-badge">Allocated</span>
-                              {item.allocated_to && (
-                                <span className="allocated-to">to {item.allocated_to}</span>
-                              )}
-                            </>
-                          ) : (
-                            <span className="status-badge available">Available</span>
-                          )}
+                  getFilteredCountries(selectedCommittee).map((item, index) => (
+                    <div
+                      key={index}
+                      className={`country-card ${selectedCommittee === 'AIPPM' ? 'aippm-card' : ''}`}
+                    >
+                      <div className="country-name">{item.country}</div>
+                      {selectedCommittee === 'AIPPM' && (
+                        <div className="aippm-details">
+                          <div className="portfolio">{item.portfolio}</div>
+                          <div className="minister">{item.minister}</div>
                         </div>
-                      </div>
-                    );
-                  })
+                      )}
+                    </div>
+                  ))
                 )}
               </div>
             </div>
