@@ -1,11 +1,16 @@
 .contact {
   flex: 1;
+  animation: popupFade 0.8s ease forwards;
 }
-
-.contact-content {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
+@keyframes popupFade {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .contact-main-grid {

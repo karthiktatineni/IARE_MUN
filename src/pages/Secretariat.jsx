@@ -5,62 +5,62 @@ function Secretariat() {
     {
       name: 'TATINENI KARTHIK SAI',
       position: 'Secretary General',
-      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'KONDA NAGA SATHVIKA',
       position: 'Deputy Secretary General',
-      image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'SILAR SAI CHARAN',
       position: 'Director General',
-      image: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'M CHAITANYA REDDY',
       position: 'OC Head',
-      image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'AMULYA VEGESNA',
       position: 'USG Finance',
-      image: 'https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'PRAGNESH VANGETY',
       position: 'USG Hospitality',
-      image: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'S SAI ABHINAV',
       position: 'USG Delegate Relations',
-      image: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'LUCKY RAO',
       position: 'USG PR & Promotions',
-      image: 'https://images.pexels.com/photos/1239288/pexels-photo-1239288.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'Rohan Gupta',
       position: 'USG Tech',
-      image: 'https://images.pexels.com/photos/1438081/pexels-photo-1438081.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'MONICA JAMPA',
       position: 'USG Design',
-      image: 'https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'SOWMYA KUMARI',
       position: 'USG Documentation',
-      image: 'https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     },
     {
       name: 'ANRAG EDIGI',
       position: 'USG Video',
-      image: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400'
+      image: ''
     }
   ];
 

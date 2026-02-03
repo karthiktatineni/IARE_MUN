@@ -1,7 +1,19 @@
 .registration {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  max-width: 92vw;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+animation: popupFade 0.8s ease forwards;
+}
+@keyframes popupFade {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .registration-soon-section {
