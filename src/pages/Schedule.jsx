@@ -24,7 +24,7 @@ function Schedule() {
         { time: '11:00 AM - 11:15 AM', title: 'Breakfast'},
         { time: '11:15 PM - 12:30 PM', title: 'Session 4'},
         { time: '12:30 PM - 01:30 PM', title: 'Lunch Break' },
-        { time: '01:30 PM - 02:15 PM', title: 'Session 5},
+        { time: '01:30 PM - 02:15 PM', title: 'Session 5'},
         { time: '02:15 PM - 02:30 PM', title: 'Break'},
         { time: '02:30 PM - 03:15 PM', title: 'Session 6'},
         { time: '03:15 PM - 03:30 PM', title: 'Break'},
