@@ -4,7 +4,7 @@ function Schedule() {
   const scheduleData = [
      {
       day: 'Day 1',
-      date: 'March 03, 2026',
+      date: 'March 06, 2026',
       events: [
         { time: '09:00 AM - 10:00 AM', title: 'Registration and Check-in' },
         { time: '10:00 AM - 12:45 PM', title: 'Opening Ceremony'},
@@ -18,7 +18,7 @@ function Schedule() {
     },
     {
       day: 'Day 2',
-      date: 'March 04, 2026',
+      date: 'March 07, 2026',
       events: [
         { time: '10:00 AM - 11:00 AM', title: 'Session 3'},
         { time: '11:00 AM - 11:15 AM', title: 'Breakfast'},
@@ -35,7 +35,7 @@ function Schedule() {
     },
     {
       day: 'Day 3',
-      date: 'March 05, 2026',
+      date: 'March 08, 2026',
       events: [
         { time: '10:00 AM - 11:15 AM', title: 'Session 8'},
         { time: '11:15 AM - 11:40 AM', title: 'Breakfast'},
