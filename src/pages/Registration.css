@@ -1,142 +1,274 @@
+/* Container */
 .registration {
   max-width: 92vw;
   width: 100%;
   margin: 0 auto;
   padding: 3rem 1rem;
-animation: popupFade 0.8s ease forwards;
+  animation: popupFade 0.8s ease forwards;
 }
+
 @keyframes popupFade {
   from {
     opacity: 0;
     transform: translateY(40px) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
-.registration-soon-section {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  min-height: 50vh;
-}
-
-.registration-soon-content {
-  max-width: 800px;
+/* Form section */
+.form-section {
+  background-color: var(--deep-space-blue);
+  border: 2px solid var(--cornflower-ocean);
+  border-radius: 14px;
+  padding: 2.5rem;
   width: 100%;
-  margin: 0 auto;
+}
+
+.form-section h2 {
   text-align: center;
-}
-
-.soon-card {
-  background: rgba(16, 24, 45, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  padding: 4rem 3rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.soon-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-
-.soon-card::before {
-  display: none;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.icon-wrapper {
-  margin-bottom: 2rem;
-  display: inline-block;
-  padding: 1.5rem;
-  background: rgba(100, 149, 237, 0.1);
-  border-radius: 50%;
-  border: 1px solid rgba(100, 149, 237, 0.2);
-  box-shadow: 0 0 20px rgba(100, 149, 237, 0.2);
-}
-
-.calendar-icon {
-  font-size: 3.5rem;
-  line-height: 1;
-  display: block;
-}
-
-.soon-card h2 {
   font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  color: var(--cornflower-ocean);
+  margin-bottom: 0.5rem;
 }
 
-.soon-text {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.8);
+.preference-note {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2.5rem;
+  font-style: italic;
+}
 
+/* Grid for inputs */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
   margin-bottom: 2rem;
-  max-width: 100%;
 }
 
-.updates-box {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 50px;
-  color: #ffd700;
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.4rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  padding: 0.85rem 1rem;
+  background-color: var(--ink-black);
+  border: 2px solid var(--yale-blue);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--cornflower-ocean);
+}
+
+/* Preference group */
+.preference-group {
+  background-color: rgba(212, 175, 55, 0.08);
+  border-left: 4px solid var(--cornflower-ocean);
+  border-radius: 10px;
+  padding: 1.8rem;
+  margin-bottom: 2rem;
+}
+
+.preference-group h3 {
+  text-align: center;
+  color: var(--cornflower-ocean);
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+/* react-select overrides */
+.css-2b097c-container {
+  /* container */
+  width: 100%;
+}
+
+.css-yk16xz-control {
+  /* main box */
+  background-color: var(--ink-black);
+  border: 2px solid var(--yale-blue);
+  border-radius: 8px;
+  min-height: 3rem;
+  font-size: 1rem;
+  color: white;
+}
+
+.css-1pahdxg-control {
+  /* focused state */
+  border-color: var(--cornflower-ocean);
+  box-shadow: 0 0 0 1px var(--cornflower-ocean);
+}
+
+.css-1wa3eu0-placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.css-1uccc91-singleValue {
+  color: white;
+}
+
+.css-1okebmr-indicatorSeparator {
+  background-color: transparent;
+}
+
+.css-b8ldur-Input {
+  /* typed text */
+  color: white;
+}
+
+.css-26l3qy-menu {
+  /* dropdown menu */
+  background-color: var(--deep-space-blue);
+  color: rgb(255, 255, 255);
+  border-radius: 8px;
+  margin-top: 4px;
+  z-index: 1000;
+  /* ensure it’s above other elements */
+}
+
+.css-yt9ioa-option {
+  /* options */
+  background-color: var(--deep-space-blue);
+  color: white;
+  padding: 0.8rem 1rem;
+}
+
+.css-yt9ioa-option:hover,
+.css-yt9ioa-option:focus {
+  background-color: var(--cornflower-ocean);
+  color: white;
+}
+
+/* Submit button */
+.form-actions {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--cornflower-ocean);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.1rem;
   font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-size: 0.9rem;
+  cursor: pointer;
   transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.updates-box:hover {
-  background: rgba(212, 175, 55, 0.2);
+.btn-submit:hover {
+  background-color: var(--baltic-blue);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
 }
 
+/* Responsive */
 @media (max-width: 768px) {
-  .soon-card {
-    padding: 3rem 1.5rem;
+  .registration {
+    padding: 2rem 1rem;
   }
 
-  .soon-card h2 {
+  .form-section {
+    padding: 1.8rem;
+  }
+
+  .form-section h2 {
     font-size: 2rem;
   }
 
-  .calendar-icon {
-    font-size: 2.5rem;
+  .preference-group {
+    padding: 1.3rem;
   }
+
+  .preference-group h3 {
+    font-size: 1.2rem;
+  }
+
+  .btn-submit {
+    font-size: 1rem;
+  }
+}
+
+/* react-select container */
+.css-2b097c-container {
+  width: 100%;
+}
+
+/* Control (input box) */
+.css-yk16xz-control {
+  background-color: var(--ink-black);
+  border: 2px solid var(--yale-blue);
+  border-radius: 8px;
+  min-height: 3rem;
+  font-size: 1rem;
+  color: white;
+}
+
+/* Focused state */
+.css-1pahdxg-control {
+  border-color: var(--cornflower-ocean);
+  box-shadow: 0 0 0 1px var(--cornflower-ocean);
+}
+
+/* Placeholder text */
+.css-1wa3eu0-placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Selected value text */
+.css-1uccc91-singleValue {
+  color: white;
+}
+
+/* Remove separator */
+.css-1okebmr-indicatorSeparator {
+  background-color: transparent;
+}
+
+/* Typed input text */
+.css-b8ldur-Input {
+  color: white !important;
+}
+
+/* Dropdown menu */
+.css-26l3qy-menu {
+  background-color: var(--deep-space-blue) !important;
+  color: white;
+  border-radius: 8px;
+  margin-top: 4px;
+  z-index: 1000;
+}
+
+/* Each option */
+.css-yt9ioa-option {
+  background-color: var(--deep-space-blue);
+  color: white;
+  padding: 0.8rem 1rem;
+}
+
+/* Option hover/focus */
+.css-yt9ioa-option:hover,
+.css-yt9ioa-option:focus {
+  background-color: var(--cornflower-ocean);
+  color: white;
 }
