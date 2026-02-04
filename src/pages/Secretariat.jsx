@@ -1,5 +1,6 @@
 import './Secretariat.css';
 
+/*
 function Secretariat() {
   const teamMembers = [
     {
@@ -99,5 +100,37 @@ function Secretariat() {
     </div>
   );
 }
+*/
+
+function Secretariat() {
+  return (
+    <div className="secretariat">
+      <section className="page-header animate-on-load">
+        <div className="container">
+          <h1>Secretariat</h1>
+          <p className="head">IARE MUN 2026</p>
+        </div>
+      </section>
+
+      <section className="section revealing-soon-section">
+        <div className="container">
+          <div className="revealing-soon-content">
+            <div className="soon-card">
+              <h2>Revealing Soon</h2>
+              <p className="soon-text">
+                The powerhouse behind IARE MUN 2026 is being finalized.
+                Stay tuned to meet the visionaries and leaders of this year's conference.
+              </p>
+              <div className="updates-box">
+                <p>Stay tuned for updates!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
 
 export default Secretariat;
+
