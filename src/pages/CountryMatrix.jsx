@@ -22,17 +22,29 @@ function CountryMatrix() {
       try {
         // Try fetching from Firestore first (Public View)
         const matrixDoc = await getDoc(doc(db, "public", "countryMatrix"));
+        let firestoreMatrix = null;
         if (matrixDoc.exists()) {
-          setCountryData(matrixDoc.data().matrix);
+          firestoreMatrix = matrixDoc.data().matrix;
         } else {
-          // Fallback to localStorage (for Admin local updates)
           const savedData = localStorage.getItem('mun_country_matrix');
-          if (savedData) {
-            setCountryData(JSON.parse(savedData));
-          } else {
-            // Fallback to static data
-            setCountryData(staticCountryData);
-          }
+          if (savedData) firestoreMatrix = JSON.parse(savedData);
+        }
+
+        if (firestoreMatrix) {
+          const mergedMatrix = {};
+          Object.keys(staticCountryData).forEach(committee => {
+            mergedMatrix[committee] = staticCountryData[committee].map(staticItem => {
+              const firestoreItem = firestoreMatrix[committee]?.find(f => f.country === staticItem.country);
+              return {
+                ...staticItem,
+                is_allocated: firestoreItem ? firestoreItem.is_allocated : false,
+                allocated_to: firestoreItem ? firestoreItem.allocated_to : null
+              };
+            });
+          });
+          setCountryData(mergedMatrix);
+        } else {
+          setCountryData(staticCountryData);
         }
       } catch (error) {
         console.error("Error fetching country matrix:", error);
