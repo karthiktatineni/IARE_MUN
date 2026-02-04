@@ -187,7 +187,7 @@ const COMMITTEE_COUNTRIES = {
     "Zimbabwe"
   ],
   AIPPM: [
-    "Nirmala Sitharaman", "Amit Shah", "Dharmendra Pradhan", "Dr. Subrahmanyam Jaishankar",
+    "Narendra Modi", "Nirmala Sitharaman", "Amit Shah", "Dharmendra Pradhan", "Dr. Subrahmanyam Jaishankar",
     "Ashwini Vaishnaw", "Anupriya Devi", "Jyotiraditya M. Scindia", "Jagat Prakash Nadda",
     "Tejasvi Surya", "Rajnath Singh", "K Annamalai", "Yogi Adityanath", "Kangana Ranaut",
     "Eknath Shinde", "Chirag Paswan", "Edapaddi Palaniswami", "H.D. Kumaraswamy",
@@ -279,7 +279,7 @@ const GRADE_OPTIONS = [
   { value: "12th Grade", label: "12th Grade" },
 ];
 
-/*
+
 function Registration() {
   const navigate = useNavigate(); // <-- Hook to redirect
   const [form, setForm] = useState({
@@ -509,38 +509,5 @@ function Registration() {
     </div>
   );
 }
-*/
-
-function Registration() {
-  return (
-    <div className="registration">
-      <section className="page-header">
-        <div className="container">
-          <h1>Delegate Registration</h1>
-          <p>Register for IARE MUN 2026</p>
-        </div>
-      </section>
-
-      <section className="section registration-soon-section">
-        <div className="container">
-          <div className="registration-soon-content">
-            <div className="soon-card">
-
-              <h2>Registrations Opening Soon</h2>
-              <p className="soon-text">
-                Prepare yourself for the ultimate diplomatic experience.
-                Delegate applications for IARE MUN 2026 will be live shortly.
-              </p>
-              <div className="updates-box">
-                <p>Stay tuned for updates!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
-
 
 export default Registration;
