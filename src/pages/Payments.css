@@ -147,3 +147,31 @@
         padding: 1.5rem;
     }
 }
+
+/* Group Registration Badge */
+.group-badge {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: rgba(212, 175, 55, 0.2);
+    color: #fbbf24;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Group Breakdown */
+.group-breakdown {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.group-breakdown p {
+    margin: 0;
+    color: #fbbf24;
+    font-size: 0.95rem;
+    font-weight: 500;
+}

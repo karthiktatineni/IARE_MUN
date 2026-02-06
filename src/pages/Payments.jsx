@@ -13,58 +13,112 @@ import {
 import { db } from "../firebase";
 import "./Payments.css";
 
+// Pricing Constants
+const PRICING = {
+    // Delegate Solo Pricing
+    "School Solo Delegates": { base: 999 },
+    "Internal Solo Delegates": { "1st Year": 999, default: 1299 },
+    "External Solo Delegates": { "1st Year": 1199, default: 1399 },
+
+    // Delegate Group Pricing (per delegate)
+    "School Group Delegation": { perMember: 859 },
+    "Internal Group Delegation": { perMember: 1199 },
+    "External Group Delegation": { perMember: 1299 },
+
+    // OC Pricing
+    "Internal OC": { "1st Year": 799, default: 899 },
+    "External OC": { "1st Year": 899, default: 999 },
+};
+
 function Payments() {
     const [searchParams] = useSearchParams();
-    const refId = searchParams.get("ref"); // get reference ID from URL
+    const refId = searchParams.get("ref");
+    const isOC = searchParams.get("type") === "oc";
+
     const [qrUrl, setQrUrl] = useState("");
     const [utr, setUtr] = useState("");
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [amount, setAmount] = useState(0);
     const [delegateName, setDelegateName] = useState("");
+    const [registrationData, setRegistrationData] = useState(null);
 
-    // Generate QR code when refId is available
+    const calculateAmount = (data, isOCReg) => {
+        const { registrationType, yearOfStudy, groupSize, isGroup, members } = data;
+
+        // OC Registration
+        if (isOCReg || registrationType === "Internal OC" || registrationType === "External OC") {
+            const pricing = PRICING[registrationType];
+            if (!pricing) return 999; // fallback
+            return yearOfStudy === "1st Year" ? pricing["1st Year"] : pricing.default;
+        }
+
+        // Group Delegation
+        if (isGroup && groupSize) {
+            const pricing = PRICING[registrationType];
+            if (pricing && pricing.perMember) {
+                return pricing.perMember * groupSize;
+            }
+        }
+
+        // Solo Delegates
+        if (registrationType === "School Solo Delegates") {
+            return PRICING["School Solo Delegates"].base;
+        }
+
+        if (registrationType === "Internal Solo Delegates") {
+            return yearOfStudy === "1st Year"
+                ? PRICING["Internal Solo Delegates"]["1st Year"]
+                : PRICING["Internal Solo Delegates"].default;
+        }
+
+        if (registrationType === "External Solo Delegates") {
+            return yearOfStudy === "1st Year"
+                ? PRICING["External Solo Delegates"]["1st Year"]
+                : PRICING["External Solo Delegates"].default;
+        }
+
+        // Fallback for legacy registration types
+        if (registrationType?.includes("School")) return 999;
+        if (registrationType?.includes("Internal")) return yearOfStudy === "1st Year" ? 999 : 1299;
+        if (registrationType?.includes("External")) return yearOfStudy === "1st Year" ? 1199 : 1399;
+
+        return 1000; // Default fallback
+    };
+
     useEffect(() => {
         if (!refId) return;
 
         const fetchDetailsAndGenerateQR = async () => {
             try {
-                const q = query(collection(db, "registrations"), where("refId", "==", refId));
-                const snapshot = await getDocs(q);
+                // Try delegate registrations first
+                let collectionName = "registrations";
+                let q = query(collection(db, collectionName), where("refId", "==", refId));
+                let snapshot = await getDocs(q);
+
+                // If not found in registrations, try OC registrations
+                if (snapshot.empty) {
+                    collectionName = "oc_registrations";
+                    q = query(collection(db, collectionName), where("refId", "==", refId));
+                    snapshot = await getDocs(q);
+                }
 
                 if (snapshot.empty) {
-                    console.error("No delegate found with this Ref ID");
+                    console.error("No registration found with this Ref ID");
                     return;
                 }
 
                 const data = snapshot.docs[0].data();
-                setDelegateName(data.name);
+                setRegistrationData({ ...data, collectionName, docId: snapshot.docs[0].id });
 
-                let calculatedAmount = 0;
-                const { registrationType, yearOfStudy } = data;
-
-                // Pricing Logic
-                if (registrationType === "School Solo Delegation") {
-                    calculatedAmount = 750;
-                } else if (registrationType === "Internal Solo Delegation") {
-                    if (yearOfStudy === "1st Year") {
-                        calculatedAmount = 899;
-                    } else {
-                        // 2nd, 3rd, 4th Year
-                        calculatedAmount = 999;
-                    }
-                } else if (registrationType === "External Solo Delegation") {
-                    if (yearOfStudy === "1st Year") {
-                        calculatedAmount = 999;
-                    } else {
-                        // 2nd, 3rd, 4th Year
-                        calculatedAmount = 1099;
-                    }
+                // Set display name
+                if (data.isGroup && data.memberNames) {
+                    setDelegateName(data.memberNames.join(", "));
                 } else {
-                    // Fallback or default
-                    calculatedAmount = 1000;
+                    setDelegateName(data.name);
                 }
 
+                const calculatedAmount = calculateAmount(data, collectionName === "oc_registrations");
                 setAmount(calculatedAmount);
 
                 // Generate QR Code with dynamic amount
@@ -74,8 +128,8 @@ function Payments() {
                     .then((url) => setQrUrl(url))
                     .catch((err) => console.error("QR Code generation failed", err));
 
-                // Update the document with the calculated amount (optional but good for records)
-                const docRef = doc(db, "registrations", snapshot.docs[0].id);
+                // Update the document with the calculated amount
+                const docRef = doc(db, collectionName, snapshot.docs[0].id);
                 await updateDoc(docRef, { amountToPay: calculatedAmount });
 
             } catch (error) {
@@ -94,25 +148,46 @@ function Payments() {
         }
 
         try {
-            // Flatten preferences for easier spreadsheet viewing
-            const flattenedData = {
-                timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-                name: delegateData.name,
-                email: delegateData.email,
-                phone: delegateData.phone,
-                college: delegateData.college,
-                registrationType: delegateData.registrationType,
-                yearOfStudy: delegateData.yearOfStudy,
-                refId: delegateData.refId,
-                amount: amount,
-                utr: utr.trim(),
-                pref1_committee: delegateData.preferences?.[0]?.committee || "-",
-                pref1_countries: delegateData.preferences?.[0]?.countries?.join(", ") || "-",
-                pref2_committee: delegateData.preferences?.[1]?.committee || "-",
-                pref2_countries: delegateData.preferences?.[1]?.countries?.join(", ") || "-",
-                pref3_committee: delegateData.preferences?.[2]?.committee || "-",
-                pref3_countries: delegateData.preferences?.[2]?.countries?.join(", ") || "-",
-            };
+            let flattenedData;
+
+            if (delegateData.isGroup) {
+                // For group registrations
+                flattenedData = {
+                    timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                    name: delegateData.memberNames?.join(", ") || "-",
+                    email: delegateData.members?.map(m => m.email).join(", ") || "-",
+                    phone: delegateData.members?.map(m => m.phone).join(", ") || "-",
+                    college: delegateData.college,
+                    registrationType: delegateData.registrationType,
+                    yearOfStudy: delegateData.members?.map(m => m.yearOfStudy).join(", ") || "-",
+                    refId: delegateData.refId,
+                    groupSize: delegateData.groupSize,
+                    groupId: delegateData.groupId,
+                    amount: amount,
+                    utr: utr.trim(),
+                    isGroup: true,
+                };
+            } else {
+                // For solo registrations
+                flattenedData = {
+                    timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+                    name: delegateData.name,
+                    email: delegateData.email,
+                    phone: delegateData.phone,
+                    college: delegateData.college,
+                    registrationType: delegateData.registrationType,
+                    yearOfStudy: delegateData.yearOfStudy,
+                    refId: delegateData.refId,
+                    amount: amount,
+                    utr: utr.trim(),
+                    pref1_committee: delegateData.preferences?.[0]?.committee || "-",
+                    pref1_countries: delegateData.preferences?.[0]?.countries?.join(", ") || "-",
+                    pref2_committee: delegateData.preferences?.[1]?.committee || "-",
+                    pref2_countries: delegateData.preferences?.[1]?.countries?.join(", ") || "-",
+                    pref3_committee: delegateData.preferences?.[2]?.committee || "-",
+                    pref3_countries: delegateData.preferences?.[2]?.countries?.join(", ") || "-",
+                };
+            }
 
             await fetch(scriptUrl, {
                 method: "POST",
@@ -144,31 +219,22 @@ function Payments() {
         setLoading(true);
 
         try {
-            // Find the delegate in Firestore by refId
-            const q = query(
-                collection(db, "registrations"),
-                where("refId", "==", refId)
-            );
-            const snapshot = await getDocs(q);
-
-            if (snapshot.empty) {
-                alert("Delegate not found!");
+            if (!registrationData) {
+                alert("Registration not found!");
                 setLoading(false);
                 return;
             }
 
-            const delegateDoc = snapshot.docs[0];
-            const delegateData = delegateDoc.data();
-            const delegateRef = doc(db, "registrations", delegateDoc.id);
+            const delegateRef = doc(db, registrationData.collectionName, registrationData.docId);
 
-            // Update delegate with UTR and payment timestamp
+            // Update with UTR and payment timestamp
             await updateDoc(delegateRef, {
                 utr: utr.trim(),
                 paidAt: serverTimestamp(),
             });
 
             // Sync with Google Sheets (Secondary Database)
-            await sendToGoogleSheets(delegateData);
+            await sendToGoogleSheets(registrationData);
 
             setSuccess(true);
             alert("✅ Payment recorded successfully!");
@@ -180,12 +246,23 @@ function Payments() {
         setLoading(false);
     };
 
+    const getRegistrationTypeLabel = () => {
+        if (!registrationData) return "";
+        if (registrationData.isGroup) {
+            return `${registrationData.registrationType} (${registrationData.groupSize} members)`;
+        }
+        return registrationData.registrationType;
+    };
+
     return (
         <div className="payment-page">
             <div className="payment-box">
                 <h2>MUN IARE – Registration Fee</h2>
                 <p className="info">
                     Welcome, <b>{delegateName}</b><br />
+                    {registrationData?.isGroup && (
+                        <span className="group-badge">Group Registration - {registrationData.groupSize} members</span>
+                    )}<br />
                     Scan the QR code and complete the payment.<br />
                     After payment, enter your UPI Transaction ID (UTR).
                 </p>
@@ -199,9 +276,16 @@ function Payments() {
                 </div>
 
                 <p className="info">
+                    Registration Type: <b>{getRegistrationTypeLabel()}</b><br />
                     Amount: <b>₹{amount}</b><br />
                     Reference: <b>{refId || "N/A"}</b>
                 </p>
+
+                {registrationData?.isGroup && (
+                    <div className="group-breakdown">
+                        <p>₹{PRICING[registrationData.registrationType]?.perMember || 0} × {registrationData.groupSize} members = ₹{amount}</p>
+                    </div>
+                )}
 
                 {!success ? (
                     <>

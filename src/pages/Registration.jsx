@@ -2,7 +2,7 @@ import { useState } from "react";
 import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import Select from "react-select";
-import { useNavigate } from "react-router-dom"; // <-- Import for redirection
+import { useNavigate } from "react-router-dom";
 import "./Registration.css";
 
 const COMMITTEE_COUNTRIES = {
@@ -259,9 +259,12 @@ const customSelectStyles = {
 };
 
 const REGISTRATION_TYPES = [
-  { value: "External Solo Delegation", label: "External Solo Delegation" },
-  { value: "School Solo Delegation", label: "School Solo Delegation" },
-  { value: "Internal Solo Delegation", label: "Internal Solo Delegation" },
+  { value: "External Solo Delegates", label: "External Solo Delegates" },
+  { value: "School Solo Delegates", label: "School Solo Delegates" },
+  { value: "Internal Solo Delegates", label: "Internal Solo Delegates" },
+  { value: "School Group Delegation", label: "School Group Delegation (4-7 members)" },
+  { value: "Internal Group Delegation", label: "Internal Group Delegation (4-9 members)" },
+  { value: "External Group Delegation", label: "External Group Delegation (4-9 members)" },
 ];
 
 const YEAR_OPTIONS = [
@@ -279,15 +282,30 @@ const GRADE_OPTIONS = [
   { value: "12th Grade", label: "12th Grade" },
 ];
 
+// Group size constraints
+const GROUP_SIZE_LIMITS = {
+  "School Group Delegation": { min: 4, max: 7 },
+  "Internal Group Delegation": { min: 4, max: 9 },
+  "External Group Delegation": { min: 4, max: 9 },
+};
 
 function Registration() {
-  const navigate = useNavigate(); // <-- Hook to redirect
+  const navigate = useNavigate();
+  const [registrationMode, setRegistrationMode] = useState(null); // null, 'delegate', 'oc'
+  const [registrationType, setRegistrationType] = useState("");
+  const [groupSize, setGroupSize] = useState(0);
+  const [currentMemberIndex, setCurrentMemberIndex] = useState(0);
+  const [groupId, setGroupId] = useState("");
+
+  // Array to hold all group member forms
+  const [groupMembers, setGroupMembers] = useState([]);
+
+  // Single member form state
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     college: "",
-    registrationType: "",
     yearOfStudy: "",
     preferences: [
       { committee: "", countries: ["", "", ""] },
@@ -298,14 +316,44 @@ function Registration() {
 
   const [loading, setLoading] = useState(false);
 
+  const isGroupRegistration = registrationType.includes("Group");
+
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSelectChange = (field, value) => {
-    // Reset yearOfStudy if registrationType changes
-    if (field === "registrationType") {
-      setForm({ ...form, registrationType: value, yearOfStudy: "" });
-    } else {
+    if (field === "yearOfStudy") {
       setForm({ ...form, [field]: value });
+    }
+  };
+
+  const handleRegistrationTypeChange = (value) => {
+    setRegistrationType(value);
+    setGroupSize(0);
+    setCurrentMemberIndex(0);
+    setGroupMembers([]);
+    setGroupId("");
+    setForm({
+      name: "",
+      email: "",
+      phone: "",
+      college: "",
+      yearOfStudy: "",
+      preferences: [
+        { committee: "", countries: ["", "", ""] },
+        { committee: "", countries: ["", "", ""] },
+        { committee: "", countries: ["", "", ""] }
+      ]
+    });
+  };
+
+  const handleGroupSizeChange = (size) => {
+    const limits = GROUP_SIZE_LIMITS[registrationType];
+    if (size >= limits.min && size <= limits.max) {
+      setGroupSize(size);
+      setCurrentMemberIndex(0);
+      setGroupMembers([]);
+      // Generate unique group ID
+      setGroupId("GRP" + Date.now());
     }
   };
 
@@ -333,21 +381,119 @@ function Registration() {
   const availableCommittees = (index) =>
     COMMITTEES.filter((c) => !form.preferences.some((p, i) => i !== index && p.committee === c));
 
-  const submitForm = async () => {
-    if (!form.name || !form.email || !form.phone || !form.college || !form.registrationType || !form.yearOfStudy) {
-      alert("Please fill all details including Registration Type and Year of Study.");
-      return;
+  const validateMemberForm = () => {
+    if (!form.name || !form.email || !form.phone || !form.college || !form.yearOfStudy) {
+      alert("Please fill all details including Year of Study.");
+      return false;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       alert("Please enter a valid email.");
-      return;
+      return false;
     }
 
     if (!/^\d{10}$/.test(form.phone)) {
       alert("Enter a valid 10-digit phone number.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const saveCurrentMemberAndNext = async () => {
+    if (!validateMemberForm()) return;
+
+    // Check for duplicate email
+    const q = query(collection(db, "registrations"), where("email", "==", form.email));
+    const existing = await getDocs(q);
+    if (!existing.empty) {
+      alert("This email is already registered!");
       return;
     }
+
+    // Also check within current group members
+    if (groupMembers.some(m => m.email === form.email)) {
+      alert("This email is already used by another member in this group!");
+      return;
+    }
+
+    const newMembers = [...groupMembers, { ...form }];
+    setGroupMembers(newMembers);
+
+    if (currentMemberIndex < groupSize - 1) {
+      setCurrentMemberIndex(currentMemberIndex + 1);
+      // Reset form for next member but keep college
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        college: form.college, // Keep the same college for group
+        yearOfStudy: "",
+        preferences: [
+          { committee: "", countries: ["", "", ""] },
+          { committee: "", countries: ["", "", ""] },
+          { committee: "", countries: ["", "", ""] }
+        ]
+      });
+    } else {
+      // All members filled, submit all
+      await submitGroupRegistration(newMembers);
+    }
+  };
+
+  const submitGroupRegistration = async (members) => {
+    setLoading(true);
+    try {
+      const refId = "MUNIARE" + Date.now();
+      const memberNames = members.map(m => m.name);
+
+      // Store all group members in a single document
+      await addDoc(collection(db, "registrations"), {
+        isGroup: true,
+        groupId: groupId,
+        groupSize: groupSize,
+        registrationType: registrationType,
+        college: members[0].college,
+        refId: refId,
+        memberNames: memberNames,
+        members: members.map((m, idx) => ({
+          ...m,
+          memberIndex: idx + 1,
+          registrationType: registrationType,
+        })),
+        createdAt: serverTimestamp()
+      });
+
+      alert(`✅ Group Registration Successful! ${groupSize} members registered.`);
+      navigate(`/payments?ref=${refId}`);
+
+      // Reset everything
+      setRegistrationType("");
+      setGroupSize(0);
+      setCurrentMemberIndex(0);
+      setGroupMembers([]);
+      setGroupId("");
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        college: "",
+        yearOfStudy: "",
+        preferences: [
+          { committee: "", countries: ["", "", ""] },
+          { committee: "", countries: ["", "", ""] },
+          { committee: "", countries: ["", "", ""] }
+        ]
+      });
+    } catch (error) {
+      console.error("Firestore Error:", error);
+      alert("❌ Registration Failed");
+    }
+    setLoading(false);
+  };
+
+  const submitSoloForm = async () => {
+    if (!validateMemberForm()) return;
 
     setLoading(true);
 
@@ -361,18 +507,17 @@ function Registration() {
         return;
       }
 
-      // Create a unique reference ID for payment
       const refId = "MUNIARE" + Date.now();
 
       await addDoc(collection(db, "registrations"), {
         ...form,
-        refId, // <-- store reference ID in Firestore
+        registrationType: registrationType,
+        isGroup: false,
+        refId,
         createdAt: serverTimestamp()
       });
 
       alert("✅ Registration Successful");
-
-      // Redirect to Payments page with reference ID
       navigate(`/payments?ref=${refId}`);
 
       setForm({
@@ -380,7 +525,6 @@ function Registration() {
         email: "",
         phone: "",
         college: "",
-        registrationType: "",
         yearOfStudy: "",
         preferences: [
           { committee: "", countries: ["", "", ""] },
@@ -388,6 +532,7 @@ function Registration() {
           { committee: "", countries: ["", "", ""] }
         ]
       });
+      setRegistrationType("");
     } catch (error) {
       console.error("Firestore Error:", error);
       alert("❌ Registration Failed");
@@ -397,114 +542,238 @@ function Registration() {
   };
 
   const getYearOptions = () => {
-    if (form.registrationType === "School Solo Delegation") {
+    if (registrationType === "School Solo Delegates" || registrationType === "School Group Delegation") {
       return GRADE_OPTIONS;
     }
     return YEAR_OPTIONS;
   };
 
+  const getGroupSizeOptions = () => {
+    const limits = GROUP_SIZE_LIMITS[registrationType];
+    if (!limits) return [];
+    const options = [];
+    for (let i = limits.min; i <= limits.max; i++) {
+      options.push({ value: i, label: `${i} Members` });
+    }
+    return options;
+  };
+
+  // Initial selection screen
+  if (registrationMode === null) {
+    return (
+      <div className="registration">
+        <div className="selection-section">
+          <h2>Choose Registration Type</h2>
+          <p className="selection-subtitle">Select how you want to participate in IARE MUN</p>
+
+          <div className="selection-buttons">
+            <button
+              className="selection-btn delegate-btn"
+              onClick={() => setRegistrationMode('delegate')}
+            >
+              <div className="btn-icon">🎤</div>
+              <div className="btn-content">
+                <h3>Register as Delegate</h3>
+                <p>Represent a country in committee debates</p>
+              </div>
+            </button>
+
+            <button
+              className="selection-btn oc-btn"
+              onClick={() => navigate('/register-oc')}
+            >
+              <div className="btn-icon">🎯</div>
+              <div className="btn-content">
+                <h3>Register as OC</h3>
+                <p>Join the Organizing Committee</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="registration">
       <div className="form-section">
+        <button className="back-btn" onClick={() => {
+          setRegistrationMode(null);
+          setRegistrationType("");
+          setGroupSize(0);
+        }}>
+          ← Back to Selection
+        </button>
+
         <h2>Delegate Registration</h2>
         <p className="preference-note">
           Select 3 different committees and 3 unique countries for each.
         </p>
 
+        {/* Registration Type Selection */}
         <div className="form-row">
-          <div className="form-group">
-            <label>Full Name</label>
-            <input name="name" value={form.name} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input name="email" value={form.email} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Phone</label>
-            <input name="phone" value={form.phone} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>College/School</label>
-            <input name="college" value={form.college} onChange={handleChange} />
-          </div>
-          <div className="form-group">
+          <div className="form-group full-width">
             <label>Registration Type</label>
             <Select
-              value={form.registrationType ? { value: form.registrationType, label: form.registrationType } : null}
-              onChange={(selected) => handleSelectChange("registrationType", selected?.value || "")}
+              value={registrationType ? { value: registrationType, label: REGISTRATION_TYPES.find(t => t.value === registrationType)?.label } : null}
+              onChange={(selected) => handleRegistrationTypeChange(selected?.value || "")}
               options={REGISTRATION_TYPES}
-              placeholder="Select Type"
-              styles={customSelectStyles}
-            />
-          </div>
-          <div className="form-group">
-            <label>
-              {form.registrationType === "School Solo Delegation" ? "Grade/Standard" : "Year of Study"}
-            </label>
-            <Select
-              value={form.yearOfStudy ? { value: form.yearOfStudy, label: form.yearOfStudy } : null}
-              onChange={(selected) => handleSelectChange("yearOfStudy", selected?.value || "")}
-              options={getYearOptions()}
-              placeholder={form.registrationType === "School Solo Delegation" ? "Select Grade" : "Select Year"}
-              isDisabled={!form.registrationType}
+              placeholder="Select Registration Type"
               styles={customSelectStyles}
             />
           </div>
         </div>
 
-        {form.preferences.map((pref, pi) => (
-          <div key={pi} className="preference-group">
-            <h3>Preference {pi + 1}</h3>
+        {/* Group Size Selection for Group Registrations */}
+        {isGroupRegistration && registrationType && (
+          <div className="form-row">
+            <div className="form-group full-width">
+              <label>Number of Team Members</label>
+              <Select
+                value={groupSize ? { value: groupSize, label: `${groupSize} Members` } : null}
+                onChange={(selected) => handleGroupSizeChange(selected?.value || 0)}
+                options={getGroupSizeOptions()}
+                placeholder="Select number of members in your group"
+                styles={customSelectStyles}
+              />
+              <p className="group-info">
+                {registrationType === "School Group Delegation"
+                  ? "Minimum 4, Maximum 7 members"
+                  : "Minimum 4, Maximum 9 members"}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Group Progress Indicator */}
+        {isGroupRegistration && groupSize > 0 && (
+          <div className="group-progress">
+            <h3>Registering Member {currentMemberIndex + 1} of {groupSize}</h3>
+            <div className="progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${((currentMemberIndex + 1) / groupSize) * 100}%` }}
+              ></div>
+            </div>
+            <div className="members-registered">
+              {groupMembers.map((m, idx) => (
+                <span key={idx} className="member-tag">✓ {m.name}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Show form only when type is selected (and group size for groups) */}
+        {registrationType && (!isGroupRegistration || groupSize > 0) && (
+          <>
             <div className="form-row">
               <div className="form-group">
-                <label>Committee</label>
+                <label>Full Name</label>
+                <input name="name" value={form.name} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input name="email" value={form.email} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Phone</label>
+                <input name="phone" value={form.phone} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>College/School</label>
+                <input
+                  name="college"
+                  value={form.college}
+                  onChange={handleChange}
+                  disabled={isGroupRegistration && currentMemberIndex > 0}
+                />
+              </div>
+              <div className="form-group">
+                <label>
+                  {(registrationType === "School Solo Delegates" || registrationType === "School Group Delegation")
+                    ? "Grade/Standard"
+                    : "Year of Study"}
+                </label>
                 <Select
-                  value={pref.committee ? { value: pref.committee, label: pref.committee } : null}
-                  onChange={(selected) => handleCommitteeChange(pi, selected?.value || "")}
-                  options={availableCommittees(pi).map((c) => ({ value: c, label: c }))}
-                  placeholder="Select Committee"
-                  isClearable
-                  isSearchable
+                  value={form.yearOfStudy ? { value: form.yearOfStudy, label: form.yearOfStudy } : null}
+                  onChange={(selected) => handleSelectChange("yearOfStudy", selected?.value || "")}
+                  options={getYearOptions()}
+                  placeholder={(registrationType === "School Solo Delegates" || registrationType === "School Group Delegation")
+                    ? "Select Grade"
+                    : "Select Year"}
                   styles={customSelectStyles}
                 />
               </div>
-              {pref.countries
-                .slice(0, pref.committee === "IP" ? 2 : 3)
-                .map((country, ci) => (
-                  <div key={ci} className="form-group">
-                    <label>{pref.committee === "IP" ? "Portfolio" : "Country"} {ci + 1}</label>
+            </div>
+
+            {form.preferences.map((pref, pi) => (
+              <div key={pi} className="preference-group">
+                <h3>Preference {pi + 1}</h3>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Committee</label>
                     <Select
-                      isDisabled={!pref.committee}
-                      value={country ? { value: country, label: country } : null}
-                      onChange={(selected) => handleCountryChange(pi, ci, selected?.value || "")}
-                      options={
-                        pref.committee
-                          ? COMMITTEE_COUNTRIES[pref.committee]
-                            .filter((c) => !pref.countries.includes(c) || c === country)
-                            .map((c) => ({ value: c, label: c }))
-                          : []
-                      }
-                      placeholder={pref.committee === "IP" ? "Select Portfolio" : "Select or search country"}
+                      value={pref.committee ? { value: pref.committee, label: pref.committee } : null}
+                      onChange={(selected) => handleCommitteeChange(pi, selected?.value || "")}
+                      options={availableCommittees(pi).map((c) => ({ value: c, label: c }))}
+                      placeholder="Select Committee"
                       isClearable
                       isSearchable
                       styles={customSelectStyles}
                     />
                   </div>
-                ))}
-            </div>
-          </div>
-        ))}
+                  {pref.countries
+                    .slice(0, pref.committee === "IP" ? 2 : 3)
+                    .map((country, ci) => (
+                      <div key={ci} className="form-group">
+                        <label>{pref.committee === "IP" ? "Portfolio" : "Country"} {ci + 1}</label>
+                        <Select
+                          isDisabled={!pref.committee}
+                          value={country ? { value: country, label: country } : null}
+                          onChange={(selected) => handleCountryChange(pi, ci, selected?.value || "")}
+                          options={
+                            pref.committee
+                              ? COMMITTEE_COUNTRIES[pref.committee]
+                                .filter((c) => !pref.countries.includes(c) || c === country)
+                                .map((c) => ({ value: c, label: c }))
+                              : []
+                          }
+                          placeholder={pref.committee === "IP" ? "Select Portfolio" : "Select or search country"}
+                          isClearable
+                          isSearchable
+                          styles={customSelectStyles}
+                        />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            ))}
 
-        <div className="form-actions">
-          <button
-            className="btn-submit"
-            onClick={submitForm}
-            disabled={loading || !form.name || !form.email || !form.phone || !form.college || !form.registrationType || !form.yearOfStudy}
-          >
-            {loading ? "Submitting..." : "Submit Registration"}
-          </button>
-        </div>
+            <div className="form-actions">
+              {isGroupRegistration ? (
+                <button
+                  className="btn-submit"
+                  onClick={saveCurrentMemberAndNext}
+                  disabled={loading || !form.name || !form.email || !form.phone || !form.college || !form.yearOfStudy}
+                >
+                  {loading
+                    ? "Submitting..."
+                    : currentMemberIndex < groupSize - 1
+                      ? `Save & Continue to Member ${currentMemberIndex + 2}`
+                      : `Submit All ${groupSize} Members`}
+                </button>
+              ) : (
+                <button
+                  className="btn-submit"
+                  onClick={submitSoloForm}
+                  disabled={loading || !form.name || !form.email || !form.phone || !form.college || !form.yearOfStudy}
+                >
+                  {loading ? "Submitting..." : "Submit Registration"}
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

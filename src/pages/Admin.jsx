@@ -6,14 +6,15 @@ import { staticCountryData } from "../data/committees";
 import "./Admin.css";
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-    PieChart, Pie, Cell, LineChart, Line
+    PieChart, Pie, Cell
 } from 'recharts';
 import {
-    LayoutDashboard, Users, CheckCircle, Globe, CreditCard, Search, LogOut, FileText
+    LayoutDashboard, Users, CheckCircle, Globe, CreditCard, Search, LogOut, FileText, UserCog
 } from 'lucide-react';
 
 function Admin() {
     const [delegates, setDelegates] = useState([]);
+    const [ocMembers, setOcMembers] = useState([]);
     const [countryData, setCountryData] = useState(staticCountryData);
     const [loading, setLoading] = useState(true);
     const [selectedTab, setSelectedTab] = useState("home");
@@ -59,9 +60,7 @@ function Admin() {
             }
         });
 
-        // Logout on tab close (Session Persistence handles this, but we can also add a listener)
         const handleTabClose = () => {
-            // signOut(auth); // Async, might not finish. Session persistence is better.
         };
         window.addEventListener('beforeunload', handleTabClose);
 
@@ -76,7 +75,7 @@ function Admin() {
         if (!user) return;
 
         let inactivityTimer;
-        const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes
+        const INACTIVITY_LIMIT = 5 * 60 * 1000;
 
         const resetTimer = () => {
             if (inactivityTimer) clearTimeout(inactivityTimer);
@@ -108,33 +107,96 @@ function Admin() {
     const fetchAndAllocate = async () => {
         setLoading(true);
         try {
+            // Fetch delegate registrations
             const querySnapshot = await getDocs(collection(db, "registrations"));
             const delegateList = [];
 
             querySnapshot.forEach(docSnap => {
                 const data = docSnap.data();
-                delegateList.push({
-                    id: docSnap.id,
-                    name: data.name,
-                    email: data.email,
-                    college: data.college,
-                    phone: data.phone,
-                    registrationType: data.registrationType || "-",
-                    yearOfStudy: data.yearOfStudy || "-",
-                    amountToPay: data.amountToPay || "-",
-                    refId: data.refId || "-",
-                    utr: data.utr || "-",
-                    verified: data.verified || false,
-                    timestamp: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : (data.timestamp || new Date(0).toISOString()),
-                    paidAt: data.paidAt?.toDate?.() ? data.paidAt.toDate().toISOString() : null,
-                    preferences: data.preferences || [],
-                    allocation: null
-                });
+
+                // Handle group registrations
+                if (data.isGroup && data.members) {
+                    // Create entry for each member in the group
+                    data.members.forEach((member, idx) => {
+                        delegateList.push({
+                            id: docSnap.id + "_" + idx,
+                            docId: docSnap.id,
+                            name: member.name,
+                            email: member.email,
+                            college: data.college,
+                            phone: member.phone,
+                            registrationType: data.registrationType,
+                            yearOfStudy: member.yearOfStudy,
+                            amountToPay: data.amountToPay || "-",
+                            refId: data.refId || "-",
+                            utr: data.utr || "-",
+                            verified: data.verified || false,
+                            timestamp: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : (data.timestamp || new Date(0).toISOString()),
+                            paidAt: data.paidAt?.toDate?.() ? data.paidAt.toDate().toISOString() : null,
+                            preferences: member.preferences || [],
+                            allocation: null,
+                            isGroup: true,
+                            groupId: data.groupId,
+                            groupSize: data.groupSize,
+                            memberIndex: idx + 1,
+                            memberNames: data.memberNames
+                        });
+                    });
+                } else {
+                    // Solo registration
+                    delegateList.push({
+                        id: docSnap.id,
+                        docId: docSnap.id,
+                        name: data.name,
+                        email: data.email,
+                        college: data.college,
+                        phone: data.phone,
+                        registrationType: data.registrationType || "-",
+                        yearOfStudy: data.yearOfStudy || "-",
+                        amountToPay: data.amountToPay || "-",
+                        refId: data.refId || "-",
+                        utr: data.utr || "-",
+                        verified: data.verified || false,
+                        timestamp: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : (data.timestamp || new Date(0).toISOString()),
+                        paidAt: data.paidAt?.toDate?.() ? data.paidAt.toDate().toISOString() : null,
+                        preferences: data.preferences || [],
+                        allocation: null,
+                        isGroup: false,
+                        groupId: null
+                    });
+                }
             });
 
             delegateList.sort(
                 (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
             );
+
+            // Fetch OC registrations (handle case where collection might not exist)
+            let ocList = [];
+            try {
+                const ocSnapshot = await getDocs(collection(db, "oc_registrations"));
+                ocSnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    ocList.push({
+                        id: docSnap.id,
+                        name: data.name,
+                        email: data.email,
+                        college: data.college,
+                        phone: data.phone,
+                        ocType: data.ocType || data.registrationType || "-",
+                        yearOfStudy: data.yearOfStudy || "-",
+                        amountToPay: data.amountToPay || "-",
+                        refId: data.refId || "-",
+                        utr: data.utr || "-",
+                        verified: data.verified || false,
+                        timestamp: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : new Date(0).toISOString(),
+                    });
+                });
+                ocList.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            } catch (ocErr) {
+                console.log("No OC registrations yet or error fetching:", ocErr);
+            }
+            setOcMembers(ocList);
 
             const newCountryData = {};
             Object.keys(staticCountryData).forEach(committee => {
@@ -169,13 +231,11 @@ function Admin() {
             setDelegates(delegateList);
             setCountryData(newCountryData);
 
-            // Save to localStorage for immediate admin view
             localStorage.setItem(
                 "mun_country_matrix",
                 JSON.stringify(newCountryData)
             );
 
-            // Sync to Firestore for public view
             try {
                 await setDoc(doc(db, "public", "countryMatrix"), {
                     matrix: newCountryData,
@@ -194,20 +254,26 @@ function Admin() {
         }
     };
 
-
-
-
-
-    const verifyPayment = async delegateId => {
+    const verifyPayment = async (delegateId, isOC = false) => {
         try {
-            await updateDoc(doc(db, "registrations", delegateId), {
+            const collectionName = isOC ? "oc_registrations" : "registrations";
+            await updateDoc(doc(db, collectionName, delegateId), {
                 verified: true
             });
-            setDelegates(prev =>
-                prev.map(d =>
-                    d.id === delegateId ? { ...d, verified: true } : d
-                )
-            );
+
+            if (isOC) {
+                setOcMembers(prev =>
+                    prev.map(d =>
+                        d.id === delegateId ? { ...d, verified: true } : d
+                    )
+                );
+            } else {
+                setDelegates(prev =>
+                    prev.map(d =>
+                        d.docId === delegateId ? { ...d, verified: true } : d
+                    )
+                );
+            }
             alert("Payment verified");
         } catch (err) {
             console.error(err);
@@ -223,6 +289,7 @@ function Admin() {
 
         const headers = [
             "Reg Time", "Name", "Email", "Phone", "College/School", "Reg Type", "Year/Grade",
+            "Group ID", "Group Size",
             "Pref 1: Committee", "Pref 1: Country 1", "Pref 1: Country 2", "Pref 1: Country 3",
             "Pref 2: Committee", "Pref 2: Country 1", "Pref 2: Country 2", "Pref 2: Country 3",
             "Pref 3: Committee", "Pref 3: Country 1", "Pref 3: Country 2", "Pref 3: Country 3",
@@ -254,6 +321,8 @@ function Admin() {
                 d.college,
                 d.registrationType,
                 d.yearOfStudy,
+                d.groupId || "-",
+                d.groupSize || "-",
                 ...prefsColumns,
                 d.refId,
                 d.amountToPay,
@@ -261,7 +330,7 @@ function Admin() {
                 paidAtStr,
                 d.verified ? "Verified" : (d.utr !== "-" ? "Paid" : "Pending"),
                 allocationStr
-            ].map(field => `"${field}"`); // Escape fields
+            ].map(field => `"${field}"`);
         });
 
         const csvContent = [
@@ -318,21 +387,29 @@ function Admin() {
     if (loading)
         return <div className="admin-loading">Loading Admin Panel...</div>;
 
-
-
     const paidDelegates = delegates.filter(d => d.utr !== "-");
     const verifiedDelegates = delegates.filter(d => d.verified);
+    const groupDelegates = delegates.filter(d => d.isGroup);
+    const soloDelegates = delegates.filter(d => !d.isGroup);
+
+    const paidOC = ocMembers.filter(d => d.utr !== "-");
+    const verifiedOC = ocMembers.filter(d => d.verified);
+
     const searchedDelegates = delegates.filter(d =>
         d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         d.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        d.refId.toLowerCase().includes(searchQuery.toLowerCase())
+        d.refId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (d.groupId && d.groupId.toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
     // Chart Data Calculations
     const regTypeData = [
-        { name: 'External', value: delegates.filter(d => d.registrationType?.includes('External')).length },
-        { name: 'Internal', value: delegates.filter(d => d.registrationType?.includes('Internal')).length },
-        { name: 'School', value: delegates.filter(d => d.registrationType?.includes('School')).length },
+        { name: 'External Solo', value: delegates.filter(d => d.registrationType?.includes('External') && !d.isGroup).length },
+        { name: 'Internal Solo', value: delegates.filter(d => d.registrationType?.includes('Internal') && !d.isGroup).length },
+        { name: 'School Solo', value: delegates.filter(d => d.registrationType?.includes('School') && !d.isGroup).length },
+        { name: 'External Group', value: delegates.filter(d => d.registrationType?.includes('External') && d.isGroup).length },
+        { name: 'Internal Group', value: delegates.filter(d => d.registrationType?.includes('Internal') && d.isGroup).length },
+        { name: 'School Group', value: delegates.filter(d => d.registrationType?.includes('School') && d.isGroup).length },
     ].filter(d => d.value > 0);
 
     const paymentData = [
@@ -353,6 +430,15 @@ function Admin() {
     }));
 
     const COLORS = ['#d4af37', '#4ade80', '#ff4444', '#00C49F', '#FFBB28', '#FF8042'];
+
+    // Group delegates by groupId for display
+    const groupedByGroupId = {};
+    groupDelegates.forEach(d => {
+        if (!groupedByGroupId[d.groupId]) {
+            groupedByGroupId[d.groupId] = [];
+        }
+        groupedByGroupId[d.groupId].push(d);
+    });
 
     return (
         <div className="admin-layout">
@@ -380,6 +466,22 @@ function Admin() {
                     >
                         <FileText size={18} />
                         <span>Delegate Info</span>
+                    </button>
+
+                    <button
+                        className={`nav-item ${selectedTab === "group_delegations" ? "active" : ""} `}
+                        onClick={() => setSelectedTab("group_delegations")}
+                    >
+                        <Users size={18} />
+                        <span>Group Delegations</span>
+                    </button>
+
+                    <button
+                        className={`nav-item ${selectedTab === "oc_members" ? "active" : ""} `}
+                        onClick={() => setSelectedTab("oc_members")}
+                    >
+                        <UserCog size={18} />
+                        <span>OC Members</span>
                     </button>
 
                     <button
@@ -461,6 +563,18 @@ function Admin() {
                                 <div className="stat-card">
                                     <h3>Total Delegates</h3>
                                     <p>{delegates.length}</p>
+                                </div>
+                                <div className="stat-card">
+                                    <h3>Solo Delegates</h3>
+                                    <p>{soloDelegates.length}</p>
+                                </div>
+                                <div className="stat-card">
+                                    <h3>Group Members</h3>
+                                    <p>{groupDelegates.length}</p>
+                                </div>
+                                <div className="stat-card">
+                                    <h3>OC Members</h3>
+                                    <p>{ocMembers.length}</p>
                                 </div>
                                 <div className="stat-card">
                                     <h3>Paid</h3>
@@ -560,8 +674,6 @@ function Admin() {
                     </>
                 )}
 
-
-
                 <section className="section">
                     <div className="container">
 
@@ -582,6 +694,7 @@ function Admin() {
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>College/School</th>
+                                            <th>Group ID</th>
                                             <th>Pref 1</th>
                                             <th>Pref 2</th>
                                             <th>Pref 3</th>
@@ -593,14 +706,18 @@ function Admin() {
                                     </thead>
                                     <tbody>
                                         {delegates.map(d => (
-                                            <tr key={d.id}>
+                                            <tr key={d.id} className={d.isGroup ? "group-row" : ""}>
                                                 <td>{new Date(d.timestamp).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</td>
-                                                <td>{d.name}</td>
+                                                <td>
+                                                    {d.name}
+                                                    {d.isGroup && <span className="group-badge-small">Group</span>}
+                                                </td>
                                                 <td>{d.registrationType}</td>
                                                 <td>{d.yearOfStudy}</td>
                                                 <td>{d.email}</td>
                                                 <td>{d.phone}</td>
                                                 <td>{d.college}</td>
+                                                <td>{d.groupId || "-"}</td>
                                                 {[0, 1, 2].map(i => {
                                                     const pref = d.preferences[i];
                                                     return (
@@ -626,6 +743,133 @@ function Admin() {
                             </div>
                         )}
 
+                        {selectedTab === "group_delegations" && (
+                            <div className="admin-table-container custom-scrollbar">
+                                <h3 className="section-title">Group Delegations ({Object.keys(groupedByGroupId).length} groups, {groupDelegates.length} members)</h3>
+                                {Object.keys(groupedByGroupId).length === 0 ? (
+                                    <p>No group delegations yet.</p>
+                                ) : (
+                                    Object.entries(groupedByGroupId).map(([groupId, members]) => (
+                                        <div key={groupId} className="group-card">
+                                            <div className="group-header">
+                                                <h4>Group: {groupId}</h4>
+                                                <span className="group-meta">
+                                                    {members[0].registrationType} | {members.length} members |
+                                                    Ref: {members[0].refId} |
+                                                    Status: <span className={`status-tag ${members[0].verified ? "verified" : (members[0].utr !== "-" ? "paid" : "pending")}`}>
+                                                        {members[0].verified ? "Verified" : (members[0].utr !== "-" ? "Paid" : "Pending")}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <table className="admin-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Phone</th>
+                                                        <th>Year/Grade</th>
+                                                        <th>Pref 1</th>
+                                                        <th>Pref 2</th>
+                                                        <th>Pref 3</th>
+                                                        <th>Allocation</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {members.map((m, idx) => (
+                                                        <tr key={m.id}>
+                                                            <td>{idx + 1}</td>
+                                                            <td>{m.name}</td>
+                                                            <td>{m.email}</td>
+                                                            <td>{m.phone}</td>
+                                                            <td>{m.yearOfStudy}</td>
+                                                            {[0, 1, 2].map(i => {
+                                                                const pref = m.preferences[i];
+                                                                return (
+                                                                    <td key={i}>
+                                                                        {pref
+                                                                            ? `${pref.committee} - ${pref.countries.slice(0, 2).join(", ")}`
+                                                                            : "-"}
+                                                                    </td>
+                                                                );
+                                                            })}
+                                                            <td>
+                                                                {m.allocation
+                                                                    ? `${m.allocation.committee} (${m.allocation.country})`
+                                                                    : "-"}
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
+
+                        {selectedTab === "oc_members" && (
+                            <div className="admin-table-container custom-scrollbar">
+                                <h3 className="section-title">OC Members ({ocMembers.length} total)</h3>
+                                <table className="admin-table full-width">
+                                    <thead>
+                                        <tr>
+                                            <th>Reg Time</th>
+                                            <th>Name</th>
+                                            <th>OC Type</th>
+                                            <th>Year</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>College</th>
+                                            <th>Ref ID</th>
+                                            <th>Amount</th>
+                                            <th>UTR</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {ocMembers.map(d => (
+                                            <tr key={d.id}>
+                                                <td>{new Date(d.timestamp).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</td>
+                                                <td>{d.name}</td>
+                                                <td>{d.ocType}</td>
+                                                <td>{d.yearOfStudy}</td>
+                                                <td>{d.email}</td>
+                                                <td>{d.phone}</td>
+                                                <td>{d.college}</td>
+                                                <td>{d.refId}</td>
+                                                <td>{d.amountToPay}</td>
+                                                <td>{d.utr}</td>
+                                                <td>
+                                                    <span className={`status-tag ${d.verified ? "verified" : (d.utr !== "-" ? "paid" : "pending")}`}>
+                                                        {d.verified ? "Verified" : (d.utr !== "-" ? "Paid" : "Pending")}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {!d.verified && d.utr !== "-" && (
+                                                        <button
+                                                            className="verify-btn"
+                                                            onClick={() => verifyPayment(d.id, true)}
+                                                        >
+                                                            Verify
+                                                        </button>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {ocMembers.length === 0 && (
+                                            <tr>
+                                                <td colSpan="12" style={{ textAlign: "center" }}>
+                                                    No OC members registered yet.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+
                         {selectedTab === "allocated_delegates" && (
                             <table className="admin-table full-width">
                                 <thead>
@@ -633,6 +877,7 @@ function Admin() {
                                         <th>Name</th>
                                         <th>Phone Number</th>
                                         <th>Email</th>
+                                        <th>Type</th>
                                         <th>Committee</th>
                                         <th>Country/Portfolio</th>
                                     </tr>
@@ -641,17 +886,21 @@ function Admin() {
                                     {delegates
                                         .filter(d => d.allocation)
                                         .map(d => (
-                                            <tr key={d.id}>
-                                                <td>{d.name}</td>
+                                            <tr key={d.id} className={d.isGroup ? "group-row" : ""}>
+                                                <td>
+                                                    {d.name}
+                                                    {d.isGroup && <span className="group-badge-small">Group</span>}
+                                                </td>
                                                 <td>{d.phone}</td>
                                                 <td>{d.email}</td>
+                                                <td>{d.registrationType}</td>
                                                 <td>{d.allocation.committee}</td>
                                                 <td>{d.allocation.country}</td>
                                             </tr>
                                         ))}
                                     {delegates.filter(d => d.allocation).length === 0 && (
                                         <tr>
-                                            <td colSpan="5" style={{ textAlign: "center" }}>
+                                            <td colSpan="6" style={{ textAlign: "center" }}>
                                                 No delegates allocated yet.
                                             </td>
                                         </tr>
@@ -696,7 +945,6 @@ function Admin() {
                                         <th>Year</th>
                                         <th>Phone</th>
                                         <th>Ref ID</th>
-
                                         <th>UTR</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -704,8 +952,11 @@ function Admin() {
                                 </thead>
                                 <tbody>
                                     {paidDelegates.map(d => (
-                                        <tr key={d.id}>
-                                            <td>{d.name}</td>
+                                        <tr key={d.id} className={d.isGroup ? "group-row" : ""}>
+                                            <td>
+                                                {d.name}
+                                                {d.isGroup && <span className="group-badge-small">Group</span>}
+                                            </td>
                                             <td>{d.registrationType}</td>
                                             <td>{d.yearOfStudy}</td>
                                             <td>{d.phone}</td>
@@ -716,7 +967,7 @@ function Admin() {
                                                 {!d.verified && (
                                                     <button
                                                         className="verify-btn"
-                                                        onClick={() => verifyPayment(d.id)}
+                                                        onClick={() => verifyPayment(d.docId)}
                                                     >
                                                         Verify
                                                     </button>
@@ -738,17 +989,22 @@ function Admin() {
                                         <th>Phone</th>
                                         <th>Ref ID</th>
                                         <th>UTR</th>
+                                        <th>Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {verifiedDelegates.map(d => (
-                                        <tr key={d.id}>
-                                            <td>{d.name}</td>
+                                        <tr key={d.id} className={d.isGroup ? "group-row" : ""}>
+                                            <td>
+                                                {d.name}
+                                                {d.isGroup && <span className="group-badge-small">Group</span>}
+                                            </td>
                                             <td>{d.email}</td>
                                             <td>{d.college}</td>
                                             <td>{d.phone}</td>
                                             <td>{d.refId}</td>
                                             <td>{d.utr}</td>
+                                            <td>{d.registrationType}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -759,7 +1015,7 @@ function Admin() {
                             <>
                                 <input
                                     type="text"
-                                    placeholder="Search by name, email, or refId..."
+                                    placeholder="Search by name, email, refId, or groupId..."
                                     value={searchQuery}
                                     onChange={e => setSearchQuery(e.target.value)}
                                     style={{
@@ -776,6 +1032,8 @@ function Admin() {
                                                 <th>Email</th>
                                                 <th>College</th>
                                                 <th>Phone</th>
+                                                <th>Type</th>
+                                                <th>Group ID</th>
                                                 <th>Ref ID</th>
                                                 <th>UTR</th>
                                                 <th>Status</th>
@@ -783,11 +1041,16 @@ function Admin() {
                                         </thead>
                                         <tbody>
                                             {searchedDelegates.map(d => (
-                                                <tr key={d.id}>
-                                                    <td>{d.name}</td>
+                                                <tr key={d.id} className={d.isGroup ? "group-row" : ""}>
+                                                    <td>
+                                                        {d.name}
+                                                        {d.isGroup && <span className="group-badge-small">Group</span>}
+                                                    </td>
                                                     <td>{d.email}</td>
                                                     <td>{d.college}</td>
                                                     <td>{d.phone}</td>
+                                                    <td>{d.registrationType}</td>
+                                                    <td>{d.groupId || "-"}</td>
                                                     <td>{d.refId}</td>
                                                     <td>{d.utr}</td>
                                                     <td>

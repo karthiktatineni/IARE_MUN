@@ -119,7 +119,7 @@ function Secretariat() {
               <h2>Revealing Soon</h2>
               <p className="soon-text">
                 The powerhouse behind IARE MUN 2026 is being finalized.
-                Stay tuned to meet the visionaries and leaders of this year's conference.
+                Stay tuned to meet the visionaries and leaders of this year&apos;s conference.
               </p>
               <div className="updates-box">
                 <p>Stay tuned for updates!</p>

@@ -6,6 +6,7 @@ import About from './pages/About';
 import Committees from './pages/Committees';
 import Schedule from './pages/Schedule';
 import Registration from './pages/Registration';
+import OCRegistration from './pages/OCRegistration';
 import CountryMatrix from './pages/CountryMatrix';
 import Secretariat from './pages/Secretariat';
 import Contact from './pages/Contact';
@@ -28,6 +29,7 @@ function App() {
         <Route path="/committees" element={<Committees />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/register" element={<Registration />} />
+        <Route path="/register-oc" element={<OCRegistration />} />
         <Route path="/country-matrix" element={<CountryMatrix />} />
         <Route path="/secretariat" element={<Secretariat />} />
         <Route path="/contact" element={<Contact />} />

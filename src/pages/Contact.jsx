@@ -29,7 +29,8 @@ function Contact() {
 
     try {
 
-      const FORMSPREE_URL = 'https://formspree.io/f/xwvvkrbp';
+      // Formspree URL can be moved to environment variable for flexibility
+      const FORMSPREE_URL = import.meta.env.VITE_FORMSPREE_URL || 'https://formspree.io/f/xwvvkrbp';
 
       const response = await fetch(FORMSPREE_URL, {
         method: 'POST',
@@ -199,7 +200,7 @@ function Contact() {
                     <div className="info-icon">📧</div>
                     <div className="info-content">
                       <h3>Email</h3>
-                      <p>iaremun2026@gmail.comn</p>
+                      <p>iaremun2026@gmail.com</p>
                     </div>
                   </div>
 
