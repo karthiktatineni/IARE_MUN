@@ -50,6 +50,7 @@ function OCRegistration() {
         college: "",
         ocType: "",
         yearOfStudy: "",
+        rollNumber: "",
     });
 
     const [loading, setLoading] = useState(false);
@@ -74,6 +75,19 @@ function OCRegistration() {
         if (!/^\d{10}$/.test(form.phone)) {
             alert("Enter a valid 10-digit phone number.");
             return;
+        }
+
+        if (form.ocType === "Internal OC") {
+            if (!form.rollNumber) {
+                alert("Please enter your Roll Number.");
+                return;
+            }
+            // Pattern: Starts with 20, 21, 22, 23, 24, 25, or 45, followed by 951A, and ending with 4 digits.
+            const rollPattern = /^(20|21|22|23|24|25|45)951A\d{4}$/;
+            if (!rollPattern.test(form.rollNumber)) {
+                alert("Invalid Roll Number. Format must start with 20-25 , followed by 951A and 4 digits).");
+                return;
+            }
         }
 
         setLoading(true);
@@ -110,6 +124,7 @@ function OCRegistration() {
                 college: "",
                 ocType: "",
                 yearOfStudy: "",
+                rollNumber: "",
             });
         } catch (error) {
             console.error("Firestore Error:", error);
@@ -169,6 +184,17 @@ function OCRegistration() {
                             styles={customSelectStyles}
                         />
                     </div>
+                    {form.ocType === "Internal OC" && (
+                        <div className="form-group">
+                            <label>Roll Number</label>
+                            <input
+                                name="rollNumber"
+                                value={form.rollNumber}
+                                onChange={(e) => setForm({ ...form, rollNumber: e.target.value.toUpperCase() })}
+
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {/* OC Pricing Info */}

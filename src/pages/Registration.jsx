@@ -308,6 +308,7 @@ function Registration() {
     phone: "",
     college: "",
     yearOfStudy: "",
+    rollNumber: "",
     preferences: [
       { committee: "", countries: ["", "", ""] },
       { committee: "", countries: ["", "", ""] },
@@ -339,6 +340,7 @@ function Registration() {
       phone: "",
       college: "",
       yearOfStudy: "",
+      rollNumber: "",
       preferences: [
         { committee: "", countries: ["", "", ""] },
         { committee: "", countries: ["", "", ""] },
@@ -393,9 +395,23 @@ function Registration() {
       return false;
     }
 
+
     if (!/^\d{10}$/.test(form.phone)) {
       alert("Enter a valid 10-digit phone number.");
       return false;
+    }
+
+    if (registrationType.includes("Internal")) {
+      if (!form.rollNumber) {
+        alert("Please enter your Roll Number.");
+        return false;
+      }
+      // Pattern: Starts with 20, 21, 22, 23, 24, 25, or 45, followed by 951A, and ending with 4 digits.
+      const rollPattern = /^(20|21|22|23|24|25|45)951A\d{4}$/;
+      if (!rollPattern.test(form.rollNumber)) {
+        alert("Invalid Roll Number. Format must start with 20-25 , followed by 951A and 4 digits).");
+        return false;
+      }
     }
 
     return true;
@@ -430,6 +446,7 @@ function Registration() {
         phone: "",
         college: form.college, // Keep the same college for group
         yearOfStudy: "",
+        rollNumber: "",
         preferences: [
           { committee: "", countries: ["", "", ""] },
           { committee: "", countries: ["", "", ""] },
@@ -480,6 +497,7 @@ function Registration() {
         phone: "",
         college: "",
         yearOfStudy: "",
+        rollNumber: "",
         preferences: [
           { committee: "", countries: ["", "", ""] },
           { committee: "", countries: ["", "", ""] },
@@ -527,6 +545,7 @@ function Registration() {
         phone: "",
         college: "",
         yearOfStudy: "",
+        rollNumber: "",
         preferences: [
           { committee: "", countries: ["", "", ""] },
           { committee: "", countries: ["", "", ""] },
@@ -719,6 +738,17 @@ function Registration() {
                   disabled={isGroupRegistration && currentMemberIndex > 0}
                 />
               </div>
+              {registrationType.includes("Internal") && (
+                <div className="form-group">
+                  <label>Roll Number</label>
+                  <input
+                    name="rollNumber"
+                    value={form.rollNumber}
+                    onChange={(e) => setForm({ ...form, rollNumber: e.target.value.toUpperCase() })}
+
+                  />
+                </div>
+              )}
               <div className="form-group">
                 <label>
                   {(registrationType === "School Solo Delegates" || registrationType === "School Group Delegation")
