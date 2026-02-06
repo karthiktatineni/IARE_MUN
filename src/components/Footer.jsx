@@ -26,8 +26,8 @@ function Footer() {
           <div className="footer-section">
             <h4>Contact</h4>
             <ul className="footer-links">
-              <li>Email: mun@iare.ac.in</li>
-              <li>Phone: +91 1234567890</li>
+              <li>Email: iaremun2026@gmail.com</li>
+              <li>Phone: Abhinav - 9515167797</li>
               <li><Link to="/contact">Contact Form</Link></li>
             </ul>
           </div>

@@ -199,8 +199,7 @@ function Contact() {
                     <div className="info-icon">📧</div>
                     <div className="info-content">
                       <h3>Email</h3>
-                      <p>mun@iare.ac.in</p>
-                      <p>info@iaremun.org</p>
+                      <p>iaremun2026@gmail.comn</p>
                     </div>
                   </div>
 
@@ -208,8 +207,9 @@ function Contact() {
                     <div className="info-icon">📞</div>
                     <div className="info-content">
                       <h3>Phone</h3>
-                      <p>+91 1234567890</p>
-                      <p>+91 0987654321</p>
+                      <p>Abhinav - 9515167797</p>
+                      <p>Bhavya - 9391599798</p>
+                      <p>Vainavi - 7793977106</p>
                     </div>
                   </div>
 
