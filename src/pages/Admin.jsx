@@ -127,6 +127,7 @@ function Admin() {
                             phone: member.phone,
                             registrationType: data.registrationType,
                             yearOfStudy: member.yearOfStudy,
+                            rollNumber: member.rollNumber || "-",
                             amountToPay: data.amountToPay || "-",
                             refId: data.refId || "-",
                             utr: data.utr || "-",
@@ -153,6 +154,7 @@ function Admin() {
                         phone: data.phone,
                         registrationType: data.registrationType || "-",
                         yearOfStudy: data.yearOfStudy || "-",
+                        rollNumber: data.rollNumber || "-",
                         amountToPay: data.amountToPay || "-",
                         refId: data.refId || "-",
                         utr: data.utr || "-",
@@ -185,6 +187,7 @@ function Admin() {
                         phone: data.phone,
                         ocType: data.ocType || data.registrationType || "-",
                         yearOfStudy: data.yearOfStudy || "-",
+                        rollNumber: data.rollNumber || "-",
                         amountToPay: data.amountToPay || "-",
                         refId: data.refId || "-",
                         utr: data.utr || "-",
@@ -288,7 +291,7 @@ function Admin() {
         }
 
         const headers = [
-            "Reg Time", "Name", "Email", "Phone", "College/School", "Reg Type", "Year/Grade",
+            "Reg Time", "Name", "Email", "Phone", "College/School", "Reg Type", "Year/Grade", "Roll No",
             "Group ID", "Group Size",
             "Pref 1: Committee", "Pref 1: Country 1", "Pref 1: Country 2", "Pref 1: Country 3",
             "Pref 2: Committee", "Pref 2: Country 1", "Pref 2: Country 2", "Pref 2: Country 3",
@@ -321,6 +324,7 @@ function Admin() {
                 d.college,
                 d.registrationType,
                 d.yearOfStudy,
+                d.rollNumber || "-",
                 d.groupId || "-",
                 d.groupSize || "-",
                 ...prefsColumns,
@@ -399,7 +403,8 @@ function Admin() {
         d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         d.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         d.refId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (d.groupId && d.groupId.toLowerCase().includes(searchQuery.toLowerCase()))
+        (d.groupId && d.groupId.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (d.rollNumber && d.rollNumber.toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
     // Chart Data Calculations
@@ -691,6 +696,7 @@ function Admin() {
                                             <th>Name</th>
                                             <th>Type</th>
                                             <th>Year/Grade</th>
+                                            <th>Roll No</th>
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>College/School</th>
@@ -714,6 +720,7 @@ function Admin() {
                                                 </td>
                                                 <td>{d.registrationType}</td>
                                                 <td>{d.yearOfStudy}</td>
+                                                <td>{d.rollNumber}</td>
                                                 <td>{d.email}</td>
                                                 <td>{d.phone}</td>
                                                 <td>{d.college}</td>
@@ -818,6 +825,7 @@ function Admin() {
                                             <th>Name</th>
                                             <th>OC Type</th>
                                             <th>Year</th>
+                                            <th>Roll No</th>
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>College</th>
@@ -835,6 +843,7 @@ function Admin() {
                                                 <td>{d.name}</td>
                                                 <td>{d.ocType}</td>
                                                 <td>{d.yearOfStudy}</td>
+                                                <td>{d.rollNumber}</td>
                                                 <td>{d.email}</td>
                                                 <td>{d.phone}</td>
                                                 <td>{d.college}</td>
@@ -1033,6 +1042,7 @@ function Admin() {
                                                 <th>College</th>
                                                 <th>Phone</th>
                                                 <th>Type</th>
+                                                <th>Roll No</th>
                                                 <th>Group ID</th>
                                                 <th>Ref ID</th>
                                                 <th>UTR</th>
@@ -1050,6 +1060,7 @@ function Admin() {
                                                     <td>{d.college}</td>
                                                     <td>{d.phone}</td>
                                                     <td>{d.registrationType}</td>
+                                                    <td>{d.rollNumber || "-"}</td>
                                                     <td>{d.groupId || "-"}</td>
                                                     <td>{d.refId}</td>
                                                     <td>{d.utr}</td>

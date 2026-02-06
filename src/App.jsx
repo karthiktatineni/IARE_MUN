@@ -17,6 +17,13 @@ import ParticlesBackground from './components/ParticlesBackground';
 import './App.css';
 
 function App() {
+  // Check for admin subdomain
+  const isAdminSubdomain = window.location.hostname.startsWith("admin.");
+
+  if (isAdminSubdomain) {
+    return <Admin />;
+  }
+
   return (
     <Router>
       <ScrollToTop />
