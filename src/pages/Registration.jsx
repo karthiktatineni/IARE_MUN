@@ -3,6 +3,7 @@ import { collection, addDoc, serverTimestamp, query, where, getDocs } from "fire
 import { db } from "../firebase";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import { Globe, Users, CheckCircle2 } from "lucide-react";
 import "./Registration.css";
 
 const COMMITTEE_COUNTRIES = {
@@ -571,7 +572,9 @@ function Registration() {
               className="selection-btn delegate-btn"
               onClick={() => setRegistrationMode('delegate')}
             >
-              <div className="btn-icon">🎤</div>
+              <div className="btn-icon">
+                <Globe size={48} />
+              </div>
               <div className="btn-content">
                 <h3>Register as Delegate</h3>
                 <p>Represent a country in committee debates</p>
@@ -582,12 +585,40 @@ function Registration() {
               className="selection-btn oc-btn"
               onClick={() => navigate('/register-oc')}
             >
-              <div className="btn-icon">🎯</div>
+              <div className="btn-icon">
+                <Users size={48} />
+              </div>
               <div className="btn-content">
                 <h3>Register as OC</h3>
                 <p>Join the Organizing Committee</p>
               </div>
             </button>
+          </div>
+
+          <div className="registration-guidelines">
+            <h3>Registration Process</h3>
+            <ul className="guidelines-list">
+              <li>
+                <CheckCircle2 size={20} className="guideline-icon" />
+                <span>Choose your role (Delegate or OC) to begin</span>
+              </li>
+              <li>
+                <CheckCircle2 size={20} className="guideline-icon" />
+                <span>Fill in your personal details and committee preferences</span>
+              </li>
+              <li>
+                <CheckCircle2 size={20} className="guideline-icon" />
+                <span>Complete the secure payment to confirm your seat</span>
+              </li>
+              <li>
+                <CheckCircle2 size={20} className="guideline-icon" />
+                <span>Receive your unique ID and await allocation updates</span>
+              </li>
+              <li>
+                <CheckCircle2 size={20} className="guideline-icon" />
+                <span>You will receive a confirmation email within 48 hours</span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
