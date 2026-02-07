@@ -121,14 +121,13 @@ function Payments() {
                 const calculatedAmount = calculateAmount(data, collectionName === "oc_registrations");
                 setAmount(calculatedAmount);
 
-                // Generate QR Code with dynamic amount
-                const upiLink = `upi://pay?pa=7995466261-2@axl&pn=Karthik Tatineni&am=${calculatedAmount}&tn=Reg Fee ${refId}&tr=${refId}`;
+
+                const upiLink = `upi://pay?pa=cheerfulsathvika6102@okaxis&pn=Konda Naga sathvika&am=${calculatedAmount}&tn=Reg Fee ${refId}&tr=${refId}`;
 
                 QRCode.toDataURL(upiLink)
                     .then((url) => setQrUrl(url))
                     .catch((err) => console.error("QR Code generation failed", err));
 
-                // Update the document with the calculated amount
                 const docRef = doc(db, collectionName, snapshot.docs[0].id);
                 await updateDoc(docRef, { amountToPay: calculatedAmount });
 
@@ -151,7 +150,7 @@ function Payments() {
             let flattenedData;
 
             if (delegateData.isGroup) {
-                // For group registrations
+
                 flattenedData = {
                     timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
                     name: delegateData.memberNames?.join(", ") || "-",
