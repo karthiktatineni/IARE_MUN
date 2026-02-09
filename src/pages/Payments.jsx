@@ -118,6 +118,12 @@ function Payments() {
                     setDelegateName(data.name);
                 }
 
+                // Check if already paid
+                if (data.utr && data.utr !== "-" && data.utr.length > 5) {
+                    setUtr(data.utr);
+                    setSuccess(true);
+                }
+
                 const calculatedAmount = calculateAmount(data, collectionName === "oc_registrations");
                 setAmount(calculatedAmount);
 
@@ -220,6 +226,24 @@ function Payments() {
         try {
             if (!registrationData) {
                 alert("Registration not found!");
+                setLoading(false);
+                return;
+                setLoading(false);
+                return;
+            }
+
+            // Check for duplicate UTR in both collections
+            const utrQuery1 = query(collection(db, "registrations"), where("utr", "==", utr.trim()));
+            const utrCheck1 = await getDocs(utrQuery1);
+
+            const utrQuery2 = query(collection(db, "oc_registrations"), where("utr", "==", utr.trim()));
+            const utrCheck2 = await getDocs(utrQuery2);
+
+            // Filter out the current user's own doc if they represent-submit (rare, but good for safety)
+            const isDuplicate = [...utrCheck1.docs, ...utrCheck2.docs].some(d => d.id !== registrationData.docId);
+
+            if (isDuplicate) {
+                alert("This UTR has already been submitted by another user. Please check your transaction ID.");
                 setLoading(false);
                 return;
             }

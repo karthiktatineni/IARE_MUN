@@ -309,6 +309,8 @@ function Registration() {
     college: "",
     yearOfStudy: "",
     rollNumber: "",
+    munExperiences: "",
+    munAwards: "",
     preferences: [
       { committee: "", countries: ["", "", ""] },
       { committee: "", countries: ["", "", ""] },
@@ -341,6 +343,8 @@ function Registration() {
       college: "",
       yearOfStudy: "",
       rollNumber: "",
+      munExperiences: "",
+      munAwards: "",
       preferences: [
         { committee: "", countries: ["", "", ""] },
         { committee: "", countries: ["", "", ""] },
@@ -406,12 +410,6 @@ function Registration() {
         alert("Please enter your Roll Number.");
         return false;
       }
-      // Pattern: Starts with 20, 21, 22, 23, 24, 25, or 45, followed by 951A, and ending with 4 digits.
-      const rollPattern = /^(20|21|22|23|24|25|45)951A\d{4}$/;
-      if (!rollPattern.test(form.rollNumber)) {
-        alert("Invalid Roll Number. Format must start with 20-25 , followed by 951A and 4 digits).");
-        return false;
-      }
     }
 
     return true;
@@ -447,6 +445,8 @@ function Registration() {
         college: form.college, // Keep the same college for group
         yearOfStudy: "",
         rollNumber: "",
+        munExperiences: "",
+        munAwards: "",
         preferences: [
           { committee: "", countries: ["", "", ""] },
           { committee: "", countries: ["", "", ""] },
@@ -498,6 +498,8 @@ function Registration() {
         college: "",
         yearOfStudy: "",
         rollNumber: "",
+        munExperiences: "",
+        munAwards: "",
         preferences: [
           { committee: "", countries: ["", "", ""] },
           { committee: "", countries: ["", "", ""] },
@@ -546,6 +548,8 @@ function Registration() {
         college: "",
         yearOfStudy: "",
         rollNumber: "",
+        munExperiences: "",
+        munAwards: "",
         preferences: [
           { committee: "", countries: ["", "", ""] },
           { committee: "", countries: ["", "", ""] },
@@ -763,6 +767,28 @@ function Registration() {
                     ? "Select Grade"
                     : "Select Year"}
                   styles={customSelectStyles}
+                />
+              </div>
+              <div className="form-group">
+                <label>No. of MUN Experiences</label>
+                <input
+                  name="munExperiences"
+                  type="number"
+                  min="0"
+                  value={form.munExperiences}
+                  onChange={handleChange}
+                  placeholder="0"
+                />
+              </div>
+              <div className="form-group">
+                <label>No. of MUN Awards</label>
+                <input
+                  name="munAwards"
+                  type="number"
+                  min="0"
+                  value={form.munAwards}
+                  onChange={handleChange}
+                  placeholder="0"
                 />
               </div>
             </div>

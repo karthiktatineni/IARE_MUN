@@ -77,17 +77,9 @@ function OCRegistration() {
             return;
         }
 
-        if (form.ocType === "Internal OC") {
-            if (!form.rollNumber) {
-                alert("Please enter your Roll Number.");
-                return;
-            }
-            // Pattern: Starts with 20, 21, 22, 23, 24, 25, or 45, followed by 951A, and ending with 4 digits.
-            const rollPattern = /^(20|21|22|23|24|25|45)951A\d{4}$/;
-            if (!rollPattern.test(form.rollNumber)) {
-                alert("Invalid Roll Number. Format must start with 20-25 , followed by 951A and 4 digits).");
-                return;
-            }
+        if (form.ocType === "Internal OC" && !form.rollNumber) {
+            alert("Please enter your Roll Number.");
+            return;
         }
 
         setLoading(true);

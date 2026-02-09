@@ -24,3 +24,4 @@ src/assets/delegates_data.csv
 *.sln
 *.sw?
 .continue
+.k6_results.txt

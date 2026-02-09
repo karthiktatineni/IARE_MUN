@@ -128,6 +128,8 @@ function Admin() {
                             registrationType: data.registrationType,
                             yearOfStudy: member.yearOfStudy,
                             rollNumber: member.rollNumber || "-",
+                            munExperiences: member.munExperiences || "0",
+                            munAwards: member.munAwards || "0",
                             amountToPay: data.amountToPay || "-",
                             refId: data.refId || "-",
                             utr: data.utr || "-",
@@ -135,7 +137,8 @@ function Admin() {
                             timestamp: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : (data.timestamp || new Date(0).toISOString()),
                             paidAt: data.paidAt?.toDate?.() ? data.paidAt.toDate().toISOString() : null,
                             preferences: member.preferences || [],
-                            allocation: null,
+                            allocation: member.allocation || null,
+                            suggestedAllocation: null,
                             isGroup: true,
                             groupId: data.groupId,
                             groupSize: data.groupSize,
@@ -155,6 +158,8 @@ function Admin() {
                         registrationType: data.registrationType || "-",
                         yearOfStudy: data.yearOfStudy || "-",
                         rollNumber: data.rollNumber || "-",
+                        munExperiences: data.munExperiences || "0",
+                        munAwards: data.munAwards || "0",
                         amountToPay: data.amountToPay || "-",
                         refId: data.refId || "-",
                         utr: data.utr || "-",
@@ -162,16 +167,25 @@ function Admin() {
                         timestamp: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : (data.timestamp || new Date(0).toISOString()),
                         paidAt: data.paidAt?.toDate?.() ? data.paidAt.toDate().toISOString() : null,
                         preferences: data.preferences || [],
-                        allocation: null,
+                        allocation: data.allocation || null,
+                        suggestedAllocation: null,
                         isGroup: false,
                         groupId: null
                     });
                 }
             });
 
-            delegateList.sort(
-                (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
-            );
+            delegateList.sort((a, b) => {
+                const awardsA = parseInt(a.munAwards || 0);
+                const awardsB = parseInt(b.munAwards || 0);
+                if (awardsA !== awardsB) return awardsB - awardsA;
+
+                const expA = parseInt(a.munExperiences || 0);
+                const expB = parseInt(b.munExperiences || 0);
+                if (expA !== expB) return expB - expA;
+
+                return new Date(a.timestamp) - new Date(b.timestamp);
+            });
 
             // Fetch OC registrations (handle case where collection might not exist)
             let ocList = [];
@@ -210,22 +224,44 @@ function Admin() {
                 }));
             });
 
+            // 1. Mark CONFIRMED allocations in matrix
             delegateList.forEach(delegate => {
-                if (delegate.allocation) return;
+                if (delegate.allocation) {
+                    const { committee, country } = delegate.allocation;
+                    const index = newCountryData[committee]?.findIndex(c => c.country === country);
+                    if (index !== -1) {
+                        newCountryData[committee][index].is_allocated = true;
+                        newCountryData[committee][index].allocated_to = delegate.name;
+                    }
+                }
+            });
+
+            // 2. Calculate SUGGESTIONS (Virtual Allocation)
+            // Deep copy to track availability for suggestions without affecting real matrix
+            const virtualMatrix = JSON.parse(JSON.stringify(newCountryData));
+
+            delegateList.forEach(delegate => {
+                if (delegate.allocation) return; // Already allocated
+
                 for (const pref of delegate.preferences) {
                     const committee = pref.committee;
+                    if (!committee) continue;
+
                     for (const country of pref.countries) {
-                        const index = newCountryData[committee]?.findIndex(
+                        if (!country) continue;
+
+                        const index = virtualMatrix[committee]?.findIndex(
                             c => c.country === country
                         );
                         if (
                             index !== -1 &&
-                            !newCountryData[committee][index].is_allocated
+                            !virtualMatrix[committee][index].is_allocated
                         ) {
-                            newCountryData[committee][index].is_allocated = true;
-                            newCountryData[committee][index].allocated_to = delegate.name;
-                            delegate.allocation = { committee, country };
-                            return;
+                            // Found a spot
+                            virtualMatrix[committee][index].is_allocated = true;
+                            virtualMatrix[committee][index].allocated_to = delegate.name; // virtual assignment
+                            delegate.suggestedAllocation = { committee, country };
+                            return; // Move to next delegate
                         }
                     }
                 }
@@ -234,26 +270,223 @@ function Admin() {
             setDelegates(delegateList);
             setCountryData(newCountryData);
 
-            localStorage.setItem(
-                "mun_country_matrix",
-                JSON.stringify(newCountryData)
-            );
-
-            try {
-                await setDoc(doc(db, "public", "countryMatrix"), {
-                    matrix: newCountryData,
-                    lastUpdated: new Date().toISOString()
-                });
-                console.log("Country matrix synced to Firestore");
-            } catch (syncErr) {
-                console.error("Error syncing matrix to Firestore:", syncErr);
-            }
+            // Note: We do NOT auto-save the matrix here anymore, only on manual allocate.
+            // But we might want to ensure the matrix is in sync if we loaded confirmed allocations.
+            // For now, we only write when we click 'Allocate'.
 
             setLoading(false);
         } catch (err) {
             console.error(err);
             setNotification("Error fetching delegates!");
             setLoading(false);
+        }
+    };
+
+    const handleAllocate = async (delegateId, docId, membersArray, memberIndex, suggested) => {
+        if (!suggested) {
+            alert("No allocation suggested (seats might be full or preferences unavailable).");
+            return;
+        }
+
+        try {
+            // Update Firestore
+            // If it's a group member, we need to update the specific member in the 'members' array
+            if (membersArray) {
+                // It's a group
+                // We need to fetch the latest doc first to avoid overwriting other concurrent updates? 
+                // For simplicity, assuming 'membersArray' passed from UI is reasonably fresh or we just update the specific index in the known array.
+                // A better approach for arrays in Firestore is tricky without reading. 
+                // But here we constructed delegateId like "docId_idx".
+
+                // Construct updated members array
+                const updatedMembers = [...membersArray]; // This is from the 'delegate' object which might be stale if we edit directly? 
+                // Actually 'delegates' state is flat. We need to find the real doc data.
+
+                // Let's just read the current 'members' from the actual delegate object in state, which comes from fetching
+                // But to be safe, let's use the docId to find the group doc locally or just update.
+
+                // Simpler: We have docId. We can just update the specific index if we use arrayUnion/Remove? No, objects.
+                // We have to write the whole members array.
+
+                // Let's find the group doc in our 'delegates' state to get the full current members list
+                // Wait, 'delegates' is flat. We need to reconstruct or find the group.
+
+                // Helper to find the group's full member list from our flat state:
+                const groupMembersInState = delegates.filter(d => d.docId === docId);
+                // We need to map them back to the structure Firestore expects.
+                const firestoreMembers = groupMembersInState.sort((a, b) => a.memberIndex - b.memberIndex).map(d => ({
+                    name: d.name,
+                    email: d.email,
+                    phone: d.phone,
+                    college: d.college,
+                    yearOfStudy: d.yearOfStudy,
+                    rollNumber: d.rollNumber,
+                    munExperiences: d.munExperiences,
+                    munAwards: d.munAwards,
+                    preferences: d.preferences,
+                    allocation: (d.memberIndex === memberIndex) ? suggested : d.allocation, // Update target
+                    // ... preserve other fields if any?
+                    memberIndex: d.memberIndex,
+                    registrationType: d.registrationType
+                    // Note: This reconstruction must match exactly what was in DB or we lose data.
+                    // Risk: If we added fields and forgot them here.
+                }));
+
+                await updateDoc(doc(db, "registrations", docId), {
+                    members: firestoreMembers
+                });
+
+            } else {
+                // Solo
+                await updateDoc(doc(db, "registrations", docId), {
+                    allocation: suggested
+                });
+            }
+
+            // Update Public Matrix
+            // We need to update countryData state first to be safe, then push
+            const newMatrix = { ...countryData };
+            const { committee, country } = suggested;
+            const cIndex = newMatrix[committee].findIndex(c => c.country === country);
+            if (cIndex !== -1) {
+                newMatrix[committee][cIndex].is_allocated = true;
+                newMatrix[committee][cIndex].allocated_to = delegates.find(d => d.id === delegateId)?.name;
+            }
+
+            setCountryData(newMatrix);
+            await setDoc(doc(db, "public", "countryMatrix"), {
+                matrix: newMatrix,
+                lastUpdated: new Date().toISOString()
+            });
+
+            // Update Local State
+            setDelegates(prev => prev.map(d => {
+                if (d.id === delegateId) {
+                    return { ...d, allocation: suggested, suggestedAllocation: null };
+                }
+                return d;
+            }));
+
+            // Re-run suggestions for everyone else based on this new locked allocation?
+            // Ideally yes. Because this seat is now taken.
+            // We can just call a lightweight "re-suggest" function or just rely on the next render?
+            // But we need to update the suggestions for OTHERS who might have wanted this seat.
+            // For now, let's just alert. The user can refresh to re-calculate suggestions 
+            // OR we can trigger a re-calc.
+            // To effectively re-calc, we need to run step 2 of fetchAndAllocate again.
+
+            // Quick Recalculate Suggestions
+            setDelegates(prevDelegates => {
+                const updatedList = [...prevDelegates];
+                // Mark the one we just allocated
+                const targetIndex = updatedList.findIndex(d => d.id === delegateId);
+                if (targetIndex !== -1) {
+                    updatedList[targetIndex].allocation = suggested;
+                    updatedList[targetIndex].suggestedAllocation = null;
+                }
+
+                // Re-eval virtual matrix
+                const virtualMatrix = JSON.parse(JSON.stringify(newMatrix)); // Uses the updated matrix with the new allocation
+
+                updatedList.forEach(del => {
+                    if (del.allocation) return;
+
+                    // clear old suggestion
+                    del.suggestedAllocation = null;
+
+                    for (const pref of del.preferences) {
+                        const comm = pref.committee;
+                        if (!comm) continue;
+                        for (const count of pref.countries) {
+                            if (!count) continue;
+                            const idx = virtualMatrix[comm]?.findIndex(c => c.country === count);
+                            if (idx !== -1 && !virtualMatrix[comm][idx].is_allocated) {
+                                virtualMatrix[comm][idx].is_allocated = true;
+                                virtualMatrix[comm][idx].allocated_to = del.name;
+                                del.suggestedAllocation = { committee: comm, country: count };
+                                return;
+                            }
+                        }
+                    }
+                });
+                return updatedList;
+            });
+
+            // alert("Allocation Confirmed!"); 
+
+        } catch (err) {
+            console.error(err);
+            alert("Failed to allocate.");
+        }
+    };
+
+    const handleDeallocate = async (delegateId, docId, membersArray, memberIndex) => {
+        if (!window.confirm("Are you sure you want to remove this allocation?")) return;
+
+        try {
+            // Find the delegate to get current allocation
+            const delegate = delegates.find(d => d.id === delegateId);
+            if (!delegate || !delegate.allocation) return;
+
+            const { committee, country } = delegate.allocation;
+
+            // Update Firestore
+            if (membersArray) {
+                // Group Logic
+                const groupMembersInState = delegates.filter(d => d.docId === docId);
+                const firestoreMembers = groupMembersInState.sort((a, b) => a.memberIndex - b.memberIndex).map(d => ({
+                    name: d.name,
+                    email: d.email,
+                    phone: d.phone,
+                    college: d.college,
+                    yearOfStudy: d.yearOfStudy,
+                    rollNumber: d.rollNumber,
+                    munExperiences: d.munExperiences,
+                    munAwards: d.munAwards,
+                    preferences: d.preferences,
+                    allocation: (d.memberIndex === memberIndex) ? null : d.allocation, // Remove allocation
+                    memberIndex: d.memberIndex,
+                    registrationType: d.registrationType
+                }));
+
+                await updateDoc(doc(db, "registrations", docId), {
+                    members: firestoreMembers
+                });
+
+            } else {
+                // Solo Logic
+                await updateDoc(doc(db, "registrations", docId), {
+                    allocation: null
+                });
+            }
+
+            // Update Public Matrix
+            const newMatrix = { ...countryData };
+            const cIndex = newMatrix[committee]?.findIndex(c => c.country === country);
+            if (cIndex !== -1) {
+                newMatrix[committee][cIndex].is_allocated = false;
+                newMatrix[committee][cIndex].allocated_to = null;
+            }
+
+            setCountryData(newMatrix);
+            await setDoc(doc(db, "public", "countryMatrix"), {
+                matrix: newMatrix,
+                lastUpdated: new Date().toISOString()
+            });
+
+            // Update Local State
+            setDelegates(prev => prev.map(d => {
+                if (d.id === delegateId) {
+                    return { ...d, allocation: null, suggestedAllocation: null };
+                }
+                return d;
+            }));
+
+            alert("Allocation removed successfully.");
+
+        } catch (err) {
+            console.error(err);
+            alert("Failed to remove allocation.");
         }
     };
 
@@ -292,6 +525,7 @@ function Admin() {
 
         const headers = [
             "Reg Time", "Name", "Email", "Phone", "College/School", "Reg Type", "Year/Grade", "Roll No",
+            "MUN Exp", "MUN Awards",
             "Group ID", "Group Size",
             "Pref 1: Committee", "Pref 1: Country 1", "Pref 1: Country 2", "Pref 1: Country 3",
             "Pref 2: Committee", "Pref 2: Country 1", "Pref 2: Country 2", "Pref 2: Country 3",
@@ -325,6 +559,8 @@ function Admin() {
                 d.registrationType,
                 d.yearOfStudy,
                 d.rollNumber || "-",
+                d.munExperiences || "0",
+                d.munAwards || "0",
                 d.groupId || "-",
                 d.groupSize || "-",
                 ...prefsColumns,
@@ -697,6 +933,8 @@ function Admin() {
                                             <th>Type</th>
                                             <th>Year/Grade</th>
                                             <th>Roll No</th>
+                                            <th>Exp</th>
+                                            <th>Awards</th>
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>College/School</th>
@@ -721,6 +959,8 @@ function Admin() {
                                                 <td>{d.registrationType}</td>
                                                 <td>{d.yearOfStudy}</td>
                                                 <td>{d.rollNumber}</td>
+                                                <td>{d.munExperiences || 0}</td>
+                                                <td>{d.munAwards || 0}</td>
                                                 <td>{d.email}</td>
                                                 <td>{d.phone}</td>
                                                 <td>{d.college}</td>
@@ -776,6 +1016,8 @@ function Admin() {
                                                         <th>Email</th>
                                                         <th>Phone</th>
                                                         <th>Year/Grade</th>
+                                                        <th>Exp</th>
+                                                        <th>Awards</th>
                                                         <th>Pref 1</th>
                                                         <th>Pref 2</th>
                                                         <th>Pref 3</th>
@@ -790,6 +1032,8 @@ function Admin() {
                                                             <td>{m.email}</td>
                                                             <td>{m.phone}</td>
                                                             <td>{m.yearOfStudy}</td>
+                                                            <td>{m.munExperiences || 0}</td>
+                                                            <td>{m.munAwards || 0}</td>
                                                             {[0, 1, 2].map(i => {
                                                                 const pref = m.preferences[i];
                                                                 return (
@@ -880,42 +1124,100 @@ function Admin() {
                         )}
 
                         {selectedTab === "allocated_delegates" && (
-                            <table className="admin-table full-width">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Phone Number</th>
-                                        <th>Email</th>
-                                        <th>Type</th>
-                                        <th>Committee</th>
-                                        <th>Country/Portfolio</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {delegates
-                                        .filter(d => d.allocation)
-                                        .map(d => (
+                            <div className="admin-table-container custom-scrollbar">
+                                <h3 className="section-title">Allocation Management</h3>
+                                <p style={{ color: "#888", marginBottom: "1rem" }}>
+                                    Review suggested allocations based on priority (Awards {'>'} Experience {'>'} Time).
+                                    Click "Allocate" to confirm and publish to the Country Matrix.
+                                </p>
+                                <table className="admin-table full-width">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Priority</th>
+                                            <th>Preferences (Comm - Country)</th>
+                                            <th>Status</th>
+                                            <th>Allocation / Suggestion</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {delegates.map(d => (
                                             <tr key={d.id} className={d.isGroup ? "group-row" : ""}>
                                                 <td>
                                                     {d.name}
                                                     {d.isGroup && <span className="group-badge-small">Group</span>}
                                                 </td>
-                                                <td>{d.phone}</td>
-                                                <td>{d.email}</td>
-                                                <td>{d.registrationType}</td>
-                                                <td>{d.allocation.committee}</td>
-                                                <td>{d.allocation.country}</td>
+                                                <td>
+                                                    <div style={{ fontSize: "0.85rem" }}>
+                                                        🏆 {d.munAwards || 0} <br />
+                                                        ⭐ {d.munExperiences || 0}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div style={{ fontSize: "0.85rem" }}>
+                                                        {d.preferences.map((p, i) => (
+                                                            <div key={i}>
+                                                                {i + 1}. {p.committee} - {p.countries.filter(Boolean).join(", ")}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {d.allocation ?
+                                                        <span className="status-tag verified">Allocated</span> :
+                                                        <span className="status-tag pending">Pending</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {d.allocation ? (
+                                                        <span style={{ color: "var(--neon-green)", fontWeight: "bold" }}>
+                                                            {d.allocation.committee} - {d.allocation.country}
+                                                        </span>
+                                                    ) : d.suggestedAllocation ? (
+                                                        <span style={{ color: "var(--gold)" }}>
+                                                            Suggest: {d.suggestedAllocation.committee} - {d.suggestedAllocation.country}
+                                                        </span>
+                                                    ) : (
+                                                        <span style={{ color: "#666" }}>No Preference Available</span>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {!d.allocation && d.suggestedAllocation && (
+                                                        <button
+                                                            className="verify-btn"
+                                                            style={{ backgroundColor: "var(--gold)", color: "black" }}
+                                                            onClick={() => handleAllocate(
+                                                                d.id,
+                                                                d.docId,
+                                                                d.isGroup ? delegates.filter(m => m.docId === d.docId) : null,
+                                                                d.memberIndex,
+                                                                d.suggestedAllocation
+                                                            )}
+                                                        >
+                                                            Allocate
+                                                        </button>
+                                                    )}
+                                                    {d.allocation && (
+                                                        <button
+                                                            className="verify-btn"
+                                                            style={{ backgroundColor: "#ff4444", color: "white" }}
+                                                            onClick={() => handleDeallocate(
+                                                                d.id,
+                                                                d.docId,
+                                                                d.isGroup ? delegates.filter(m => m.docId === d.docId) : null,
+                                                                d.memberIndex
+                                                            )}
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    )}
+                                                </td>
                                             </tr>
                                         ))}
-                                    {delegates.filter(d => d.allocation).length === 0 && (
-                                        <tr>
-                                            <td colSpan="6" style={{ textAlign: "center" }}>
-                                                No delegates allocated yet.
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         )}
 
                         {selectedTab === "countries" &&
