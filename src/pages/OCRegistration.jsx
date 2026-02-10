@@ -85,15 +85,6 @@ function OCRegistration() {
         setLoading(true);
 
         try {
-            const q = query(collection(db, "oc_registrations"), where("email", "==", form.email));
-            const existing = await getDocs(q);
-
-            if (!existing.empty) {
-                alert("This email is already registered as OC!");
-                setLoading(false);
-                return;
-            }
-
             // Create a unique reference ID for payment
             const refId = "MUNOC" + Date.now();
 

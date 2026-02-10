@@ -399,7 +399,6 @@ function Registration() {
       return false;
     }
 
-
     if (!/^\d{10}$/.test(form.phone)) {
       alert("Enter a valid 10-digit phone number.");
       return false;
@@ -412,25 +411,39 @@ function Registration() {
       }
     }
 
+    // Validate MUN Experiences and Awards
+    if (form.munExperiences === "" || form.munExperiences === null || form.munExperiences === undefined) {
+      alert("Please enter the number of MUN Experiences (enter 0 if none).");
+      return false;
+    }
+
+    if (form.munAwards === "" || form.munAwards === null || form.munAwards === undefined) {
+      alert("Please enter the number of MUN Awards (enter 0 if none).");
+      return false;
+    }
+
+    // Validate Preferences
+    for (let i = 0; i < form.preferences.length; i++) {
+      const pref = form.preferences[i];
+      if (!pref.committee) {
+        alert(`Please select a committee for Preference ${i + 1}`);
+        return false;
+      }
+
+      const requiredCountries = pref.committee === "IP" ? 2 : 3;
+      for (let j = 0; j < requiredCountries; j++) {
+        if (!pref.countries[j]) {
+          alert(`Please select ${pref.committee === "IP" ? "Portfolio" : "Country"} ${j + 1} for Preference ${i + 1}`);
+          return false;
+        }
+      }
+    }
+
     return true;
   };
 
   const saveCurrentMemberAndNext = async () => {
     if (!validateMemberForm()) return;
-
-    // Check for duplicate email
-    const q = query(collection(db, "registrations"), where("email", "==", form.email));
-    const existing = await getDocs(q);
-    if (!existing.empty) {
-      alert("This email is already registered!");
-      return;
-    }
-
-    // Also check within current group members
-    if (groupMembers.some(m => m.email === form.email)) {
-      alert("This email is already used by another member in this group!");
-      return;
-    }
 
     const newMembers = [...groupMembers, { ...form }];
     setGroupMembers(newMembers);
@@ -519,15 +532,6 @@ function Registration() {
     setLoading(true);
 
     try {
-      const q = query(collection(db, "registrations"), where("email", "==", form.email));
-      const existing = await getDocs(q);
-
-      if (!existing.empty) {
-        alert("This email is already registered!");
-        setLoading(false);
-        return;
-      }
-
       const refId = "MUNIARE" + Date.now();
 
       await addDoc(collection(db, "registrations"), {
