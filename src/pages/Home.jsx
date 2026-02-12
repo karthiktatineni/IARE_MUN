@@ -9,7 +9,7 @@ function Home() {
           <div className="hero-content">
             <h1 className="hero-title">IARE Model United Nations</h1>
             <p className="hero-tagline">Where Diplomacy Meets Leadership</p>
-            <p className="hero-dates">MARCH 6TH, 2026 - MARCH 8TH, 2026</p>
+            <p className="hero-dates"></p>
             <div className="hero-buttons">
               <Link to="/register" className="btn btn-primary">Register Now</Link>
               <Link to="/committees" className="btn btn-secondary">View Committees</Link>

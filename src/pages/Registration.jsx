@@ -1,11 +1,90 @@
-import { useState } from "react";
-import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
-import Select from "react-select";
-import { useNavigate } from "react-router-dom";
-import { Globe, Users, CheckCircle2 } from "lucide-react";
+// import { useState } from "react";
+// import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
+// import { db } from "../firebase";
+// import Select from "react-select";
+// import { useNavigate } from "react-router-dom";
+// import { Globe, Users, CheckCircle2 } from "lucide-react";
 import "./Registration.css";
 
+function Registration() {
+  return (
+    <div className="registration" style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "var(--deep-space-black)"
+    }}>
+      <div style={{
+        background: "rgba(255, 255, 255, 0.03)",
+        backdropFilter: "blur(16px)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+        borderRadius: "24px",
+        padding: "4rem",
+        textAlign: "center",
+        maxWidth: "600px",
+        width: "90%",
+        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)"
+      }}>
+        <h1 style={{
+          fontSize: "3.5rem",
+          marginBottom: "1rem",
+          background: "linear-gradient(135deg, #fff 0%, #60a5fa 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          fontWeight: "800",
+          letterSpacing: "-0.02em"
+        }}>
+          IARE MUN 2026
+        </h1>
+        <h2 style={{
+          fontSize: "2rem",
+          color: "rgba(255, 255, 255, 0.9)",
+          marginBottom: "1.5rem",
+          fontWeight: "500"
+        }}>
+          Registrations Opening Soon
+        </h2>
+        <p style={{
+          fontSize: "1.1rem",
+          color: "rgba(255, 255, 255, 0.6)",
+          marginBottom: "2.5rem",
+          lineHeight: "1.6"
+        }}>
+          We are finalizing the committee matrix and allocation protocols.
+          The portal will be live shortly. Stay tuned!
+        </p>
+
+        <div style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          padding: "0.75rem 1.5rem",
+          background: "rgba(96, 165, 250, 0.1)",
+          borderRadius: "100px",
+          border: "1px solid rgba(96, 165, 250, 0.2)",
+          color: "#60a5fa",
+          fontSize: "0.9rem",
+          fontWeight: "600"
+        }}>
+          <span style={{
+            width: "8px",
+            height: "8px",
+            background: "#60a5fa",
+            borderRadius: "50%",
+            display: "block",
+            boxShadow: "0 0 10px #60a5fa"
+          }}></span>
+          Coming Soon
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Registration;
+
+/*
 const COMMITTEE_COUNTRIES = {
   UNSC: [
     "China",
@@ -668,206 +747,213 @@ function Registration() {
           Select 3 different committees and 3 unique countries for each.
         </p>
 
-        {/* Registration Type Selection */}
-        <div className="form-row">
-          <div className="form-group full-width">
-            <label>Registration Type</label>
-            <Select
-              value={registrationType ? { value: registrationType, label: REGISTRATION_TYPES.find(t => t.value === registrationType)?.label } : null}
-              onChange={(selected) => handleRegistrationTypeChange(selected?.value || "")}
-              options={REGISTRATION_TYPES}
-              placeholder="Select Registration Type"
-              styles={customSelectStyles}
-            />
-          </div>
-        </div>
+        {/* Registration Type Selection * /}
+<div className="form-row">
+  <div className="form-group full-width">
+    <label>Registration Type</label>
+    <Select
+      value={registrationType ? { value: registrationType, label: REGISTRATION_TYPES.find(t => t.value === registrationType)?.label } : null}
+      onChange={(selected) => handleRegistrationTypeChange(selected?.value || "")}
+      options={REGISTRATION_TYPES}
+      placeholder="Select Registration Type"
+      styles={customSelectStyles}
+    />
+  </div>
+</div>
 
-        {/* Group Size Selection for Group Registrations */}
-        {isGroupRegistration && registrationType && (
-          <div className="form-row">
-            <div className="form-group full-width">
-              <label>Number of Team Members</label>
-              <Select
-                value={groupSize ? { value: groupSize, label: `${groupSize} Members` } : null}
-                onChange={(selected) => handleGroupSizeChange(selected?.value || 0)}
-                options={getGroupSizeOptions()}
-                placeholder="Select number of members in your group"
-                styles={customSelectStyles}
-              />
-              <p className="group-info">
-                {registrationType === "School Group Delegation"
-                  ? "Minimum 4, Maximum 7 members"
-                  : "Minimum 4, Maximum 9 members"}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Group Progress Indicator */}
-        {isGroupRegistration && groupSize > 0 && (
-          <div className="group-progress">
-            <h3>Registering Member {currentMemberIndex + 1} of {groupSize}</h3>
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${((currentMemberIndex + 1) / groupSize) * 100}%` }}
-              ></div>
-            </div>
-            <div className="members-registered">
-              {groupMembers.map((m, idx) => (
-                <span key={idx} className="member-tag">✓ {m.name}</span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Show form only when type is selected (and group size for groups) */}
-        {registrationType && (!isGroupRegistration || groupSize > 0) && (
-          <>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Full Name</label>
-                <input name="name" value={form.name} onChange={handleChange} />
-              </div>
-              <div className="form-group">
-                <label>Email</label>
-                <input name="email" value={form.email} onChange={handleChange} />
-              </div>
-              <div className="form-group">
-                <label>Phone</label>
-                <input name="phone" value={form.phone} onChange={handleChange} />
-              </div>
-              <div className="form-group">
-                <label>College/School</label>
-                <input
-                  name="college"
-                  value={form.college}
-                  onChange={handleChange}
-                  disabled={isGroupRegistration && currentMemberIndex > 0}
-                />
-              </div>
-              {registrationType.includes("Internal") && (
-                <div className="form-group">
-                  <label>Roll Number</label>
-                  <input
-                    name="rollNumber"
-                    value={form.rollNumber}
-                    onChange={(e) => setForm({ ...form, rollNumber: e.target.value.toUpperCase() })}
-
-                  />
-                </div>
-              )}
-              <div className="form-group">
-                <label>
-                  {(registrationType === "School Solo Delegates" || registrationType === "School Group Delegation")
-                    ? "Grade/Standard"
-                    : "Year of Study"}
-                </label>
-                <Select
-                  value={form.yearOfStudy ? { value: form.yearOfStudy, label: form.yearOfStudy } : null}
-                  onChange={(selected) => handleSelectChange("yearOfStudy", selected?.value || "")}
-                  options={getYearOptions()}
-                  placeholder={(registrationType === "School Solo Delegates" || registrationType === "School Group Delegation")
-                    ? "Select Grade"
-                    : "Select Year"}
-                  styles={customSelectStyles}
-                />
-              </div>
-              <div className="form-group">
-                <label>No. of MUN Experiences</label>
-                <input
-                  name="munExperiences"
-                  type="number"
-                  min="0"
-                  value={form.munExperiences}
-                  onChange={handleChange}
-                  placeholder="0"
-                />
-              </div>
-              <div className="form-group">
-                <label>No. of MUN Awards</label>
-                <input
-                  name="munAwards"
-                  type="number"
-                  min="0"
-                  value={form.munAwards}
-                  onChange={handleChange}
-                  placeholder="0"
-                />
-              </div>
-            </div>
-
-            {form.preferences.map((pref, pi) => (
-              <div key={pi} className="preference-group">
-                <h3>Preference {pi + 1}</h3>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Committee</label>
-                    <Select
-                      value={pref.committee ? { value: pref.committee, label: pref.committee } : null}
-                      onChange={(selected) => handleCommitteeChange(pi, selected?.value || "")}
-                      options={availableCommittees(pi).map((c) => ({ value: c, label: c }))}
-                      placeholder="Select Committee"
-                      isClearable
-                      isSearchable
-                      styles={customSelectStyles}
-                    />
-                  </div>
-                  {pref.countries
-                    .slice(0, pref.committee === "IP" ? 2 : 3)
-                    .map((country, ci) => (
-                      <div key={ci} className="form-group">
-                        <label>{pref.committee === "IP" ? "Portfolio" : "Country"} {ci + 1}</label>
-                        <Select
-                          isDisabled={!pref.committee}
-                          value={country ? { value: country, label: country } : null}
-                          onChange={(selected) => handleCountryChange(pi, ci, selected?.value || "")}
-                          options={
-                            pref.committee
-                              ? COMMITTEE_COUNTRIES[pref.committee]
-                                .filter((c) => !pref.countries.includes(c) || c === country)
-                                .map((c) => ({ value: c, label: c }))
-                              : []
-                          }
-                          placeholder={pref.committee === "IP" ? "Select Portfolio" : "Select or search country"}
-                          isClearable
-                          isSearchable
-                          styles={customSelectStyles}
-                        />
-                      </div>
-                    ))}
-                </div>
-              </div>
-            ))}
-
-            <div className="form-actions">
-              {isGroupRegistration ? (
-                <button
-                  className="btn-submit"
-                  onClick={saveCurrentMemberAndNext}
-                  disabled={loading || !form.name || !form.email || !form.phone || !form.college || !form.yearOfStudy}
-                >
-                  {loading
-                    ? "Submitting..."
-                    : currentMemberIndex < groupSize - 1
-                      ? `Save & Continue to Member ${currentMemberIndex + 2}`
-                      : `Submit All ${groupSize} Members`}
-                </button>
-              ) : (
-                <button
-                  className="btn-submit"
-                  onClick={submitSoloForm}
-                  disabled={loading || !form.name || !form.email || !form.phone || !form.college || !form.yearOfStudy}
-                >
-                  {loading ? "Submitting..." : "Submit Registration"}
-                </button>
-              )}
-            </div>
-          </>
-        )}
+{/* Group Size Selection for Group Registrations * / }
+{
+  isGroupRegistration && registrationType && (
+    <div className="form-row">
+      <div className="form-group full-width">
+        <label>Number of Team Members</label>
+        <Select
+          value={groupSize ? { value: groupSize, label: `${groupSize} Members` } : null}
+          onChange={(selected) => handleGroupSizeChange(selected?.value || 0)}
+          options={getGroupSizeOptions()}
+          placeholder="Select number of members in your group"
+          styles={customSelectStyles}
+        />
+        <p className="group-info">
+          {registrationType === "School Group Delegation"
+            ? "Minimum 4, Maximum 7 members"
+            : "Minimum 4, Maximum 9 members"}
+        </p>
       </div>
     </div>
-  );
+  )
 }
 
-export default Registration;
+{/* Group Progress Indicator * / }
+{
+  isGroupRegistration && groupSize > 0 && (
+    <div className="group-progress">
+      <h3>Registering Member {currentMemberIndex + 1} of {groupSize}</h3>
+      <div className="progress-bar">
+        <div
+          className="progress-fill"
+          style={{ width: `${((currentMemberIndex + 1) / groupSize) * 100}%` }}
+        ></div>
+      </div>
+      <div className="members-registered">
+        {groupMembers.map((m, idx) => (
+          <span key={idx} className="member-tag">✓ {m.name}</span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+{/* Show form only when type is selected (and group size for groups) * / }
+{
+  registrationType && (!isGroupRegistration || groupSize > 0) && (
+    <>
+      <div className="form-row">
+        <div className="form-group">
+          <label>Full Name</label>
+          <input name="name" value={form.name} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label>Email</label>
+          <input name="email" value={form.email} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label>Phone</label>
+          <input name="phone" value={form.phone} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label>College/School</label>
+          <input
+            name="college"
+            value={form.college}
+            onChange={handleChange}
+            disabled={isGroupRegistration && currentMemberIndex > 0}
+          />
+        </div>
+        {registrationType.includes("Internal") && (
+          <div className="form-group">
+            <label>Roll Number</label>
+            <input
+              name="rollNumber"
+              value={form.rollNumber}
+              onChange={(e) => setForm({ ...form, rollNumber: e.target.value.toUpperCase() })}
+
+            />
+          </div>
+        )}
+        <div className="form-group">
+          <label>
+            {(registrationType === "School Solo Delegates" || registrationType === "School Group Delegation")
+              ? "Grade/Standard"
+              : "Year of Study"}
+          </label>
+          <Select
+            value={form.yearOfStudy ? { value: form.yearOfStudy, label: form.yearOfStudy } : null}
+            onChange={(selected) => handleSelectChange("yearOfStudy", selected?.value || "")}
+            options={getYearOptions()}
+            placeholder={(registrationType === "School Solo Delegates" || registrationType === "School Group Delegation")
+              ? "Select Grade"
+              : "Select Year"}
+            styles={customSelectStyles}
+          />
+        </div>
+        <div className="form-group">
+          <label>No. of MUN Experiences</label>
+          <input
+            name="munExperiences"
+            type="number"
+            min="0"
+            value={form.munExperiences}
+            onChange={handleChange}
+            placeholder="0"
+          />
+        </div>
+        <div className="form-group">
+          <label>No. of MUN Awards</label>
+          <input
+            name="munAwards"
+            type="number"
+            min="0"
+            value={form.munAwards}
+            onChange={handleChange}
+            placeholder="0"
+          />
+        </div>
+      </div>
+
+      {form.preferences.map((pref, pi) => (
+        <div key={pi} className="preference-group">
+          <h3>Preference {pi + 1}</h3>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Committee</label>
+              <Select
+                value={pref.committee ? { value: pref.committee, label: pref.committee } : null}
+                onChange={(selected) => handleCommitteeChange(pi, selected?.value || "")}
+                options={availableCommittees(pi).map((c) => ({ value: c, label: c }))}
+                placeholder="Select Committee"
+                isClearable
+                isSearchable
+                styles={customSelectStyles}
+              />
+            </div>
+            {pref.countries
+              .slice(0, pref.committee === "IP" ? 2 : 3)
+              .map((country, ci) => (
+                <div key={ci} className="form-group">
+                  <label>{pref.committee === "IP" ? "Portfolio" : "Country"} {ci + 1}</label>
+                  <Select
+                    isDisabled={!pref.committee}
+                    value={country ? { value: country, label: country } : null}
+                    onChange={(selected) => handleCountryChange(pi, ci, selected?.value || "")}
+                    options={
+                      pref.committee
+                        ? COMMITTEE_COUNTRIES[pref.committee]
+                          .filter((c) => !pref.countries.includes(c) || c === country)
+                          .map((c) => ({ value: c, label: c }))
+                        : []
+                    }
+                    placeholder={pref.committee === "IP" ? "Select Portfolio" : "Select or search country"}
+                    isClearable
+                    isSearchable
+                    styles={customSelectStyles}
+                  />
+                </div>
+              ))}
+          </div>
+        </div>
+      ))}
+
+      <div className="form-actions">
+        {isGroupRegistration ? (
+          <button
+            className="btn-submit"
+            onClick={saveCurrentMemberAndNext}
+            disabled={loading || !form.name || !form.email || !form.phone || !form.college || !form.yearOfStudy}
+          >
+            {loading
+              ? "Submitting..."
+              : currentMemberIndex < groupSize - 1
+                ? `Save & Continue to Member ${currentMemberIndex + 2}`
+                : `Submit All ${groupSize} Members`}
+          </button>
+        ) : (
+          <button
+            className="btn-submit"
+            onClick={submitSoloForm}
+            disabled={loading || !form.name || !form.email || !form.phone || !form.college || !form.yearOfStudy}
+          >
+            {loading ? "Submitting..." : "Submit Registration"}
+          </button>
+        )}
+      </div>
+    </>
+  )
+}
+      </div >
+    </div >
+  );
+}
+* /
+
+*/
